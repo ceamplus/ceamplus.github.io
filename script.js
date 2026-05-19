@@ -6,6 +6,31 @@ const startAssessmentButton = document.querySelector("[data-start-assessment]");
 const assessmentPanel = document.querySelector("[data-assessment-panel]");
 const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
+const phases = [
+  {
+    id: "assess_context",
+    title: "Assess Context",
+    description: "Name the goal, people affected, practical limits, information needs, and signs that people are ready.",
+  },
+  {
+    id: "map_cognitive_load",
+    title: "Map Cognitive Load",
+    description: "Notice where people feel overwhelmed, confused, rushed, or unsure.",
+  },
+  {
+    id: "apply_ethical_checks",
+    title: "Apply Ethical Checks",
+    description: "Make risks, privacy needs, fairness, human review, and help paths visible.",
+  },
+  {
+    id: "pilot_and_learn",
+    title: "Pilot and Learn",
+    description: "Try AI in a small way, listen to feedback, measure human impact, and improve the plan.",
+  },
+];
+
+const phaseIds = phases.map((phase) => phase.id);
+
 const readinessLevels = [
   {
     max: 49,
@@ -24,317 +49,342 @@ const readinessLevels = [
   },
 ];
 
+const recommendationTemplates = {
+  business: {
+    low: {
+      nextStep: "Begin with one work task. Clarify the goal, affected people, data source, and readiness signal before testing AI.",
+      risk: "The main risk is hidden workload. AI may add pressure if the task owner, oversight path, or decision rule is unclear.",
+      implementation: "Run a small pilot with one owner, one feedback channel, and one pause rule. Review whether the tool reduces effort before expanding.",
+    },
+    medium: {
+      nextStep: "Choose the workflow with the clearest value. Define one outcome that would show lower overload or better decision quality.",
+      risk: "Adoption may stall if people do not know when to trust, question, or override AI output.",
+      implementation: "Use a short pilot guide. Include the purpose, data limits, review role, feedback method, and adjustment schedule.",
+    },
+    high: {
+      nextStep: "Move into guided implementation for one work or business use case. Keep ownership, oversight, and feedback visible.",
+      risk: "Scaling too quickly can hide confusion from quieter users or people with heavier workload pressure.",
+      implementation: "Use CEAM+ checkpoint reviews to monitor workload, communication friction, operational risk, and stakeholder confidence.",
+    },
+  },
+  education: {
+    low: {
+      nextStep: "Start with the learning goal. Identify the learner, access need, privacy limit, and support plan before AI is introduced.",
+      risk: "The main risk is confusion. Students or faculty may not know what AI use is allowed or how to ask for help.",
+      implementation: "Use a low-stakes pilot. Provide examples, privacy guidance, accessibility support, and a feedback channel.",
+    },
+    medium: {
+      nextStep: "Pilot one learning-support activity. Define the learning outcome and the support format before using AI.",
+      risk: "Readiness may vary by learner. Some people need examples, checklists, discussion, or practice before AI feels safe.",
+      implementation: "Use short feedback cycles during the term. Revise instructions, examples, accessibility supports, and communication norms.",
+    },
+    high: {
+      nextStep: "Move toward guided implementation across a course, program, or personal learning goal.",
+      risk: "High readiness can still create uneven experiences if privacy, accessibility, and academic integrity expectations are not visible.",
+      implementation: "Schedule recurring CEAM+ reviews for learning impact, faculty workload, student confidence, and ethical use.",
+    },
+  },
+  healthcare: {
+    low: {
+      nextStep: "Start with one low-risk care task. Clarify the goal, user, privacy limit, and oversight owner before AI use.",
+      risk: "The main risk is unsafe ambiguity. Patient trust can drop when privacy limits, clinical oversight, or escalation rules are not visible.",
+      implementation: "Run a bounded pilot with a clear human reviewer, privacy rule, escalation path, and feedback check.",
+    },
+    medium: {
+      nextStep: "Test one workflow with the people who will use it. Confirm the oversight rule before broader use.",
+      risk: "Privacy or accountability may fail during busy moments if the clinical review process is not practiced.",
+      implementation: "Use realistic scenarios to review usability, documentation burden, escalation behavior, and patient trust.",
+    },
+    high: {
+      nextStep: "Begin guided implementation with safety checks, privacy controls, and clinical oversight visible.",
+      risk: "A tool can be accurate and still increase stress, patient confusion, or documentation burden.",
+      implementation: "Track patient trust, staff workload, privacy fit, risk signals, and human impact throughout the pilot.",
+    },
+  },
+  rehabilitation: {
+    low: {
+      nextStep: "Start with one support goal. Talk through the person's needs, privacy concerns, comfort level, and preferred way to receive help.",
+      risk: "The main risk is that the person may feel pushed, confused, or watched instead of supported.",
+      implementation: "Try one small support tool with a clear pause plan, a trusted helper, and a simple way for the person to share how it feels.",
+    },
+    medium: {
+      nextStep: "Choose one daily task where AI support may help. Match the support to the person's communication style and learning needs.",
+      risk: "Support may fail if reminders, tracking, or helper involvement feels stressful in real life.",
+      implementation: "Review comfort, progress, stress, and feedback before adding more AI support.",
+    },
+    high: {
+      nextStep: "Move forward with one clearly explained support plan. Keep the person's choices visible at every step.",
+      risk: "Even helpful tools can become frustrating if the support stops fitting the person's needs.",
+      implementation: "Use regular check-ins to adjust reminders, instructions, helper roles, and support choices.",
+    },
+  },
+};
+
 const assessments = [
   {
     id: "business",
+    version: "1.0",
     title: "Work / Business AI Readiness Assessment",
     icon: "briefcase",
     description:
       "Evaluate AI opportunities, job fit, workflow efficiency, personal capacity, and stakeholder readiness before scaling.",
-    recommendations: {
-      low: {
-        nextStep: "Before choosing another AI tool, clarify the personal or work goals, affected users, workflow constraints, data conditions, and readiness signals for your own job, role, or team. Then run an overload map to identify the moments where you or others lose focus, repeat decisions, wait for approvals, switch between systems, or feel pressure to respond faster than you can think.",
-        risk: "The main barrier is likely not interest in AI; it is mental bandwidth and cognitive load. If you or your team are already managing stress, unclear priorities, communication friction, confusion, or decision burden, a new AI workflow can feel like another demand instead of support.",
-        implementation: "Start with a two-week guided pilot that includes communication preferences, training format choices, and a short reflection log. Ask what you or others have already tried, what helped, what created more work, and where decisions still feel unclear. Use those answers to build a simple adoption pathway with defined roles, escalation points, and a weekly adjustment rhythm.",
-      },
-      medium: {
-        nextStep: "Choose the personal or workplace workflow with the clearest combination of value and human relief. Define what reduced overload would look like in practical terms: fewer repeated explanations, clearer handoffs, shorter search time, fewer after-hours corrections, or better confidence in routine decisions.",
-        risk: "Readiness may stall if leaders focus only on efficiency metrics and miss how different people learn, communicate, and recover from overload. Some staff may need visual examples, others may need written steps, live practice, or private time to test the tool before using it in a visible workflow.",
-        implementation: "Create a role-based pilot guide with three parts: what the AI tool will do, what humans still decide, and how feedback will change the process. Include office-hours support, a shared issue log, and a midpoint review that asks whether the tool is reducing mental effort or simply moving effort somewhere less visible.",
-      },
-      high: {
-        nextStep: "Move into a guided implementation plan for one scalable personal, job, or business use case, but keep the human factors explicit. Name the process owner, decision owner, training owner, and feedback owner, then define how you will monitor overload, communication friction, confidence, and workflow value at each milestone.",
-        risk: "High readiness can create pressure to scale too quickly. The risk is that early adopters adapt well while quieter teams, new employees, neurodivergent staff, or people under heavier workload pressure fall behind without saying so directly.",
-        implementation: "Use CEAM+ checkpoint reviews every two to four weeks. Review workflow data alongside human signals: confusion themes, repeated questions, stress points, training gaps, and suggestions from people who were hesitant. Treat those signals as design data, not resistance, and adjust the implementation before expanding.",
-      },
-    },
+    phases: phaseIds,
+    recommendations: recommendationTemplates.business,
     questions: [
-      {
-        layer: "Assess Context",
-        label: "You or your team can clarify goals, affected users, workflow constraints, data conditions, and readiness signals before choosing where AI belongs.",
-        low: "Hard to name",
-        high: "Clearly named",
-      },
-      {
-        layer: "Map Cognitive Load",
-        label: "You or others can name the specific moments that cause overload, friction, confusion, decision burden, or mental stress, such as repeated approvals, unclear priorities, system switching, or urgent messages.",
-        low: "Little bandwidth",
-        high: "Enough bandwidth",
-      },
-      {
-        layer: "Map Cognitive Load",
-        label: "Training can match different learning styles, including written steps, visual examples, live practice, and time to try the tool privately.",
-        low: "One format",
-        high: "Multiple formats",
-      },
-      {
-        layer: "Apply Ethical Checks",
-        label: "Communication style differences are considered when explaining AI decisions, limits, risks, and escalation paths to stakeholders.",
-        low: "Not considered",
-        high: "Well considered",
-      },
-      {
-        layer: "Apply Ethical Checks",
-        label: "Customer, employee, or vendor data risks are reviewed before AI tools are tested in a real business workflow.",
-        low: "Rarely reviewed",
-        high: "Reviewed early",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "You or the affected people have discussed what has already been tried to improve the workflow and why those attempts did or did not reduce friction.",
-        low: "Not discussed",
-        high: "Clearly discussed",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "You or your team has a practical plan for handling overload during a bounded pilot, including where questions go and what work can pause if needed.",
-        low: "No plan",
-        high: "Clear plan",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "Feedback from the pilot can be used to measure human impact and refine process changes, training updates, or communication adjustments within the next planning cycle.",
-        low: "Unlikely",
-        high: "Very likely",
-      },
+      { id: "business_context_work_goal", phase: "assess_context", label: "Can the business goal for AI be named?", low: "Unclear goal", high: "Clear goal" },
+      { id: "business_context_affected_employees", phase: "assess_context", label: "Can the employees affected by AI be named?", low: "Unclear employees", high: "Clear employees" },
+      { id: "business_context_affected_customers", phase: "assess_context", label: "Can the customers affected by AI be named?", low: "Unclear customers", high: "Clear customers" },
+      { id: "business_context_workflow_constraint", phase: "assess_context", label: "Can you tell what parts of the job might make AI hard to use?", low: "Hard to tell", high: "Easy to tell" },
+      { id: "business_context_data_source", phase: "assess_context", label: "Can you tell what information AI would need?", low: "Unclear info", high: "Clear info" },
+      { id: "business_context_readiness_signal", phase: "assess_context", label: "Can you tell if people are ready to try AI?", low: "Hard to tell", high: "Easy to tell" },
+      { id: "business_load_overload_source", phase: "map_cognitive_load", label: "Can busy points in the workday be named?", low: "Not named", high: "Clearly named" },
+      { id: "business_load_repeated_approvals", phase: "map_cognitive_load", label: "Do repeated approvals slow people down?", low: "Not clear", high: "Very clear" },
+      { id: "business_load_unclear_priorities", phase: "map_cognitive_load", label: "Do unclear priorities create stress?", low: "Not clear", high: "Very clear" },
+      { id: "business_load_system_switching", phase: "map_cognitive_load", label: "Do people get frustrated switching between apps?", low: "Not clear", high: "Very clear" },
+      { id: "business_load_urgent_messages", phase: "map_cognitive_load", label: "Do urgent messages interrupt important work?", low: "Not clear", high: "Very clear" },
+      { id: "business_load_mental_stress", phase: "map_cognitive_load", label: "Can stressful tasks be named?", low: "Not named", high: "Clearly named" },
+      { id: "business_load_written_training", phase: "map_cognitive_load", label: "Can step-by-step training be provided?", low: "Not available", high: "Ready to use" },
+      { id: "business_load_visual_examples", phase: "map_cognitive_load", label: "Can visual examples be provided?", low: "Not available", high: "Ready to use" },
+      { id: "business_load_live_practice", phase: "map_cognitive_load", label: "Can live practice be provided?", low: "Not available", high: "Ready to use" },
+      { id: "business_load_private_testing", phase: "map_cognitive_load", label: "Can people test the tool privately before rollout?", low: "No private test", high: "Private test ready" },
+      { id: "business_load_learning_preferences", phase: "map_cognitive_load", label: "Can training fit different learning needs?", low: "One-size training", high: "Flexible training" },
+      { id: "business_ethics_customer_privacy", phase: "apply_ethical_checks", label: "Are customer privacy risks reviewed before AI testing?", low: "Not reviewed", high: "Reviewed" },
+      { id: "business_ethics_employee_privacy", phase: "apply_ethical_checks", label: "Are employee privacy risks reviewed before AI testing?", low: "Not reviewed", high: "Reviewed" },
+      { id: "business_ethics_vendor_privacy", phase: "apply_ethical_checks", label: "Are vendor privacy risks reviewed before AI testing?", low: "Not reviewed", high: "Reviewed" },
+      { id: "business_ethics_operational_risk", phase: "apply_ethical_checks", label: "Are real work risks reviewed before AI testing?", low: "Not reviewed", high: "Reviewed" },
+      { id: "business_ethics_communication_style", phase: "apply_ethical_checks", label: "Are different communication styles considered during rollout?", low: "Not considered", high: "Considered" },
+      { id: "business_ethics_decision_explanation", phase: "apply_ethical_checks", label: "Do people understand how AI suggestions are made?", low: "Unclear", high: "Clear" },
+      { id: "business_ethics_ai_ability", phase: "apply_ethical_checks", label: "Do people understand what AI can do?", low: "Unclear", high: "Clear" },
+      { id: "business_ethics_ai_limits", phase: "apply_ethical_checks", label: "Do people understand what AI cannot do?", low: "Unclear", high: "Clear" },
+      { id: "business_ethics_oversight_owner", phase: "apply_ethical_checks", label: "Do people know who checks AI output?", low: "No reviewer", high: "Clear reviewer" },
+      { id: "business_ethics_help_path", phase: "apply_ethical_checks", label: "Do people know where to ask for help?", low: "Unclear help", high: "Clear help" },
+      { id: "business_pilot_prior_improvement", phase: "pilot_and_learn", label: "Have past work improvement attempts been discussed?", low: "Not discussed", high: "Discussed" },
+      { id: "business_pilot_successful_change", phase: "pilot_and_learn", label: "Has the team discussed what made work smoother?", low: "Not discussed", high: "Discussed" },
+      { id: "business_pilot_failed_change", phase: "pilot_and_learn", label: "Has the team discussed what failed to make work easier?", low: "Not discussed", high: "Discussed" },
+      { id: "business_pilot_employee_frustrations", phase: "pilot_and_learn", label: "Have employees shared current work frustrations?", low: "Not shared", high: "Clearly shared" },
+      { id: "business_pilot_support_contact", phase: "pilot_and_learn", label: "Is there a clear support contact during the AI test?", low: "No contact", high: "Clear contact" },
+      { id: "business_pilot_confusion_plan", phase: "pilot_and_learn", label: "Is there a plan for employee confusion during the AI test?", low: "No plan", high: "Clear plan" },
+      { id: "business_pilot_pause_plan", phase: "pilot_and_learn", label: "Is there a plan to pause work if overload increases?", low: "No plan", high: "Clear plan" },
+      { id: "business_pilot_technical_issues", phase: "pilot_and_learn", label: "Is there a process for technical issues during testing?", low: "No process", high: "Clear process" },
+      { id: "business_pilot_employee_feedback", phase: "pilot_and_learn", label: "Can employee feedback be collected during the AI test?", low: "No channel", high: "Clear channel" },
+      { id: "business_pilot_customer_feedback", phase: "pilot_and_learn", label: "Can customer feedback be collected during the AI test?", low: "No channel", high: "Clear channel" },
+      { id: "business_pilot_human_impact", phase: "pilot_and_learn", label: "Can feedback show how AI affects people?", low: "Hard to show", high: "Easy to show" },
+      { id: "business_pilot_process_revision", phase: "pilot_and_learn", label: "Can work steps be changed after feedback?", low: "Hard to change", high: "Easy to change" },
+      { id: "business_pilot_training_update", phase: "pilot_and_learn", label: "Can training materials be updated after feedback?", low: "Hard to update", high: "Easy to update" },
+      { id: "business_pilot_revision", phase: "pilot_and_learn", label: "Can instructions be improved after feedback?", low: "Hard to improve", high: "Easy to improve" },
     ],
   },
   {
     id: "education",
+    version: "1.0",
     title: "Learning / Education AI Readiness Assessment",
     icon: "book",
     description:
       "Support responsible learning tools, study habits, faculty adoption, accessibility, and student-centered safeguards.",
-    recommendations: {
-      low: {
-        nextStep: "Begin with a learning-environment scan before selecting a tool. Ask where overload shows up for you, students, or educators: unclear instructions, too many platforms, anxiety about grades or performance, difficulty asking for help, accessibility barriers, or uncertainty about whether AI use is allowed. Choose one learning use case that reduces confusion rather than adding another layer.",
-        risk: "The biggest barrier may be uneven emotional and cognitive safety. A person may use AI silently when overwhelmed, while an educator may avoid AI because they do not want to police it or redesign assignments without support. Without clear communication and accessible guidance, AI can widen gaps instead of supporting learning.",
-        implementation: "Create a personal, classroom, or program protocol that includes acceptable use, disclosure language, accessibility checks, learning-style supports, and a low-stakes practice activity. Build in reflection about what was tried, what caused confusion, and what helped learning rather than simply completing work.",
-      },
-      medium: {
-        nextStep: "Pilot one learning-support workflow where the purpose is specific: drafting feedback, study planning, accessibility support, tutoring practice, personal comprehension, or faculty preparation. Define how the AI tool should reduce cognitive load for the learner or educator and how you will know if it is causing confusion.",
-        risk: "Adoption may fragment if each instructor creates different expectations without shared language. Students who need direct communication, visual examples, repetition, or assistive supports may experience the policy as unclear or unsafe.",
-        implementation: "Use a shared rubric, sample prompts, reflection questions, and short faculty/student check-ins. Ask what has already been tried, whether it improved learning, and whether communication needs to be more direct, more visual, more scaffolded, or more flexible.",
-      },
-      high: {
-        nextStep: "Move toward a guided implementation plan across a personal learning goal, course, program, or department, but keep the focus on learning conditions rather than tool enthusiasm. Name the learning outcome, support model, accessibility requirements, communication norms, and feedback loop before scaling.",
-        risk: "High readiness can still produce inconsistent student experiences if faculty workload, student anxiety, academic integrity concerns, and accessibility needs are not reviewed together. Students may comply on the surface while remaining confused about what responsible AI use actually means.",
-        implementation: "Schedule recurring CEAM+ reviews that examine learning impact, mental workload, student confidence, faculty time, accessibility, and ethical use. Update guidance during the term rather than waiting until the next academic cycle.",
-      },
-    },
+    phases: phaseIds,
+    recommendations: recommendationTemplates.education,
     questions: [
-      {
-        layer: "Assess Context",
-        label: "You, faculty, or students can clarify learning goals, affected users, accessibility constraints, data conditions, and readiness signals before AI is added.",
-        low: "Hard to identify",
-        high: "Clearly identified",
-      },
-      {
-        layer: "Map Cognitive Load",
-        label: "Faculty and students can identify what causes overload, friction, confusion, decision burden, or mental health stress in the learning environment, such as platform switching, unclear AI rules, assignment anxiety, or too many instructions.",
-        low: "Not considered",
-        high: "Actively considered",
-      },
-      {
-        layer: "Map Cognitive Load",
-        label: "The learner receives AI guidance in more than one learning style, such as examples, checklists, demonstrations, discussion, and practice prompts.",
-        low: "One format",
-        high: "Multiple formats",
-      },
-      {
-        layer: "Apply Ethical Checks",
-        label: "Communication style needs are addressed so students know when AI use is allowed, when it must be disclosed, and how to ask clarifying questions.",
-        low: "Unclear",
-        high: "Very clear",
-      },
-      {
-        layer: "Apply Ethical Checks",
-        label: "Privacy, accessibility, fairness, transparency, bias, and attribution expectations are explained before students are asked to use AI tools.",
-        low: "After use",
-        high: "Before use",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "Faculty have discussed what they have already tried to reduce confusion, improve feedback, or support struggling learners before adding AI.",
-        low: "Not discussed",
-        high: "Clearly discussed",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "There is a plan for handling overload during a bounded pilot when AI guidance confuses students, increases faculty questions, or changes assignment support needs.",
-        low: "No plan",
-        high: "Clear plan",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "Learner, student, or faculty feedback can be used during the term to measure human impact and refine AI instructions, examples, accessibility supports, and communication norms.",
-        low: "Rarely revised",
-        high: "Regularly revised",
-      },
+      { id: "education_context_learning_goal", phase: "assess_context", label: "Can the learning goal be named?", low: "Unclear goal", high: "Clear goal" },
+      { id: "education_context_affected_users", phase: "assess_context", label: "Can the students affected by AI be named?", low: "Unclear students", high: "Clear students" },
+      { id: "education_context_affected_faculty", phase: "assess_context", label: "Can the teachers affected by AI be named?", low: "Unclear teachers", high: "Clear teachers" },
+      { id: "education_context_accessibility_needs", phase: "assess_context", label: "Can student access needs be named?", low: "Unclear needs", high: "Clear needs" },
+      { id: "education_context_data_conditions", phase: "assess_context", label: "Can you tell what class information AI would use?", low: "Unclear info", high: "Clear info" },
+      { id: "education_context_privacy_limits", phase: "assess_context", label: "Can privacy limits be explained?", low: "Unclear limits", high: "Clear limits" },
+      { id: "education_context_readiness_signals", phase: "assess_context", label: "Can you tell if the class is ready to try AI?", low: "Hard to tell", high: "Easy to tell" },
+      { id: "education_load_faculty_overload", phase: "map_cognitive_load", label: "Can teachers name what feels overwhelming?", low: "Not named", high: "Clearly named" },
+      { id: "education_load_student_overload", phase: "map_cognitive_load", label: "Can students name what feels overwhelming?", low: "Not named", high: "Clearly named" },
+      { id: "education_load_platform_switching", phase: "map_cognitive_load", label: "Do students get frustrated switching between platforms?", low: "Not clear", high: "Very clear" },
+      { id: "education_load_unclear_ai_rules", phase: "map_cognitive_load", label: "Do unclear AI rules confuse students?", low: "Not clear", high: "Very clear" },
+      { id: "education_load_assignment_anxiety", phase: "map_cognitive_load", label: "Do assignments create anxiety?", low: "Not clear", high: "Very clear" },
+      { id: "education_load_confusing_instructions", phase: "map_cognitive_load", label: "Do too many instructions confuse students?", low: "Not clear", high: "Very clear" },
+      { id: "education_load_examples", phase: "map_cognitive_load", label: "Does the learner get examples?", low: "No examples", high: "Clear examples" },
+      { id: "education_load_checklists", phase: "map_cognitive_load", label: "Does the learner get checklists?", low: "No checklist", high: "Clear checklist" },
+      { id: "education_load_demonstrations", phase: "map_cognitive_load", label: "Does the learner get demonstrations?", low: "No demo", high: "Clear demo" },
+      { id: "education_load_discussion_support", phase: "map_cognitive_load", label: "Does the learner get discussion support?", low: "No discussion", high: "Clear support" },
+      { id: "education_load_practice_prompts", phase: "map_cognitive_load", label: "Does the learner get practice prompts?", low: "No prompts", high: "Useful prompts" },
+      { id: "education_load_student_private_practice", phase: "map_cognitive_load", label: "Can students try AI privately before class use?", low: "No private try", high: "Private try ready" },
+      { id: "education_load_teacher_private_practice", phase: "map_cognitive_load", label: "Can teachers try AI privately before class use?", low: "No private try", high: "Private try ready" },
+      { id: "education_load_student_questions", phase: "map_cognitive_load", label: "Can students ask questions before using AI?", low: "No question time", high: "Question time ready" },
+      { id: "education_load_teacher_questions", phase: "map_cognitive_load", label: "Can teachers ask questions before using AI?", low: "No question time", high: "Question time ready" },
+      { id: "education_ethics_privacy", phase: "apply_ethical_checks", label: "Are privacy rules explained before AI use?", low: "Not explained", high: "Explained" },
+      { id: "education_ethics_accessibility", phase: "apply_ethical_checks", label: "Are access needs explained before AI use?", low: "Not explained", high: "Explained" },
+      { id: "education_ethics_fairness", phase: "apply_ethical_checks", label: "Are fair-use expectations explained before AI use?", low: "Not explained", high: "Explained" },
+      { id: "education_ethics_transparency", phase: "apply_ethical_checks", label: "Do students know when AI is being used?", low: "Not clear", high: "Very clear" },
+      { id: "education_ethics_bias", phase: "apply_ethical_checks", label: "Are bias concerns explained before AI use?", low: "Not explained", high: "Explained" },
+      { id: "education_ethics_attribution", phase: "apply_ethical_checks", label: "Do students know how to cite AI help?", low: "Not clear", high: "Very clear" },
+      { id: "education_ethics_academic_integrity", phase: "apply_ethical_checks", label: "Are honesty rules clear before AI use?", low: "Unclear", high: "Clear" },
+      { id: "education_pilot_reduce_confusion", phase: "pilot_and_learn", label: "Have teachers discussed what reduced confusion?", low: "Not discussed", high: "Discussed" },
+      { id: "education_pilot_improve_feedback", phase: "pilot_and_learn", label: "Have teachers discussed what improved feedback?", low: "Not discussed", high: "Discussed" },
+      { id: "education_pilot_support_struggling_learners", phase: "pilot_and_learn", label: "Have teachers discussed what helped struggling learners?", low: "Not discussed", high: "Discussed" },
+      { id: "education_pilot_student_confusion_plan", phase: "pilot_and_learn", label: "Is there a plan if AI confuses students?", low: "No plan", high: "Clear plan" },
+      { id: "education_pilot_faculty_questions_plan", phase: "pilot_and_learn", label: "Is there a plan if AI increases teacher questions?", low: "No plan", high: "Clear plan" },
+      { id: "education_pilot_assignment_support_plan", phase: "pilot_and_learn", label: "Is there a plan if assignment help needs change?", low: "No plan", high: "Clear plan" },
+      { id: "education_pilot_pause_plan", phase: "pilot_and_learn", label: "Is there a plan to pause if overload increases?", low: "No plan", high: "Clear plan" },
+      { id: "education_pilot_learner_feedback", phase: "pilot_and_learn", label: "Can learner feedback be collected during class?", low: "No channel", high: "Clear channel" },
+      { id: "education_pilot_faculty_feedback", phase: "pilot_and_learn", label: "Can teacher feedback be collected during class?", low: "No channel", high: "Clear channel" },
+      { id: "education_pilot_human_impact", phase: "pilot_and_learn", label: "Can feedback show how AI affects people?", low: "Hard to show", high: "Easy to show" },
+      { id: "education_pilot_revise_instructions", phase: "pilot_and_learn", label: "Can AI instructions be improved after feedback?", low: "Hard to improve", high: "Easy to improve" },
+      { id: "education_pilot_revise_examples", phase: "pilot_and_learn", label: "Can examples be improved after feedback?", low: "Hard to improve", high: "Easy to improve" },
+      { id: "education_pilot_revise_accessibility", phase: "pilot_and_learn", label: "Can access supports be improved after feedback?", low: "Hard to improve", high: "Easy to improve" },
+      { id: "education_pilot_revise_communication", phase: "pilot_and_learn", label: "Can class communication be improved after feedback?", low: "Hard to improve", high: "Easy to improve" },
     ],
   },
   {
     id: "healthcare",
+    version: "1.0",
     title: "Health / Care AI Readiness Assessment",
     icon: "cross",
     description:
       "Map personal, clinical, or administrative AI use against privacy, risk, usability, compliance, and accountability needs.",
-    recommendations: {
-      low: {
-        nextStep: "Start with a low-risk health or care workflow and complete an overload review before implementation. Ask where you, staff, patients, or caregivers experience cognitive strain: documentation backlogs, alert fatigue, unclear escalation, appointment pressure, patient communication pressure, compliance uncertainty, or emotional stress after difficult situations.",
-        risk: "Health and care readiness can look higher on paper than it feels in practice. If a person, clinician, caregiver, or staff member is already managing stress, compassion fatigue, time pressure, or communication breakdowns, AI may be perceived as another monitoring system instead of a support tool.",
-        implementation: "Run a structured readiness session for the person or group affected, including privacy and accountability considerations. Document what has already been tried, what failed under real workflow pressure, and what supports people need to safely question, override, or escalate AI output.",
-      },
-      medium: {
-        nextStep: "Clarify the oversight model and test the AI workflow with a small group that represents the actual communication and learning needs of the setting. Include staff who prefer written protocols, scenario practice, visual workflows, and direct escalation examples.",
-        risk: "Privacy and accountability may be understood conceptually but fail during busy clinical or administrative moments if staff do not have a clear mental model for what the AI is doing and when human judgment takes priority.",
-        implementation: "Use scenario-based testing with realistic cases. Review cognitive load, usability, documentation burden, mental stress points, escalation behavior, and whether the tool improves communication among patients, staff, and accountable decision-makers.",
-      },
-      high: {
-        nextStep: "Begin a guided implementation pilot with defined safety checks, privacy controls, human accountability points, and a staff-support plan. Treat staff wellbeing, workload, and communication clarity as implementation measures, not secondary concerns.",
-        risk: "Even high-readiness healthcare settings can create risk if monitoring focuses only on technical performance. A tool can be accurate and still increase documentation burden, emotional stress, patient confusion, or hesitation to escalate concerns.",
-        implementation: "Track human impact, patient or service risk, compliance fit, workflow burden, and communication breakdowns throughout the pilot. Use weekly feedback to update training, escalation language, and safeguards before expanding use.",
-      },
-    },
+    phases: phaseIds,
+    recommendations: recommendationTemplates.healthcare,
     questions: [
-      {
-        layer: "Assess Context",
-        label: "You, clinicians, or staff can clarify care goals, affected users, clinical or personal constraints, data conditions, and readiness signals before AI enters the workflow.",
-        low: "Hard to identify",
-        high: "Clearly identified",
-      },
-      {
-        layer: "Map Cognitive Load",
-        label: "You, clinicians, or staff can identify what causes overload, friction, confusion, decision burden, or wellbeing pressure, such as alert fatigue, documentation pressure, unclear escalation, or competing care needs.",
-        low: "Not considered",
-        high: "Actively considered",
-      },
-      {
-        layer: "Map Cognitive Load",
-        label: "Training can support different learning styles through scenarios, written protocols, visual workflows, supervised practice, and quick-reference aids.",
-        low: "Limited training",
-        high: "Layered training",
-      },
-      {
-        layer: "Apply Ethical Checks",
-        label: "Communication style needs are addressed for explaining AI-supported decisions to patients, families, staff, and accountable leaders.",
-        low: "Not addressed",
-        high: "Well addressed",
-      },
-      {
-        layer: "Apply Ethical Checks",
-        label: "Privacy, consent, fairness, transparency, oversight, escalation, compliance, and data-minimization expectations are defined before AI output enters a clinical or administrative workflow.",
-        low: "Undefined",
-        high: "Defined",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "Frontline users have discussed what they have already tried to reduce burden, improve handoffs, or clarify decisions before adding AI.",
-        low: "Not discussed",
-        high: "Clearly discussed",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "There is a practical plan for handling overload during a bounded pilot if AI output conflicts with staff judgment, patient needs, or time-sensitive workflow demands.",
-        low: "No plan",
-        high: "Clear plan",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "Quality, compliance, staff feedback, and patient or service human impact can be reviewed together to refine the adoption plan after implementation.",
-        low: "Separate reviews",
-        high: "Integrated review",
-      },
+      { id: "healthcare_context_care_goal", phase: "assess_context", label: "Can the care goal be named?", low: "Unclear goal", high: "Clear goal" },
+      { id: "healthcare_context_affected_patient", phase: "assess_context", label: "Can the patients affected by AI be named?", low: "Unclear patients", high: "Clear patients" },
+      { id: "healthcare_context_affected_staff", phase: "assess_context", label: "Can the staff affected by AI be named?", low: "Unclear staff", high: "Clear staff" },
+      { id: "healthcare_context_clinical_constraint", phase: "assess_context", label: "Can you tell what care rules might make AI hard to use?", low: "Hard to tell", high: "Easy to tell" },
+      { id: "healthcare_context_data_condition", phase: "assess_context", label: "Can you tell what patient information AI would use?", low: "Unclear info", high: "Clear info" },
+      { id: "healthcare_context_readiness_signal", phase: "assess_context", label: "Can you tell if the care team is ready to try AI?", low: "Hard to tell", high: "Easy to tell" },
+      { id: "healthcare_load_alert_fatigue", phase: "map_cognitive_load", label: "Do too many alerts wear people down?", low: "Not clear", high: "Very clear" },
+      { id: "healthcare_load_documentation_burden", phase: "map_cognitive_load", label: "Does paperwork take too much time?", low: "Not clear", high: "Very clear" },
+      { id: "healthcare_load_unclear_help", phase: "map_cognitive_load", label: "Do people know when to ask for help?", low: "Unclear", high: "Clear" },
+      { id: "healthcare_load_wellbeing_pressure", phase: "map_cognitive_load", label: "Can staff stress points be named?", low: "Not named", high: "Clearly named" },
+      { id: "healthcare_load_training_format", phase: "map_cognitive_load", label: "Can the best training format be named?", low: "Not known", high: "Known" },
+      { id: "healthcare_ethics_privacy", phase: "apply_ethical_checks", label: "Are patient privacy rules explained before AI use?", low: "Not explained", high: "Explained" },
+      { id: "healthcare_ethics_consent", phase: "apply_ethical_checks", label: "Are patient permission rules explained before AI use?", low: "Not explained", high: "Explained" },
+      { id: "healthcare_ethics_oversight_owner", phase: "apply_ethical_checks", label: "Do people know who reviews AI output?", low: "No reviewer", high: "Clear reviewer" },
+      { id: "healthcare_ethics_help_path", phase: "apply_ethical_checks", label: "Do people know where to report a concern?", low: "Unclear", high: "Clear" },
+      { id: "healthcare_ethics_accountability_rule", phase: "apply_ethical_checks", label: "Do people know who is responsible for final decisions?", low: "Unclear", high: "Clear" },
+      { id: "healthcare_pilot_prior_burden_reduction", phase: "pilot_and_learn", label: "Have past burden-reduction attempts been discussed?", low: "Not discussed", high: "Discussed" },
+      { id: "healthcare_pilot_pause_on_risk", phase: "pilot_and_learn", label: "Is there a plan to pause if risk increases?", low: "No plan", high: "Clear plan" },
+      { id: "healthcare_pilot_staff_feedback", phase: "pilot_and_learn", label: "Can staff feedback be collected during the AI test?", low: "No channel", high: "Clear channel" },
+      { id: "healthcare_pilot_patient_trust", phase: "pilot_and_learn", label: "Can patient trust be checked during the AI test?", low: "Not checked", high: "Clearly checked" },
+      { id: "healthcare_pilot_refine_plan", phase: "pilot_and_learn", label: "Can the care plan be improved after feedback?", low: "Hard to improve", high: "Easy to improve" },
     ],
   },
   {
     id: "rehabilitation",
+    version: "1.0",
     title: "Rehabilitation / Adaptive Support AI Readiness Assessment",
     icon: "path",
     description:
-      "Shape assistive and adaptive systems around personal goals, autonomy, behavior change, and care insight.",
-    recommendations: {
-      low: {
-        nextStep: "Begin with one person-centered support scenario and map what overload looks like for the person, caregiver, job coach, educator, or care team. Consider fatigue, frustration, sensory load, memory demands, communication barriers, emotional readiness, and the point where support starts to feel like pressure.",
-        risk: "Assistive or adaptive AI can unintentionally reduce autonomy if recommendations are too frequent, too complex, or disconnected from the person's communication style and lived experience. Mental health, motivation, and trust can be affected if the tool feels judgmental or hard to control.",
-        implementation: "Use a small co-designed pilot with the person and any caregivers, clinicians, educators, or support partners involved. Ask what has already been tried, what helped, what felt overwhelming, and how the person prefers to receive reminders, choices, encouragement, or feedback. Build those answers into the first version.",
-      },
-      medium: {
-        nextStep: "Refine one adaptive support workflow around a specific patient goal and the person's preferred learning and communication style. Define whether the support should be visual, verbal, step-by-step, choice-based, caregiver-mediated, or clinician-guided.",
-        risk: "The system may be technically promising but difficult to sustain if stress, motivation, autonomy, caregiver workload, or behavior-change readiness is overlooked. A patient may disengage if the support feels too fast, too corrective, or too disconnected from daily life.",
-        implementation: "Add structured check-ins that review patient experience, goal progress, care-team interpretation of AI suggestions, and overload signals. Adjust frequency, language, prompts, and escalation steps before expanding the use case.",
-      },
-      high: {
-        nextStep: "Move into guided implementation with patient-goal tracking, autonomy safeguards, and multidisciplinary feedback loops. Keep the person's mental energy, confidence, preferred communication style, and sense of control visible in the implementation plan.",
-        risk: "Scaling adaptive systems can create uneven experiences if personalization and oversight are not maintained over time. What supports one person may overload another, especially when cognitive fatigue, emotional readiness, disability access, or caregiver involvement differs.",
-        implementation: "Use CEAM+ improvement cycles to adjust prompts, supports, escalation paths, and care-team responsibilities. Review both measurable progress and lived experience so the system remains adaptive, respectful, and clinically useful.",
-      },
-    },
+      "Shape support tools around personal goals, daily needs, communication style, and trusted care.",
+    phases: phaseIds,
+    recommendations: recommendationTemplates.rehabilitation,
     questions: [
-      {
-        layer: "Assess Context",
-        label: "You or the support team can clarify personal goals, affected users, therapy or job constraints, data conditions, and readiness signals before AI support is introduced.",
-        low: "Hard to identify",
-        high: "Clearly identified",
-      },
-      {
-        layer: "Map Cognitive Load",
-        label: "You or the support team can identify what causes overload, friction, confusion, decision burden, or mental health strain, such as fatigue, sensory input, memory demands, frustration, or too many prompts.",
-        low: "Not considered",
-        high: "Actively considered",
-      },
-      {
-        layer: "Map Cognitive Load",
-        label: "The support can match the person's learning style through demonstration, repetition, visuals, verbal coaching, written steps, or caregiver modeling.",
-        low: "One format",
-        high: "Personalized formats",
-      },
-      {
-        layer: "Apply Ethical Checks",
-        label: "Communication style preferences are documented so prompts, feedback, and choices are presented in a way the person can understand and control.",
-        low: "Not documented",
-        high: "Well documented",
-      },
-      {
-        layer: "Apply Ethical Checks",
-        label: "Risk, fairness, transparency, privacy, oversight, consent, autonomy, and choice are checked when adaptive recommendations are presented to patients, caregivers, or clinicians.",
-        low: "Weak safeguards",
-        high: "Strong safeguards",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "You or the support team has discussed what has already been tried to support behavior change and which strategies helped, failed, or caused overload.",
-        low: "Not discussed",
-        high: "Clearly discussed",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "There is a plan for handling overload during a bounded pilot if prompts, tracking, caregiver involvement, or AI suggestions become stressful or disruptive.",
-        low: "No plan",
-        high: "Clear plan",
-      },
-      {
-        layer: "Pilot and Learn",
-        label: "Progress data and lived experience feedback can be used to measure human impact and refine supports over time without reducing patient autonomy.",
-        low: "Rarely adjusted",
-        high: "Continuously adjusted",
-      },
+      { id: "rehab_context_personal_goal", phase: "assess_context", label: "Can the personal goal be explained clearly?", low: "Unclear goal", high: "Clear goal" },
+      { id: "rehab_context_affected_person", phase: "assess_context", label: "Can the person affected by AI support be named?", low: "Unclear person", high: "Clear person" },
+      { id: "rehab_context_therapy_barrier", phase: "assess_context", label: "Can therapy needs that may make AI hard be named?", low: "Not named", high: "Clearly named" },
+      { id: "rehab_context_work_barrier", phase: "assess_context", label: "Can work needs that may make AI hard be named?", low: "Not named", high: "Clearly named" },
+      { id: "rehab_context_daily_life_barrier", phase: "assess_context", label: "Can daily life needs that may make AI hard be named?", low: "Not named", high: "Clearly named" },
+      { id: "rehab_context_privacy_concern", phase: "assess_context", label: "Can privacy concerns be named before AI is used?", low: "Not named", high: "Clearly named" },
+      { id: "rehab_context_person_ready", phase: "assess_context", label: "Can you tell if the person is ready to try new support tools?", low: "Hard to tell", high: "Easy to tell" },
+      { id: "rehab_load_overwhelming_situations", phase: "map_cognitive_load", label: "Can stressful situations be named?", low: "Not named", high: "Clearly named" },
+      { id: "rehab_load_sensory_triggers", phase: "map_cognitive_load", label: "Can sensory overload triggers be named?", low: "Not named", high: "Clearly named" },
+      { id: "rehab_load_memory_difficulties", phase: "map_cognitive_load", label: "Can memory difficulties be named?", low: "Not named", high: "Clearly named" },
+      { id: "rehab_load_frustration_points", phase: "map_cognitive_load", label: "Can frustration points be named?", low: "Not named", high: "Clearly named" },
+      { id: "rehab_load_reminder_stress", phase: "map_cognitive_load", label: "Can stressful reminders be noticed?", low: "Hard to notice", high: "Easy to notice" },
+      { id: "rehab_load_demonstrations", phase: "map_cognitive_load", label: "Can support be explained through demonstrations?", low: "Not available", high: "Ready to use" },
+      { id: "rehab_load_repetition", phase: "map_cognitive_load", label: "Can support include repetition when needed?", low: "Not available", high: "Ready to use" },
+      { id: "rehab_load_visual_examples", phase: "map_cognitive_load", label: "Can visual examples be provided?", low: "Not available", high: "Ready to use" },
+      { id: "rehab_load_verbal_coaching", phase: "map_cognitive_load", label: "Can verbal coaching be provided?", low: "Not available", high: "Ready to use" },
+      { id: "rehab_load_written_steps", phase: "map_cognitive_load", label: "Can written steps be provided?", low: "Not available", high: "Ready to use" },
+      { id: "rehab_load_caregiver_modeling", phase: "map_cognitive_load", label: "Can caregivers demonstrate tasks if needed?", low: "Not available", high: "Ready to use" },
+      { id: "rehab_ethics_privacy", phase: "apply_ethical_checks", label: "Are privacy concerns explained before AI support is used?", low: "Not explained", high: "Explained" },
+      { id: "rehab_ethics_risk", phase: "apply_ethical_checks", label: "Are risks explained clearly?", low: "Not explained", high: "Explained" },
+      { id: "rehab_ethics_ai_suggestions", phase: "apply_ethical_checks", label: "Does the person understand how AI gives suggestions?", low: "Unclear", high: "Clear" },
+      { id: "rehab_ethics_permission", phase: "apply_ethical_checks", label: "Is permission discussed before AI support is used?", low: "Not discussed", high: "Discussed" },
+      { id: "rehab_ethics_person_choices", phase: "apply_ethical_checks", label: "Can the person still make their own choices?", low: "Unclear choice", high: "Clear choice" },
+      { id: "rehab_ethics_staff_review", phase: "apply_ethical_checks", label: "Can staff review AI suggestions when needed?", low: "No review", high: "Clear review" },
+      { id: "rehab_ethics_caregiver_review", phase: "apply_ethical_checks", label: "Can caregivers review AI suggestions when needed?", low: "No review", high: "Clear review" },
+      { id: "rehab_ethics_communication_preference", phase: "apply_ethical_checks", label: "Are communication preferences discussed before AI support?", low: "Not discussed", high: "Discussed" },
+      { id: "rehab_ethics_prompt_clarity", phase: "apply_ethical_checks", label: "Can prompts be explained in a way the person understands?", low: "Hard to explain", high: "Easy to explain" },
+      { id: "rehab_ethics_feedback_clarity", phase: "apply_ethical_checks", label: "Can feedback be given in a way the person understands?", low: "Hard to explain", high: "Easy to explain" },
+      { id: "rehab_ethics_choice_control", phase: "apply_ethical_checks", label: "Can the person adjust support choices?", low: "Hard to adjust", high: "Easy to adjust" },
+      { id: "rehab_pilot_prior_support", phase: "pilot_and_learn", label: "Has the team discussed what has already been tried?", low: "Not discussed", high: "Discussed" },
+      { id: "rehab_pilot_helpful_strategies", phase: "pilot_and_learn", label: "Has the team discussed what helped?", low: "Not discussed", high: "Discussed" },
+      { id: "rehab_pilot_unhelpful_strategies", phase: "pilot_and_learn", label: "Has the team discussed what did not help?", low: "Not discussed", high: "Discussed" },
+      { id: "rehab_pilot_stressful_strategies", phase: "pilot_and_learn", label: "Has the team discussed what caused stress?", low: "Not discussed", high: "Discussed" },
+      { id: "rehab_pilot_reminder_plan", phase: "pilot_and_learn", label: "Is there a plan if reminders become stressful?", low: "No plan", high: "Clear plan" },
+      { id: "rehab_pilot_tracking_plan", phase: "pilot_and_learn", label: "Is there a plan if tracking feels overwhelming?", low: "No plan", high: "Clear plan" },
+      { id: "rehab_pilot_caregiver_stress_plan", phase: "pilot_and_learn", label: "Is there a plan if helper involvement creates stress?", low: "No plan", high: "Clear plan" },
+      { id: "rehab_pilot_suggestion_plan", phase: "pilot_and_learn", label: "Is there a plan if AI suggestions feel upsetting?", low: "No plan", high: "Clear plan" },
+      { id: "rehab_pilot_backup_plan", phase: "pilot_and_learn", label: "Is there a backup plan if the support is not helping?", low: "No backup", high: "Clear backup" },
+      { id: "rehab_pilot_progress_review", phase: "pilot_and_learn", label: "Can progress be reviewed over time?", low: "Not reviewed", high: "Reviewed" },
+      { id: "rehab_pilot_person_feedback", phase: "pilot_and_learn", label: "Can the person share how the support feels?", low: "No channel", high: "Clear channel" },
+      { id: "rehab_pilot_caregiver_feedback", phase: "pilot_and_learn", label: "Can caregivers share feedback?", low: "No channel", high: "Clear channel" },
+      { id: "rehab_pilot_staff_feedback", phase: "pilot_and_learn", label: "Can staff share feedback?", low: "No channel", high: "Clear channel" },
+      { id: "rehab_pilot_refine_support", phase: "pilot_and_learn", label: "Can support plans be changed after feedback?", low: "Hard to change", high: "Easy to change" },
+      { id: "rehab_pilot_preserve_choice", phase: "pilot_and_learn", label: "Can changes keep the person's choices in place?", low: "Hard to keep", high: "Easy to keep" },
     ],
   },
 ];
 
 const getAssessmentById = (id) => assessments.find((assessment) => assessment.id === id);
 
+const getReadinessLevel = (score) => readinessLevels.find((level) => score <= level.max) || readinessLevels.at(-1);
+
+const calculateScore = (responses, questions = null) => {
+  const values = questions
+    ? questions.map((question) => Number(responses[question.id] ?? 3))
+    : Object.values(responses).map((value) => Number(value));
+
+  if (!values.length) return 0;
+
+  const total = values.reduce((sum, value) => sum + value, 0);
+  return Math.round((total / (values.length * 5)) * 100);
+};
+
+const calculatePhaseScores = (assessment, responses) =>
+  phases.reduce((scores, phase) => {
+    const phaseQuestions = assessment.questions.filter((question) => question.phase === phase.id);
+    scores[phase.id] = calculateScore(responses, phaseQuestions);
+    return scores;
+  }, {});
+
+const getRecommendation = (assessmentId, score) => {
+  const assessment = getAssessmentById(assessmentId);
+  const readiness = getReadinessLevel(score);
+  return assessment?.recommendations?.[readiness.tone] || {
+    nextStep: "Clarify the immediate goal before expanding AI use.",
+    risk: "The main risk is moving forward without visible assumptions or oversight.",
+    implementation: "Use a small pilot with feedback, review, and a clear pause rule.",
+  };
+};
+
+const buildAssessmentResult = (assessment, responses) => {
+  const score = calculateScore(responses, assessment.questions);
+  const readiness = getReadinessLevel(score);
+  const phaseScores = calculatePhaseScores(assessment, responses);
+
+  return {
+    assessmentId: assessment.id,
+    version: assessment.version,
+    responses,
+    score,
+    readinessLevel: readiness.level,
+    readinessTone: readiness.tone,
+    phaseScores,
+    recommendation: getRecommendation(assessment.id, score, phaseScores),
+  };
+};
+
 const calculateAssessmentResult = (values, questionCount, assessment) => {
-  const total = values.reduce((sum, value) => sum + Number(value), 0);
-  const maximum = questionCount * 5;
-  const score = Math.round((total / maximum) * 100);
-  const readiness = readinessLevels.find((level) => score <= level.max);
+  const responses = {};
+  const questions = assessment?.questions?.slice(0, questionCount) || [];
+
+  values.forEach((value, index) => {
+    const questionId = questions[index]?.id || `question_${index + 1}`;
+    responses[questionId] = value;
+  });
+
+  const score = calculateScore(responses, questions.length ? questions : null);
+  const readiness = getReadinessLevel(score);
   return {
     score,
     level: readiness.level,
     tone: readiness.tone,
-    ...assessment.recommendations[readiness.tone],
+    ...getRecommendation(assessment?.id, score),
   };
 };
 
@@ -357,17 +407,16 @@ const updateHeader = () => {
   header.classList.toggle("is-scrolled", window.scrollY > 8);
 };
 
-const createQuestion = (assessment, question, index) => {
-  const questionId = `${assessment.id}-question-${index}`;
+const renderQuestion = (question, index) => {
   const wrapper = document.createElement("div");
   wrapper.className = "guided-question";
   wrapper.innerHTML = `
     <div class="question-meta">
-      <span>${question.layer}</span>
-      <output for="${questionId}" data-output>3</output>
+      <span>Question ${index + 1}</span>
+      <output for="${question.id}" data-output>3</output>
     </div>
-    <label for="${questionId}">${question.label}</label>
-    <input id="${questionId}" name="${questionId}" type="range" min="1" max="5" value="3" step="1">
+    <label for="${question.id}">${question.label}</label>
+    <input id="${question.id}" name="${question.id}" data-question-id="${question.id}" type="range" min="1" max="5" value="3" step="1">
     <div class="scale-labels" aria-hidden="true">
       <span>${question.low}</span>
       <span>${question.high}</span>
@@ -376,10 +425,37 @@ const createQuestion = (assessment, question, index) => {
   return wrapper;
 };
 
+const renderPhase = (phase, phaseQuestions, questionOffset = 0, isOpen = false) => {
+  const phaseCard = document.createElement("details");
+  phaseCard.className = "phase-card";
+  phaseCard.open = isOpen;
+  phaseCard.innerHTML = `
+    <summary>
+      <span>${phase.title}</span>
+      <small>${phaseQuestions.length} questions</small>
+    </summary>
+    <p>${phase.description}</p>
+    <div class="phase-questions"></div>
+  `;
+
+  const phaseQuestionList = phaseCard.querySelector(".phase-questions");
+  phaseQuestions.forEach((question, index) => {
+    phaseQuestionList.appendChild(renderQuestion(question, questionOffset + index));
+  });
+
+  return phaseCard;
+};
+
+const getResponsesFromPanel = (panel) =>
+  [...panel.querySelectorAll('input[type="range"][data-question-id]')].reduce((responses, input) => {
+    responses[input.dataset.questionId] = Number(input.value);
+    return responses;
+  }, {});
+
 const updateGuidedAssessment = (panel, assessment) => {
-  const values = [...panel.querySelectorAll('input[type="range"]')].map((input) => input.value);
-  const result = calculateAssessmentResult(values, assessment.questions.length, assessment);
-  const answered = values.filter((value) => Number(value) !== 3).length;
+  const responses = getResponsesFromPanel(panel);
+  const result = buildAssessmentResult(assessment, responses);
+  const answered = Object.values(responses).filter((value) => Number(value) !== 3).length;
   const progressPercent = Math.round((answered / assessment.questions.length) * 100);
   const score = panel.querySelector("[data-score]");
   const progress = panel.querySelector("[data-progress]");
@@ -394,25 +470,25 @@ const updateGuidedAssessment = (panel, assessment) => {
 
   if (resultBox.dataset.submitted === "true") {
     resultBox.hidden = false;
-    resultBox.className = `guided-result ${result.tone}`;
+    resultBox.className = `guided-result ${result.readinessTone}`;
     resultBox.innerHTML = `
       <div>
-        <span>${result.level}</span>
+        <span>${result.readinessLevel}</span>
         <strong>${result.score}% readiness</strong>
       </div>
       <dl>
         <dt>Practical next step</dt>
-        <dd>${result.nextStep}</dd>
+        <dd>${result.recommendation.nextStep}</dd>
         <dt>Risk or barrier observation</dt>
-        <dd>${result.risk}</dd>
+        <dd>${result.recommendation.risk}</dd>
         <dt>Implementation suggestion</dt>
-        <dd>${result.implementation}</dd>
+        <dd>${result.recommendation.implementation}</dd>
       </dl>
     `;
   }
 };
 
-const renderGuidedAssessment = (assessment) => {
+const renderAssessment = (assessment) => {
   if (!assessmentPanel) return;
   assessmentPanel.hidden = false;
   assessmentPanel.classList.add("is-visible");
@@ -441,8 +517,13 @@ const renderGuidedAssessment = (assessment) => {
   `;
 
   const questionList = assessmentPanel.querySelector(".guided-questions");
-  assessment.questions.forEach((question, index) => {
-    questionList.appendChild(createQuestion(assessment, question, index));
+  let questionOffset = 0;
+  phases.forEach((phase, phaseIndex) => {
+    const phaseQuestions = assessment.questions.filter((question) => question.phase === phase.id);
+    if (!phaseQuestions.length) return;
+
+    questionList.appendChild(renderPhase(phase, phaseQuestions, questionOffset, phaseIndex === 0));
+    questionOffset += phaseQuestions.length;
   });
 
   assessmentPanel.querySelectorAll('input[type="range"]').forEach((input) => {
@@ -476,8 +557,17 @@ const handleOrganizationChange = () => {
 
 window.CEAMAssessments = {
   assessments,
+  phases,
+  buildAssessmentResult,
   calculateAssessmentResult,
+  calculatePhaseScores,
+  calculateScore,
   getAssessmentById,
+  getReadinessLevel,
+  getRecommendation,
+  renderAssessment,
+  renderPhase,
+  renderQuestion,
 };
 
 updateHeader();
@@ -487,7 +577,7 @@ organizationSelect?.addEventListener("change", handleOrganizationChange);
 startAssessmentButton?.addEventListener("click", () => {
   const assessment = getAssessmentById(organizationSelect.value);
   if (!assessment) return;
-  renderGuidedAssessment(assessment);
+  renderAssessment(assessment);
   assessmentPanel.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
 });
 
