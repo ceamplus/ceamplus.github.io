@@ -27,23 +27,23 @@ const readinessLevels = [
 const assessments = [
   {
     id: "business",
-    title: "Business AI Readiness Assessment",
+    title: "Work / Business AI Readiness Assessment",
     icon: "briefcase",
     description:
-      "Evaluate AI opportunities, operational fit, workflow efficiency, and stakeholder readiness before scaling.",
+      "Evaluate AI opportunities, job fit, workflow efficiency, personal capacity, and stakeholder readiness before scaling.",
     recommendations: {
       low: {
-        nextStep: "Before choosing another AI tool, clarify the business goals, affected users, workflow constraints, data conditions, and readiness signals for one team. Then run an overload map to identify the moments where people lose focus, repeat decisions, wait for approvals, switch between systems, or feel pressure to respond faster than they can think.",
-        risk: "The main barrier is likely not interest in AI; it is mental bandwidth and cognitive load. If teams are already managing stress, unclear priorities, communication friction, confusion, or decision burden, a new AI workflow can feel like another demand instead of support.",
-        implementation: "Start with a two-week guided pilot that includes communication preferences, training format choices, and a short reflection log. Ask what has already been tried, what helped, what created more work, and where decisions still feel unclear. Use those answers to build a simple adoption pathway with defined roles, escalation points, and a weekly adjustment rhythm.",
+        nextStep: "Before choosing another AI tool, clarify the personal or work goals, affected users, workflow constraints, data conditions, and readiness signals for your own job, role, or team. Then run an overload map to identify the moments where you or others lose focus, repeat decisions, wait for approvals, switch between systems, or feel pressure to respond faster than you can think.",
+        risk: "The main barrier is likely not interest in AI; it is mental bandwidth and cognitive load. If you or your team are already managing stress, unclear priorities, communication friction, confusion, or decision burden, a new AI workflow can feel like another demand instead of support.",
+        implementation: "Start with a two-week guided pilot that includes communication preferences, training format choices, and a short reflection log. Ask what you or others have already tried, what helped, what created more work, and where decisions still feel unclear. Use those answers to build a simple adoption pathway with defined roles, escalation points, and a weekly adjustment rhythm.",
       },
       medium: {
-        nextStep: "Choose the workflow with the clearest combination of business value and human relief. Define what reduced overload would look like in practical terms: fewer repeated explanations, clearer handoffs, shorter search time, fewer after-hours corrections, or better confidence in routine decisions.",
+        nextStep: "Choose the personal or workplace workflow with the clearest combination of value and human relief. Define what reduced overload would look like in practical terms: fewer repeated explanations, clearer handoffs, shorter search time, fewer after-hours corrections, or better confidence in routine decisions.",
         risk: "Readiness may stall if leaders focus only on efficiency metrics and miss how different people learn, communicate, and recover from overload. Some staff may need visual examples, others may need written steps, live practice, or private time to test the tool before using it in a visible workflow.",
         implementation: "Create a role-based pilot guide with three parts: what the AI tool will do, what humans still decide, and how feedback will change the process. Include office-hours support, a shared issue log, and a midpoint review that asks whether the tool is reducing mental effort or simply moving effort somewhere less visible.",
       },
       high: {
-        nextStep: "Move into a guided implementation plan for one scalable business use case, but keep the human factors explicit. Name the process owner, decision owner, training owner, and feedback owner, then define how you will monitor overload, communication friction, stakeholder confidence, and workflow value at each milestone.",
+        nextStep: "Move into a guided implementation plan for one scalable personal, job, or business use case, but keep the human factors explicit. Name the process owner, decision owner, training owner, and feedback owner, then define how you will monitor overload, communication friction, confidence, and workflow value at each milestone.",
         risk: "High readiness can create pressure to scale too quickly. The risk is that early adopters adapt well while quieter teams, new employees, neurodivergent staff, or people under heavier workload pressure fall behind without saying so directly.",
         implementation: "Use CEAM+ checkpoint reviews every two to four weeks. Review workflow data alongside human signals: confusion themes, repeated questions, stress points, training gaps, and suggestions from people who were hesitant. Treat those signals as design data, not resistance, and adjust the implementation before expanding.",
       },
@@ -51,13 +51,13 @@ const assessments = [
     questions: [
       {
         layer: "Assess Context",
-        label: "The team can clarify goals, affected users, workflow constraints, data conditions, and readiness signals before choosing where AI belongs.",
+        label: "You or your team can clarify goals, affected users, workflow constraints, data conditions, and readiness signals before choosing where AI belongs.",
         low: "Hard to name",
         high: "Clearly named",
       },
       {
         layer: "Map Cognitive Load",
-        label: "People can name the specific moments that cause overload, friction, confusion, decision burden, or mental stress, such as repeated approvals, unclear priorities, system switching, or urgent messages.",
+        label: "You or others can name the specific moments that cause overload, friction, confusion, decision burden, or mental stress, such as repeated approvals, unclear priorities, system switching, or urgent messages.",
         low: "Little bandwidth",
         high: "Enough bandwidth",
       },
@@ -81,13 +81,13 @@ const assessments = [
       },
       {
         layer: "Pilot and Learn",
-        label: "Stakeholders have discussed what they have already tried to improve the workflow and why those attempts did or did not reduce friction.",
+        label: "You or the affected people have discussed what has already been tried to improve the workflow and why those attempts did or did not reduce friction.",
         low: "Not discussed",
         high: "Clearly discussed",
       },
       {
         layer: "Pilot and Learn",
-        label: "The team has a practical plan for handling overload during a bounded pilot, including where questions go and what work can pause if needed.",
+        label: "You or your team has a practical plan for handling overload during a bounded pilot, including where questions go and what work can pause if needed.",
         low: "No plan",
         high: "Clear plan",
       },
@@ -101,23 +101,23 @@ const assessments = [
   },
   {
     id: "education",
-    title: "Education AI Readiness Assessment",
+    title: "Learning / Education AI Readiness Assessment",
     icon: "book",
     description:
-      "Support responsible learning tools, faculty adoption, accessibility, and student-centered safeguards.",
+      "Support responsible learning tools, study habits, faculty adoption, accessibility, and student-centered safeguards.",
     recommendations: {
       low: {
-        nextStep: "Begin with a learning-environment scan before selecting a tool. Ask faculty and students where overload shows up: unclear instructions, too many platforms, anxiety about grades, difficulty asking for help, accessibility barriers, or uncertainty about whether AI use is allowed. Choose one instructional use case that reduces confusion rather than adding another layer.",
-        risk: "The biggest barrier may be uneven emotional and cognitive safety. Students may use AI silently when they are overwhelmed, while faculty may avoid AI because they do not want to police it or redesign assignments without support. Without clear communication and accessible guidance, AI can widen gaps instead of supporting learning.",
-        implementation: "Create a classroom or program protocol that includes acceptable use, disclosure language, accessibility checks, learning-style supports, and a low-stakes practice activity. Build in student feedback about what they tried, what confused them, and what helped them learn rather than simply complete work.",
+        nextStep: "Begin with a learning-environment scan before selecting a tool. Ask where overload shows up for you, students, or educators: unclear instructions, too many platforms, anxiety about grades or performance, difficulty asking for help, accessibility barriers, or uncertainty about whether AI use is allowed. Choose one learning use case that reduces confusion rather than adding another layer.",
+        risk: "The biggest barrier may be uneven emotional and cognitive safety. A person may use AI silently when overwhelmed, while an educator may avoid AI because they do not want to police it or redesign assignments without support. Without clear communication and accessible guidance, AI can widen gaps instead of supporting learning.",
+        implementation: "Create a personal, classroom, or program protocol that includes acceptable use, disclosure language, accessibility checks, learning-style supports, and a low-stakes practice activity. Build in reflection about what was tried, what caused confusion, and what helped learning rather than simply completing work.",
       },
       medium: {
-        nextStep: "Pilot one learning-support workflow where the purpose is specific: drafting feedback, study planning, accessibility support, tutoring practice, or faculty preparation. Define how the AI tool should reduce cognitive load for students or faculty and how you will know if it is causing confusion.",
+        nextStep: "Pilot one learning-support workflow where the purpose is specific: drafting feedback, study planning, accessibility support, tutoring practice, personal comprehension, or faculty preparation. Define how the AI tool should reduce cognitive load for the learner or educator and how you will know if it is causing confusion.",
         risk: "Adoption may fragment if each instructor creates different expectations without shared language. Students who need direct communication, visual examples, repetition, or assistive supports may experience the policy as unclear or unsafe.",
         implementation: "Use a shared rubric, sample prompts, reflection questions, and short faculty/student check-ins. Ask what has already been tried, whether it improved learning, and whether communication needs to be more direct, more visual, more scaffolded, or more flexible.",
       },
       high: {
-        nextStep: "Move toward a guided implementation plan across a course, program, or department, but keep the focus on learning conditions rather than tool enthusiasm. Name the learning outcome, support model, accessibility requirements, communication norms, and feedback loop before scaling.",
+        nextStep: "Move toward a guided implementation plan across a personal learning goal, course, program, or department, but keep the focus on learning conditions rather than tool enthusiasm. Name the learning outcome, support model, accessibility requirements, communication norms, and feedback loop before scaling.",
         risk: "High readiness can still produce inconsistent student experiences if faculty workload, student anxiety, academic integrity concerns, and accessibility needs are not reviewed together. Students may comply on the surface while remaining confused about what responsible AI use actually means.",
         implementation: "Schedule recurring CEAM+ reviews that examine learning impact, mental workload, student confidence, faculty time, accessibility, and ethical use. Update guidance during the term rather than waiting until the next academic cycle.",
       },
@@ -125,7 +125,7 @@ const assessments = [
     questions: [
       {
         layer: "Assess Context",
-        label: "Faculty and students can clarify learning goals, affected users, accessibility constraints, data conditions, and readiness signals before AI is added.",
+        label: "You, faculty, or students can clarify learning goals, affected users, accessibility constraints, data conditions, and readiness signals before AI is added.",
         low: "Hard to identify",
         high: "Clearly identified",
       },
@@ -137,7 +137,7 @@ const assessments = [
       },
       {
         layer: "Map Cognitive Load",
-        label: "Students receive AI guidance in more than one learning style, such as examples, checklists, demonstrations, discussion, and practice prompts.",
+        label: "The learner receives AI guidance in more than one learning style, such as examples, checklists, demonstrations, discussion, and practice prompts.",
         low: "One format",
         high: "Multiple formats",
       },
@@ -167,7 +167,7 @@ const assessments = [
       },
       {
         layer: "Pilot and Learn",
-        label: "Student and faculty feedback can be used during the term to measure human impact and refine AI instructions, examples, accessibility supports, and communication norms.",
+        label: "Learner, student, or faculty feedback can be used during the term to measure human impact and refine AI instructions, examples, accessibility supports, and communication norms.",
         low: "Rarely revised",
         high: "Regularly revised",
       },
@@ -175,15 +175,15 @@ const assessments = [
   },
   {
     id: "healthcare",
-    title: "Healthcare AI Readiness Assessment",
+    title: "Health / Care AI Readiness Assessment",
     icon: "cross",
     description:
-      "Map clinical and administrative AI use against privacy, risk, usability, compliance, and accountability needs.",
+      "Map personal, clinical, or administrative AI use against privacy, risk, usability, compliance, and accountability needs.",
     recommendations: {
       low: {
-        nextStep: "Start with a low-risk workflow and complete a healthcare overload review before implementation. Ask where staff experience cognitive strain: documentation backlogs, alert fatigue, unclear escalation, patient communication pressure, compliance uncertainty, or emotional stress after difficult cases. Use that review to choose an AI support that reduces burden without weakening accountability.",
-        risk: "Healthcare readiness can look higher on paper than it feels in practice. If clinicians or staff are already managing stress, compassion fatigue, time pressure, or communication breakdowns, AI may be perceived as another monitoring system instead of a support tool.",
-        implementation: "Run a structured readiness session with frontline users, compliance, privacy, and accountable clinical or operational leaders. Document what has already been tried, what failed under real workflow pressure, and what supports people need to safely question, override, or escalate AI output.",
+        nextStep: "Start with a low-risk health or care workflow and complete an overload review before implementation. Ask where you, staff, patients, or caregivers experience cognitive strain: documentation backlogs, alert fatigue, unclear escalation, appointment pressure, patient communication pressure, compliance uncertainty, or emotional stress after difficult situations.",
+        risk: "Health and care readiness can look higher on paper than it feels in practice. If a person, clinician, caregiver, or staff member is already managing stress, compassion fatigue, time pressure, or communication breakdowns, AI may be perceived as another monitoring system instead of a support tool.",
+        implementation: "Run a structured readiness session for the person or group affected, including privacy and accountability considerations. Document what has already been tried, what failed under real workflow pressure, and what supports people need to safely question, override, or escalate AI output.",
       },
       medium: {
         nextStep: "Clarify the oversight model and test the AI workflow with a small group that represents the actual communication and learning needs of the setting. Include staff who prefer written protocols, scenario practice, visual workflows, and direct escalation examples.",
@@ -199,13 +199,13 @@ const assessments = [
     questions: [
       {
         layer: "Assess Context",
-        label: "Clinicians or staff can clarify care goals, affected users, clinical constraints, data conditions, and readiness signals before AI enters the workflow.",
+        label: "You, clinicians, or staff can clarify care goals, affected users, clinical or personal constraints, data conditions, and readiness signals before AI enters the workflow.",
         low: "Hard to identify",
         high: "Clearly identified",
       },
       {
         layer: "Map Cognitive Load",
-        label: "Clinicians or staff can identify what causes overload, friction, confusion, decision burden, or wellbeing pressure, such as alert fatigue, documentation pressure, unclear escalation, or competing patient needs.",
+        label: "You, clinicians, or staff can identify what causes overload, friction, confusion, decision burden, or wellbeing pressure, such as alert fatigue, documentation pressure, unclear escalation, or competing care needs.",
         low: "Not considered",
         high: "Actively considered",
       },
@@ -249,15 +249,15 @@ const assessments = [
   },
   {
     id: "rehabilitation",
-    title: "Rehabilitation AI Readiness Assessment",
+    title: "Rehabilitation / Adaptive Support AI Readiness Assessment",
     icon: "path",
     description:
-      "Shape assistive and adaptive systems around patient goals, autonomy, behavior change, and care-team insight.",
+      "Shape assistive and adaptive systems around personal goals, autonomy, behavior change, and care insight.",
     recommendations: {
       low: {
-        nextStep: "Begin with one patient-centered support scenario and map what overload looks like for the patient, caregiver, and care team. Consider fatigue, frustration, sensory load, memory demands, communication barriers, emotional readiness, and the point where support starts to feel like pressure.",
+        nextStep: "Begin with one person-centered support scenario and map what overload looks like for the person, caregiver, job coach, educator, or care team. Consider fatigue, frustration, sensory load, memory demands, communication barriers, emotional readiness, and the point where support starts to feel like pressure.",
         risk: "Assistive or adaptive AI can unintentionally reduce autonomy if recommendations are too frequent, too complex, or disconnected from the person's communication style and lived experience. Mental health, motivation, and trust can be affected if the tool feels judgmental or hard to control.",
-        implementation: "Use a small co-designed pilot with patients, caregivers, and clinicians. Ask what has already been tried, what helped, what felt overwhelming, and how the person prefers to receive reminders, choices, encouragement, or feedback. Build those answers into the first version.",
+        implementation: "Use a small co-designed pilot with the person and any caregivers, clinicians, educators, or support partners involved. Ask what has already been tried, what helped, what felt overwhelming, and how the person prefers to receive reminders, choices, encouragement, or feedback. Build those answers into the first version.",
       },
       medium: {
         nextStep: "Refine one adaptive support workflow around a specific patient goal and the person's preferred learning and communication style. Define whether the support should be visual, verbal, step-by-step, choice-based, caregiver-mediated, or clinician-guided.",
@@ -273,13 +273,13 @@ const assessments = [
     questions: [
       {
         layer: "Assess Context",
-        label: "The care team can clarify patient goals, affected users, therapy constraints, data conditions, and readiness signals before AI support is introduced.",
+        label: "You or the support team can clarify personal goals, affected users, therapy or job constraints, data conditions, and readiness signals before AI support is introduced.",
         low: "Hard to identify",
         high: "Clearly identified",
       },
       {
         layer: "Map Cognitive Load",
-        label: "The care team can identify what causes overload, friction, confusion, decision burden, or mental health strain for the patient or client, such as fatigue, sensory input, memory demands, frustration, or too many prompts.",
+        label: "You or the support team can identify what causes overload, friction, confusion, decision burden, or mental health strain, such as fatigue, sensory input, memory demands, frustration, or too many prompts.",
         low: "Not considered",
         high: "Actively considered",
       },
@@ -303,7 +303,7 @@ const assessments = [
       },
       {
         layer: "Pilot and Learn",
-        label: "The team has discussed what has already been tried to support behavior change and which strategies helped, failed, or caused overload.",
+        label: "You or the support team has discussed what has already been tried to support behavior change and which strategies helped, failed, or caused overload.",
         low: "Not discussed",
         high: "Clearly discussed",
       },
