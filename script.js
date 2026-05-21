@@ -464,11 +464,13 @@ const getScale = (question) => scaleSets[question.scale] || scaleSets.agreement;
 const getReadinessLevel = (score) => profileRules.find((rule) => score <= rule.max) || profileRules.at(-1);
 
 const getQuestionScore = (question, value) => {
+  if (value === undefined || value === null || value === "") return null;
+
   if (question.type === "choice") {
     const index = question.options.indexOf(value);
     const scores = question.score || question.options.map(() => 4);
     if (Math.max(...scores) <= 3) return 3;
-    return scores[index] || 3;
+    return scores[index] || null;
   }
 
   const number = Number(value || 3);
@@ -476,9 +478,12 @@ const getQuestionScore = (question, value) => {
 };
 
 const calculateScore = (responses, questions = []) => {
-  const scoredQuestions = questions.filter((question) => question.type !== "text");
+  const scoredQuestions = questions
+    .filter((question) => question.type !== "text")
+    .map((question) => getQuestionScore(question, responses[question.id]))
+    .filter((score) => score !== null);
   if (!scoredQuestions.length) return 0;
-  const total = scoredQuestions.reduce((sum, question) => sum + getQuestionScore(question, responses[question.id]), 0);
+  const total = scoredQuestions.reduce((sum, score) => sum + score, 0);
   return Math.round((total / (scoredQuestions.length * 5)) * 100);
 };
 
@@ -493,6 +498,7 @@ const collectIndicators = (assessment, responses) =>
   assessment.questions.reduce((indicators, question) => {
     if (!question.indicator) return indicators;
     const score = getQuestionScore(question, responses[question.id]);
+    if (score === null) return indicators;
     const current = indicators[question.indicator] || { total: 0, count: 0 };
     indicators[question.indicator] = { total: current.total + score, count: current.count + 1 };
     return indicators;
@@ -670,6 +676,7 @@ const buildAssessmentResult = (assessment, responses, participant = {}) => {
   const phaseScores = calculatePhaseScores(assessment, responses);
   const indicatorSummary = summarizeIndicators(collectIndicators(assessment, responses));
   const recommendation = getRecommendation(assessment.id, score, phaseScores, indicatorSummary);
+  const answeredCount = assessment.questions.filter((question) => responses[question.id] !== undefined).length;
 
   return {
     resultId: `${assessment.id}-${Date.now()}`,
@@ -680,6 +687,8 @@ const buildAssessmentResult = (assessment, responses, participant = {}) => {
     participant,
     responses,
     score,
+    answeredCount,
+    questionCount: assessment.questions.length,
     readinessLevel: readiness.label,
     readinessTone: readiness.tone,
     phaseScores,
@@ -862,9 +871,9 @@ const renderQuestion = (question, index) => {
     question.type === "choice"
       ? `<div class="choice-list">${question.options
           .map(
-            (option, optionIndex) => `
+            (option) => `
               <label class="choice-option">
-                <input type="radio" name="${question.id}" value="${option}" ${optionIndex === 0 ? "checked" : ""}>
+                <input type="radio" name="${question.id}" value="${option}" required>
                 <span>${option}</span>
               </label>
             `
@@ -915,7 +924,8 @@ const renderPhase = (phase, phaseQuestions, questionOffset = 0, isOpen = false) 
 const getResponsesFromPanel = (panel, assessment) =>
   assessment.questions.reduce((responses, question) => {
     if (question.type === "choice") {
-      responses[question.id] = panel.querySelector(`input[name="${question.id}"]:checked`)?.value || question.options[0];
+      const selected = panel.querySelector(`input[name="${question.id}"]:checked`)?.value;
+      if (selected) responses[question.id] = selected;
     } else {
       responses[question.id] = Number(panel.querySelector(`[name="${question.id}"]`)?.value || 3);
     }
@@ -961,7 +971,7 @@ const updateFollowUp = (question, wrapper) => {
           .map(
             (option, index) => `
               <label class="choice-option">
-                <input type="radio" name="${question.id}_followup" value="${option}" ${option === currentFollowUp || (!currentFollowUp && index === 0) ? "checked" : ""}>
+                <input type="radio" name="${question.id}_followup" value="${option}" ${option === currentFollowUp ? "checked" : ""}>
                 <span>${option}</span>
               </label>
             `
@@ -982,6 +992,7 @@ const renderResult = (resultBox, result) => {
     </div>
     <section class="result-section">
       <h4>Your Readiness Summary</h4>
+      <p>${result.answeredCount} of ${result.questionCount} questions answered.</p>
       <p>${result.recommendation.description}</p>
     </section>
     <div class="profile-tags">
@@ -1126,7 +1137,7 @@ const renderResult = (resultBox, result) => {
 const updateGuidedAssessment = (panel, assessment) => {
   const responses = getResponsesFromPanel(panel, assessment);
   const result = buildAssessmentResult(assessment, responses);
-  const answered = Object.values(responses).filter(Boolean).length;
+  const answered = assessment.questions.filter((question) => responses[question.id] !== undefined).length;
   const progressPercent = Math.min(100, Math.round((answered / assessment.questions.length) * 100));
   const score = panel.querySelector("[data-score]");
   const progress = panel.querySelector("[data-progress]");
@@ -1137,7 +1148,7 @@ const updateGuidedAssessment = (panel, assessment) => {
   score.textContent = `${result.score}%`;
   progress.style.width = `${progressPercent}%`;
   progressBar.setAttribute("aria-valuenow", progressPercent);
-  progressText.textContent = `${Math.min(answered, assessment.questions.length)} of ${assessment.questions.length} responses started`;
+  progressText.textContent = `${Math.min(answered, assessment.questions.length)} of ${assessment.questions.length} questions answered`;
 
   if (resultBox.dataset.submitted === "true") renderResult(resultBox, result);
 };
@@ -1160,7 +1171,7 @@ const renderAssessment = (assessment) => {
         <div class="guided-progress" role="progressbar" aria-label="${assessment.title} progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <span data-progress></span>
         </div>
-        <p data-progress-text>0 of ${assessment.questions.length} responses started</p>
+        <p data-progress-text>0 of ${assessment.questions.length} questions answered</p>
       </div>
       <form data-assessment-form>
         ${renderParticipantFields(assessment)}
