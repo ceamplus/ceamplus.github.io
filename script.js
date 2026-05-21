@@ -487,6 +487,7 @@ const assessments = Object.entries(contextCopy).map(([id, copy]) => ({
 
 const getAssessmentById = (id) => assessments.find((assessment) => assessment.id === id);
 const getScale = (question) => scaleSets[question.scale] || scaleSets.agreement;
+const sliderTicksId = "ceam-slider-ticks";
 
 const getReadinessLevel = (score) => profileRules.find((rule) => score <= rule.max) || profileRules.at(-1);
 
@@ -995,7 +996,10 @@ const renderQuestion = (question, index) => {
             `
           )
           .join("")}</div>`
-      : `<input id="${question.id}" name="${question.id}" data-question-id="${question.id}" type="range" min="1" max="5" value="3" step="1">
+      : `<input id="${question.id}" name="${question.id}" data-question-id="${question.id}" type="range" min="1" max="5" value="3" step="1" list="${sliderTicksId}">
+        <div class="range-numbers" aria-hidden="true">
+          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+        </div>
         <div class="scale-labels" aria-hidden="true">
           <span>${getScale(question).low}</span>
           <span>${getScale(question).high}</span>
@@ -1004,7 +1008,7 @@ const renderQuestion = (question, index) => {
   wrapper.innerHTML = `
     <div class="question-meta">
       <span>Question ${index + 1}</span>
-      ${question.type === "scale" ? `<output for="${question.id}" data-output>3</output>` : ""}
+      ${question.type === "scale" ? `<output for="${question.id}" data-output>Selected: 3</output>` : ""}
     </div>
     ${question.scenario ? `<p class="scenario">${question.scenario}</p>` : ""}
     <label class="question-label" for="${question.id}">${question.label}</label>
@@ -1286,13 +1290,20 @@ const renderAssessment = (assessment) => {
   assessmentPanel.classList.add("is-visible");
   assessmentPanel.innerHTML = `
     <article class="guided-assessment-card ${assessment.id}">
+      <datalist id="${sliderTicksId}">
+        <option value="1"></option>
+        <option value="2"></option>
+        <option value="3"></option>
+        <option value="4"></option>
+        <option value="5"></option>
+      </datalist>
       <header class="guided-assessment-header">
         <span class="category-icon">${getIconMarkup(assessment.icon)}</span>
         <div>
           <h3>${assessment.title}</h3>
           <p>${assessment.description}</p>
         </div>
-        <strong data-score>60%</strong>
+        <strong data-score>0%</strong>
       </header>
       <div class="guided-progress-wrap">
         <div class="guided-progress" role="progressbar" aria-label="${assessment.title} progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -1325,7 +1336,7 @@ const renderAssessment = (assessment) => {
     wrapper.addEventListener("input", () => {
       const output = wrapper.querySelector("[data-output]");
       const slider = wrapper.querySelector('input[type="range"]');
-      if (output && slider) output.textContent = slider.value;
+      if (output && slider) output.textContent = `Selected: ${slider.value}`;
       updateFollowUp(question, wrapper);
       updateGuidedAssessment(assessmentPanel, assessment);
     });
