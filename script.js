@@ -997,6 +997,9 @@ const renderQuestion = (question, index) => {
           )
           .join("")}</div>`
       : `<input id="${question.id}" name="${question.id}" data-question-id="${question.id}" type="range" min="1" max="5" value="3" step="1" list="${sliderTicksId}">
+        <div class="range-ticks" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
         <div class="range-numbers" aria-hidden="true">
           <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
         </div>
