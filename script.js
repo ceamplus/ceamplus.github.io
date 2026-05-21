@@ -108,6 +108,33 @@ const contextCopy = {
 // Question templates stay behavior-based and non-diagnostic. They are adapted by category.
 const questionTemplates = [
   {
+    id: "current_ai_tools",
+    phase: "adoption",
+    type: "choice",
+    label: "What AI or automation tools do you already use?",
+    options: [
+      "ChatGPT or another AI chat tool",
+      "Email writing or reply suggestions",
+      "Scheduling or reminder tools",
+      "Document or note summarizers",
+      "Invoice, billing, or record tools",
+      "I do not use AI tools yet",
+    ],
+    score: [5, 4, 4, 4, 4, 2],
+    indicator: "current_ai_use",
+    followUp: {
+      when: [
+        "ChatGPT or another AI chat tool",
+        "Email writing or reply suggestions",
+        "Scheduling or reminder tools",
+        "Document or note summarizers",
+        "Invoice, billing, or record tools",
+      ],
+      label: "How are those tools helping right now?",
+      options: ["Saving time", "Organizing information", "Writing drafts", "Remembering tasks", "Explaining things more simply"],
+    },
+  },
+  {
     id: "many_tasks_first_response",
     phase: "cognitive",
     type: "choice",
@@ -464,13 +491,17 @@ const getScale = (question) => scaleSets[question.scale] || scaleSets.agreement;
 const getReadinessLevel = (score) => profileRules.find((rule) => score <= rule.max) || profileRules.at(-1);
 
 const getQuestionScore = (question, value) => {
-  if (value === undefined || value === null || value === "") return null;
+  if (value === undefined || value === null || value === "" || (Array.isArray(value) && !value.length)) return null;
 
   if (question.type === "choice") {
-    const index = question.options.indexOf(value);
     const scores = question.score || question.options.map(() => 4);
     if (Math.max(...scores) <= 3) return 3;
-    return scores[index] || null;
+    const selectedValues = Array.isArray(value) ? value : [value];
+    const selectedScores = selectedValues
+      .map((selected) => scores[question.options.indexOf(selected)])
+      .filter((score) => typeof score === "number");
+    if (!selectedScores.length) return null;
+    return selectedScores.reduce((sum, score) => sum + score, 0) / selectedScores.length;
   }
 
   const number = Number(value || 3);
@@ -518,6 +549,83 @@ const indicatorLabels = {
   support_need: "Support should be planned before starting",
   growth_potential: "Long-term growth potential is present",
   environmental_barrier: "The environment may be making focus harder",
+  current_ai_use: "Current AI use can shape the next step",
+};
+
+const answerInsightRules = [
+  {
+    match: ["I do not use AI tools yet"],
+    message: "The user may be new to AI tools, so recommendations should start with very simple examples and low-risk practice.",
+  },
+  {
+    match: ["ChatGPT or another AI chat tool"],
+    message: "The user already has some experience with AI chat tools, so prompts, drafts, and planning templates may be a good next step.",
+  },
+  {
+    match: ["Email writing or reply suggestions"],
+    message: "The user already uses writing support, so email drafts, client messages, and follow-up notes may be a practical starting point.",
+  },
+  {
+    match: ["Scheduling or reminder tools"],
+    message: "The user already uses reminder or scheduling support, so AI can build on routines, follow-ups, and planning.",
+  },
+  {
+    match: ["Document or note summarizers"],
+    message: "The user already uses summarizing support, so record summaries, meeting notes, and checklist creation may be useful.",
+  },
+  {
+    match: ["I pause because it feels like too much", "Too much information at once", "Not knowing where to start"],
+    message: "The user may need fewer steps and a clear first action before adding more tools.",
+  },
+  {
+    match: ["Fear of mistakes", "Fear of breaking something"],
+    message: "The user may need a safe practice space and reassurance that mistakes can be corrected.",
+  },
+  {
+    match: ["No explanation", "Ask for an explanation", "Clear explanation"],
+    message: "Clear explanations will matter. The AI should show what it used, what it suggested, and what a person should review.",
+  },
+  {
+    match: ["Working with someone directly", "A person to ask", "Help from a person"],
+    message: "The user may benefit from guided help or a trusted person during setup.",
+  },
+  {
+    match: ["Small wins", "Seeing progress", "Checklist"],
+    message: "Progress tracking and small wins may help the user keep going.",
+  },
+  {
+    match: ["Noise", "Interruptions", "Too many tools", "Unclear priorities"],
+    message: "The environment may need small changes before AI feels easy to use.",
+  },
+];
+
+const flattenResponseValues = (responses) =>
+  Object.values(responses).flatMap((value) => {
+    if (Array.isArray(value)) return value;
+    if (typeof value === "string") return [value];
+    return [];
+  });
+
+const analyzeSelectedAnswers = (responses) => {
+  const values = flattenResponseValues(responses);
+  const insights = answerInsightRules
+    .filter((rule) => rule.match.some((answer) => values.includes(answer)))
+    .map((rule) => rule.message);
+
+  return {
+    selectedAnswerCount: values.length,
+    currentAiTools: values.filter((value) =>
+      [
+        "ChatGPT or another AI chat tool",
+        "Email writing or reply suggestions",
+        "Scheduling or reminder tools",
+        "Document or note summarizers",
+        "Invoice, billing, or record tools",
+        "I do not use AI tools yet",
+      ].includes(value)
+    ),
+    insights: [...new Set(insights)].slice(0, 6),
+  };
 };
 
 const getProfileTags = (score, indicatorSummary) => {
@@ -599,7 +707,7 @@ const getSupportLevel = (score, indicatorSummary) => {
   return supportLevels.find((level) => score <= level.max) || supportLevels.at(-1);
 };
 
-const getImplementationPath = (assessmentId, indicatorSummary) => {
+const getImplementationPath = (assessmentId, indicatorSummary, answerAnalysis = {}) => {
   const start = aiStartingPoints[assessmentId] || aiStartingPoints.business;
   const steps = [
     `Choose one repeated task first, such as ${start.examples.slice(0, 2).join(" or ")}.`,
@@ -615,6 +723,12 @@ const getImplementationPath = (assessmentId, indicatorSummary) => {
     steps.unshift("Start by simplifying the most frustrating part of the day before adding a new AI tool.");
   } else if (firstBarrier === "workflow_friction") {
     steps.unshift("Pick the task that wastes the most time each week and make that task easier first.");
+  }
+
+  if (answerAnalysis.currentAiTools?.includes("I do not use AI tools yet")) {
+    steps.unshift("Begin with a simple AI practice task that does not affect clients, grades, records, money, or care decisions.");
+  } else if (answerAnalysis.currentAiTools?.length) {
+    steps.unshift("Build from the AI tools already being used instead of introducing too many new tools at once.");
   }
 
   return [...new Set(steps)].slice(0, 5);
@@ -634,7 +748,7 @@ const getPlainBarrier = (indicatorId) => {
 };
 
 // Recommendations are generated from the same result data used for on-screen output and email templates.
-const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSummary = []) => {
+const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSummary = [], answerAnalysis = {}) => {
   const copy = contextCopy[assessmentId] || contextCopy.business;
   const profile = getReadinessLevel(score);
   const topIndicator = indicatorSummary[0]?.id;
@@ -661,7 +775,7 @@ const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSumma
     profile: profile.label,
     description: profileDescriptions[profile.label],
     recommendations: [...new Set(recommendations)].slice(0, 4),
-    implementationPath: getImplementationPath(assessmentId, indicatorSummary),
+    implementationPath: getImplementationPath(assessmentId, indicatorSummary, answerAnalysis),
     startingPoint,
     supportLevel,
     nextStep: `Start with one simple task, like ${startingPoint.examples[0]} or ${startingPoint.examples[1]}. Try it with ${copy.support} before using it for bigger tasks.`,
@@ -675,7 +789,8 @@ const buildAssessmentResult = (assessment, responses, participant = {}) => {
   const readiness = getReadinessLevel(score);
   const phaseScores = calculatePhaseScores(assessment, responses);
   const indicatorSummary = summarizeIndicators(collectIndicators(assessment, responses));
-  const recommendation = getRecommendation(assessment.id, score, phaseScores, indicatorSummary);
+  const answerAnalysis = analyzeSelectedAnswers(responses);
+  const recommendation = getRecommendation(assessment.id, score, phaseScores, indicatorSummary, answerAnalysis);
   const answeredCount = assessment.questions.filter((question) => responses[question.id] !== undefined).length;
 
   return {
@@ -693,6 +808,7 @@ const buildAssessmentResult = (assessment, responses, participant = {}) => {
     readinessTone: readiness.tone,
     phaseScores,
     indicators: indicatorSummary,
+    answerAnalysis,
     profileTags: getProfileTags(score, indicatorSummary),
     recommendation,
   };
@@ -713,14 +829,14 @@ const emailTemplates = {
     return {
       to: result.participant.email,
       subject: `Your CEAM+ ${result.assessmentTitle} Results`,
-      body: `Hi ${name},\n\nThank you for completing the ${result.assessmentTitle}.\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nBest starting point:\n${result.recommendation.startingPoint.task}\n\nNext step: ${result.recommendation.nextStep}\n\nYour results will be reviewed if you request follow-up support.\n`,
+      body: `Hi ${name},\n\nThank you for completing the ${result.assessmentTitle}.\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat your answers point to:\n${result.answerAnalysis.insights.map((item) => `- ${item}`).join("\n") || "- No single pattern stood out yet."}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nBest starting point:\n${result.recommendation.startingPoint.task}\n\nNext step: ${result.recommendation.nextStep}\n\nYour results will be reviewed if you request follow-up support.\n`,
     };
   },
   admin(result) {
     return {
       to: "briggsfaye@icloud.com",
       subject: `New CEAM+ Assessment: ${result.assessmentTitle}`,
-      body: `Client: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nTop support needs: ${result.profileTags.join(", ")}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nResponses:\n${Object.entries(result.responses).map(([key, value]) => `${key}: ${value}`).join("\n")}`,
+      body: `Client: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nTop support needs: ${result.profileTags.join(", ")}\nAI tools already used: ${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\nAnswer insights: ${result.answerAnalysis.insights.join(" | ") || "No single pattern stood out yet."}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nResponses:\n${Object.entries(result.responses).map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(", ") : value}`).join("\n")}`,
     };
   },
   supportAdmin(result, supportRequest) {
@@ -873,7 +989,7 @@ const renderQuestion = (question, index) => {
           .map(
             (option) => `
               <label class="choice-option">
-                <input type="radio" name="${question.id}" value="${option}" required>
+                <input type="checkbox" name="${question.id}" value="${option}">
                 <span>${option}</span>
               </label>
             `
@@ -924,15 +1040,15 @@ const renderPhase = (phase, phaseQuestions, questionOffset = 0, isOpen = false) 
 const getResponsesFromPanel = (panel, assessment) =>
   assessment.questions.reduce((responses, question) => {
     if (question.type === "choice") {
-      const selected = panel.querySelector(`input[name="${question.id}"]:checked`)?.value;
-      if (selected) responses[question.id] = selected;
+      const selected = [...panel.querySelectorAll(`input[name="${question.id}"]:checked`)].map((input) => input.value);
+      if (selected.length) responses[question.id] = selected;
     } else {
       responses[question.id] = Number(panel.querySelector(`[name="${question.id}"]`)?.value || 3);
     }
     const note = panel.querySelector(`[name="${question.id}_note"]`)?.value.trim();
     if (note) responses[`${question.id}_note`] = note;
-    const followUp = panel.querySelector(`[name="${question.id}_followup"]:checked`)?.value;
-    if (followUp) responses[`${question.id}_followup`] = followUp;
+    const followUp = [...panel.querySelectorAll(`[name="${question.id}_followup"]:checked`)].map((input) => input.value);
+    if (followUp.length) responses[`${question.id}_followup`] = followUp;
     return responses;
   }, {});
 
@@ -950,10 +1066,10 @@ const getParticipantFromForm = (formElement) => {
 
 const updateFollowUp = (question, wrapper) => {
   if (!question.followUp) return;
-  const selected = wrapper.querySelector(`input[name="${question.id}"]:checked`)?.value;
+  const selected = [...wrapper.querySelectorAll(`input[name="${question.id}"]:checked`)].map((input) => input.value);
   const followUp = wrapper.querySelector("[data-follow-up]");
-  const shouldShow = question.followUp.when.includes(selected);
-  const currentFollowUp = wrapper.querySelector(`input[name="${question.id}_followup"]:checked`)?.value;
+  const shouldShow = selected.some((value) => question.followUp.when.includes(value));
+  const currentFollowUp = [...wrapper.querySelectorAll(`input[name="${question.id}_followup"]:checked`)].map((input) => input.value);
 
   followUp.hidden = !shouldShow;
   if (!shouldShow) {
@@ -971,7 +1087,7 @@ const updateFollowUp = (question, wrapper) => {
           .map(
             (option, index) => `
               <label class="choice-option">
-                <input type="radio" name="${question.id}_followup" value="${option}" ${option === currentFollowUp ? "checked" : ""}>
+                <input type="checkbox" name="${question.id}_followup" value="${option}" ${currentFollowUp.includes(option) ? "checked" : ""}>
                 <span>${option}</span>
               </label>
             `
@@ -1017,6 +1133,17 @@ const renderResult = (resultBox, result) => {
     <section class="result-section">
       <h4>What May Be Making Things Harder</h4>
       <p>${result.recommendation.barrier}</p>
+    </section>
+    <section class="result-section">
+      <h4>What Your Answers Point To</h4>
+      ${
+        result.answerAnalysis.insights.length
+          ? `<ul>${result.answerAnalysis.insights.map((item) => `<li>${item}</li>`).join("")}</ul>`
+          : "<p>Your selected answers did not point to one major pattern yet. Answering more questions can make this section more specific.</p>"
+      }
+      <p><strong>AI tools already used:</strong> ${
+        result.answerAnalysis.currentAiTools.length ? result.answerAnalysis.currentAiTools.join(", ") : "None selected yet"
+      }</p>
     </section>
     <section class="result-section">
       <h4>Recommended AI Implementation Path</h4>
