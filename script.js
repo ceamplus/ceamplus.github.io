@@ -504,14 +504,14 @@ const summarizeIndicators = (indicators) =>
     .sort((a, b) => a.score - b.score);
 
 const indicatorLabels = {
-  cognitive_overload: "Cognitive overload may be present",
-  workflow_friction: "Workflow friction may be present",
+  cognitive_overload: "Some tasks may feel mentally heavy",
+  workflow_friction: "Parts of the routine may feel harder than they need to be",
   trust_sensitivity: "Trust and transparency matter here",
   learning_preference: "Learning preferences are important",
-  adoption_barrier: "Adoption may need extra support",
-  support_need: "Support needs should be planned",
+  adoption_barrier: "Trying new tools may feel easier with support",
+  support_need: "Support should be planned before starting",
   growth_potential: "Long-term growth potential is present",
-  environmental_barrier: "Environmental barriers may be affecting progress",
+  environmental_barrier: "The environment may be making focus harder",
 };
 
 const getProfileTags = (score, indicatorSummary) => {
@@ -528,40 +528,138 @@ const getLayerSummary = (phaseScores) =>
     score: phaseScores[phase.id],
     message:
       phaseScores[phase.id] >= 75
-        ? "This area looks fairly supported."
+        ? "This area looks like a helpful starting strength."
         : phaseScores[phase.id] >= 55
-          ? "This area may work better with clearer support."
-          : "This area may need simplification before adding AI or a new tool.",
+          ? "This area may work better with clearer examples and support."
+          : "This area may need simpler steps before adding AI or a new tool.",
   }));
+
+const aiStartingPoints = {
+  business: {
+    label: "Business use",
+    task: "Start with customer messages, estimates, invoices, scheduling, FAQs, training guides, or recordkeeping.",
+    examples: ["draft customer replies", "summarize notes", "create invoice checklists", "organize schedules", "write training guides"],
+  },
+  education: {
+    label: "Education use",
+    task: "Start with study plans, assignment breakdowns, note summaries, tutoring prompts, or time management.",
+    examples: ["break down assignments", "summarize notes", "make study plans", "create tutoring prompts", "organize due dates"],
+  },
+  healthcare: {
+    label: "Health or care use",
+    task: "Start with note summaries, appointment preparation, checklist drafts, reminder planning, or plain-language instructions.",
+    examples: ["summarize records", "draft appointment notes", "create checklists", "simplify instructions", "organize follow-up tasks"],
+  },
+  rehabilitation: {
+    label: "Support use",
+    task: "Start with goal tracking, appointment reminders, step-by-step planning, coping plans, or support check-ins.",
+    examples: ["track goals", "create reminders", "write step-by-step plans", "draft coping plans", "prepare support check-ins"],
+  },
+};
+
+const supportLevels = [
+  {
+    max: 44,
+    label: "Hands-On Consulting",
+    message: "Direct help would make this easier. A consultant can help set up simple tools, forms, prompts, and first workflows with you.",
+  },
+  {
+    max: 59,
+    label: "Guided Implementation",
+    message: "Step-by-step support is recommended. You may benefit from a guided walkthrough before using AI for bigger tasks.",
+  },
+  {
+    max: 72,
+    label: "Light Support",
+    message: "You can start small with examples, templates, and occasional check-ins.",
+  },
+  {
+    max: 86,
+    label: "Self-Guided",
+    message: "You may be ready to try a simple AI task independently while keeping human review in place.",
+  },
+  {
+    max: 100,
+    label: "Training Recommended",
+    message: "You may be ready for broader use. A short AI basics session can help a team use tools more consistently.",
+  },
+];
+
+const getSupportLevel = (score, indicatorSummary) => {
+  const highNeed = indicatorSummary.some((indicator) =>
+    ["cognitive_overload", "support_need", "adoption_barrier"].includes(indicator.id) && indicator.score < 55
+  );
+  if (highNeed && score < 75) return supportLevels.find((level) => level.label === "Guided Implementation");
+  return supportLevels.find((level) => score <= level.max) || supportLevels.at(-1);
+};
+
+const getImplementationPath = (assessmentId, indicatorSummary) => {
+  const start = aiStartingPoints[assessmentId] || aiStartingPoints.business;
+  const steps = [
+    `Choose one repeated task first, such as ${start.examples.slice(0, 2).join(" or ")}.`,
+    "Use AI to make a first draft, summary, checklist, reminder, or plan. Treat it as a helper, not the final answer.",
+    "Have a person review the AI suggestion before using it for anything important.",
+    "Track simple results: time saved, mistakes reduced, confidence gained, and steps completed.",
+  ];
+
+  const firstBarrier = indicatorSummary[0]?.id;
+  if (firstBarrier === "trust_sensitivity") {
+    steps.splice(2, 0, "Clearly explain how the AI works, what information it uses, and who people can contact for help.");
+  } else if (firstBarrier === "cognitive_overload") {
+    steps.unshift("Start by simplifying the most frustrating part of the day before adding a new AI tool.");
+  } else if (firstBarrier === "workflow_friction") {
+    steps.unshift("Pick the task that wastes the most time each week and make that task easier first.");
+  }
+
+  return [...new Set(steps)].slice(0, 5);
+};
+
+const getPlainBarrier = (indicatorId) => {
+  const barriers = {
+    cognitive_overload: "Too many steps, interruptions, or unclear choices may be making the day feel heavier.",
+    workflow_friction: "The routine may have confusing steps that should be simplified before adding AI.",
+    trust_sensitivity: "People may need clearer explanations before they feel comfortable using AI suggestions.",
+    learning_preference: "People may need examples, videos, written steps, or hands-on practice before they feel confident.",
+    adoption_barrier: "Trying a new tool may feel easier with setup help and a safe first task.",
+    support_need: "A clear support person or help option should be available before the tool is used.",
+    environmental_barrier: "Noise, interruptions, unclear priorities, or missing resources may be getting in the way.",
+  };
+  return barriers[indicatorId] || "Nothing here means failure. It simply points to where support may help most.";
+};
 
 // Recommendations are generated from the same result data used for on-screen output and email templates.
 const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSummary = []) => {
   const copy = contextCopy[assessmentId] || contextCopy.business;
   const profile = getReadinessLevel(score);
   const topIndicator = indicatorSummary[0]?.id;
+  const startingPoint = aiStartingPoints[assessmentId] || aiStartingPoints.business;
+  const supportLevel = getSupportLevel(score, indicatorSummary);
 
   const recommendations = [
-    `Start with one small part of the ${copy.setting} instead of changing everything at once.`,
-    `Use the person's preferred learning style and give time to practice before expecting full use.`,
-    `Make privacy, human help, and the reason for each AI suggestion easy to see.`,
+    `Start with one simple task, like ${startingPoint.examples.slice(0, 3).join(", ")}.`,
+    "People learn differently. Offer examples, written steps, videos, or hands-on practice before expecting full use.",
+    "Clearly explain how the AI works, what information it uses, and who users can contact if they need help.",
   ];
 
   if (topIndicator === "cognitive_overload") {
-    recommendations.unshift("Reduce the number of steps, choices, or interruptions before adding another tool.");
+    recommendations.unshift("Start by simplifying the most frustrating part of the daily routine before adding new AI tools.");
   }
   if (topIndicator === "trust_sensitivity") {
-    recommendations.unshift("Explain how the tool works and who can review or correct it.");
+    recommendations.unshift("Use AI suggestions with human review until people feel comfortable trusting the process.");
   }
   if (topIndicator === "workflow_friction") {
-    recommendations.unshift("Fix the confusing part of the routine before asking people to rely on AI.");
+    recommendations.unshift("Pick one task that takes extra time each week and make that task easier first.");
   }
 
   return {
     profile: profile.label,
     description: profileDescriptions[profile.label],
     recommendations: [...new Set(recommendations)].slice(0, 4),
-    nextStep: `Choose one low-pressure task and review it with ${copy.support}.`,
-    barrier: indicatorSummary[0] ? indicatorLabels[indicatorSummary[0].id] : "No major barrier stood out.",
+    implementationPath: getImplementationPath(assessmentId, indicatorSummary),
+    startingPoint,
+    supportLevel,
+    nextStep: `Start with one simple task, like ${startingPoint.examples[0]} or ${startingPoint.examples[1]}. Try it with ${copy.support} before using it for bigger tasks.`,
+    barrier: getPlainBarrier(topIndicator),
     layerSummary: getLayerSummary(phaseScores),
   };
 };
@@ -574,6 +672,7 @@ const buildAssessmentResult = (assessment, responses, participant = {}) => {
   const recommendation = getRecommendation(assessment.id, score, phaseScores, indicatorSummary);
 
   return {
+    resultId: `${assessment.id}-${Date.now()}`,
     assessmentId: assessment.id,
     assessmentTitle: assessment.title,
     version: assessment.version,
@@ -605,14 +704,28 @@ const emailTemplates = {
     return {
       to: result.participant.email,
       subject: `Your CEAM+ ${result.assessmentTitle} Results`,
-      body: `Hi ${name},\n\nThank you for completing the ${result.assessmentTitle}.\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nTop recommendations:\n${result.recommendation.recommendations.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nFor follow-up support, reply to this message or contact CEAM+ directly.\n`,
+      body: `Hi ${name},\n\nThank you for completing the ${result.assessmentTitle}.\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nBest starting point:\n${result.recommendation.startingPoint.task}\n\nNext step: ${result.recommendation.nextStep}\n\nYour results will be reviewed if you request follow-up support.\n`,
     };
   },
   admin(result) {
     return {
       to: "briggsfaye@icloud.com",
       subject: `New CEAM+ Assessment: ${result.assessmentTitle}`,
-      body: `Client: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nProfile: ${result.recommendation.profile}\nMain barrier: ${result.recommendation.barrier}\nTop support needs: ${result.profileTags.join(", ")}\n\nResponses:\n${Object.entries(result.responses).map(([key, value]) => `${key}: ${value}`).join("\n")}`,
+      body: `Client: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nTop support needs: ${result.profileTags.join(", ")}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nResponses:\n${Object.entries(result.responses).map(([key, value]) => `${key}: ${value}`).join("\n")}`,
+    };
+  },
+  supportAdmin(result, supportRequest) {
+    return {
+      to: "briggsfaye@icloud.com",
+      subject: `CEAM+ Support Request: ${supportRequest.supportOption}`,
+      body: `Client: ${supportRequest.firstName} ${supportRequest.lastName}\nEmail: ${supportRequest.email}\nPhone: ${supportRequest.phone}\nOrganization: ${supportRequest.organization}\nAssessment: ${result.assessmentTitle}\nProfile: ${result.recommendation.profile}\nSupport option: ${supportRequest.supportOption}\nMain goal: ${supportRequest.mainGoal}\nBiggest challenge: ${supportRequest.biggestChallenge}\nBest time to contact: ${supportRequest.bestTime}\nResult ID: ${result.resultId}`,
+    };
+  },
+  supportClient(result, supportRequest) {
+    return {
+      to: supportRequest.email,
+      subject: "Your CEAM+ support request was received",
+      body: `Hi ${supportRequest.firstName},\n\nThank you. Your request was received. We will review your results and follow up with next steps.\n\nSelected support option: ${supportRequest.supportOption}\nAssessment summary: ${result.recommendation.profile}\nSuggested first AI step: ${result.recommendation.nextStep}\n\nYour results will be reviewed for follow-up support.\n`,
     };
   },
 };
@@ -657,6 +770,54 @@ const sendAssessmentEmails = async (result) => {
     return { configured: true, sent: false, error: error.message, payload };
   }
 };
+
+const sendSupportRequest = async (result, supportRequest) => {
+  const payload = {
+    requestType: "consultant-support-request",
+    supportRequest,
+    clientEmail: emailTemplates.supportClient(result, supportRequest),
+    adminEmail: emailTemplates.supportAdmin(result, supportRequest),
+    result,
+  };
+
+  try {
+    const formPayload = new URLSearchParams({
+      requestType: payload.requestType,
+      supportRequest: JSON.stringify(payload.supportRequest),
+      clientEmail: JSON.stringify(payload.clientEmail),
+      adminEmail: JSON.stringify(payload.adminEmail),
+      result: JSON.stringify(payload.result),
+      clientName: `${supportRequest.firstName} ${supportRequest.lastName}`.trim(),
+      clientEmailAddress: supportRequest.email,
+      supportOption: supportRequest.supportOption,
+      assessmentTitle: result.assessmentTitle,
+      readinessProfile: result.recommendation.profile,
+      resultId: result.resultId,
+    });
+
+    await fetch(zapierWebhookUrl, {
+      method: "POST",
+      mode: "no-cors",
+      body: formPayload,
+    });
+
+    return { sent: true, payload };
+  } catch (error) {
+    console.error("CEAM+ support request submission failed:", error);
+    return { sent: false, error: error.message, payload };
+  }
+};
+
+const supportOptions = [
+  "I want to try this myself first",
+  "I want step-by-step written instructions",
+  "I want a guided walkthrough",
+  "I want hands-on setup help",
+  "I want training for my team",
+  "I want help choosing the best AI tools",
+  "I want help creating prompts, templates, or workflows",
+  "I want help tracking results and progress",
+];
 
 const getIconMarkup = (icon) => {
   const paths = {
@@ -810,30 +971,147 @@ const renderResult = (resultBox, result) => {
       <span>${result.recommendation.profile}</span>
       <strong>${result.score}% support readiness</strong>
     </div>
-    <p>${result.recommendation.description}</p>
+    <section class="result-section">
+      <h4>Your Readiness Summary</h4>
+      <p>${result.recommendation.description}</p>
+    </section>
     <div class="profile-tags">
       ${result.profileTags.map((tag) => `<span>${tag}</span>`).join("")}
     </div>
-    <div class="layer-summary">
-      ${result.recommendation.layerSummary
-        .map(
-          (layer) => `
-            <article>
-              <strong>${layer.title}</strong>
-              <span>${layer.score}%</span>
-              <p>${layer.message}</p>
-            </article>
-          `
-        )
-        .join("")}
-    </div>
-    <div>
-      <h4>Helpful next steps</h4>
+    <section class="result-section">
+      <h4>What We Noticed</h4>
+      <div class="layer-summary">
+        ${result.recommendation.layerSummary
+          .map(
+            (layer) => `
+              <article>
+                <strong>${layer.title}</strong>
+                <span>${layer.score}%</span>
+                <p>${layer.message}</p>
+              </article>
+            `
+          )
+          .join("")}
+      </div>
+    </section>
+    <section class="result-section">
+      <h4>What May Be Making Things Harder</h4>
+      <p>${result.recommendation.barrier}</p>
+    </section>
+    <section class="result-section">
+      <h4>Recommended AI Implementation Path</h4>
+      <ol>${result.recommendation.implementationPath.map((item) => `<li>${item}</li>`).join("")}</ol>
+    </section>
+    <section class="result-section">
+      <h4>Best Starting Point</h4>
+      <p>${result.recommendation.startingPoint.task}</p>
+    </section>
+    <section class="result-section">
+      <h4>Easy AI Tools to Start With</h4>
+      <ul>
+        <li>ChatGPT for drafts, planning, simple explanations, and checklists.</li>
+        <li>Reminder or scheduling tools for appointments, routines, and follow-up tasks.</li>
+        <li>Email drafting tools for messages that still need human review.</li>
+        <li>Document summarizers for notes, records, instructions, or long information.</li>
+        <li>Workflow checklists for repeated steps that are easy to miss.</li>
+      </ul>
+    </section>
+    <section class="result-section support-level">
+      <h4>Recommended Support Level</h4>
+      <strong>${result.recommendation.supportLevel.label}</strong>
+      <p>${result.recommendation.supportLevel.message}</p>
+    </section>
+    <section class="result-section">
+      <h4>Recommended First Steps</h4>
       <ul>${result.recommendation.recommendations.map((item) => `<li>${item}</li>`).join("")}</ul>
-      <p><strong>Suggested next step:</strong> ${result.recommendation.nextStep}</p>
-      <p class="email-note">Email templates were prepared for the client and CEAM+ admin. Connect an email service to send them automatically.</p>
-    </div>
+      <p><strong>Simple next step:</strong> ${result.recommendation.nextStep}</p>
+    </section>
+    <section class="consultant-cta">
+      <h4>Need Help Getting Started?</h4>
+      <p>Want help turning these results into a real implementation plan?</p>
+      <div class="result-actions">
+        <button class="button primary" type="button" data-show-support>Contact a Consultant</button>
+        <button class="button secondary" type="button" data-support-shortcut="I want a guided walkthrough">Guided Setup Help</button>
+        <button class="button secondary" type="button" data-support-shortcut="I want training for my team">Team Training</button>
+        <button class="button secondary" type="button" data-support-shortcut="I want step-by-step written instructions">Step-by-Step Help</button>
+        <button class="button secondary" type="button" data-email-results>Email My Results</button>
+        <button class="button secondary" type="button" data-download-results>Download My Results</button>
+      </div>
+    </section>
+    <section class="support-request" data-support-request hidden>
+      <h4>Guided Implementation Options</h4>
+      <form data-support-form>
+        <div class="choice-list">
+          ${supportOptions
+            .map(
+              (option, index) => `
+                <label class="choice-option">
+                  <input type="radio" name="supportOption" value="${option}" ${index === 0 ? "checked" : ""}>
+                  <span>${option}</span>
+                </label>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="field-grid">
+          <label>First name<input name="firstName" value="${result.participant.firstName || ""}" required></label>
+          <label>Last name<input name="lastName" value="${result.participant.lastName || ""}" required></label>
+          <label>Email<input type="email" name="email" value="${result.participant.email || ""}" required></label>
+          <label>Phone number<input type="tel" name="phone" value="${result.participant.phone || ""}" required></label>
+          <label>Business or organization name<input name="organization" value="${result.participant.organization || ""}" required></label>
+          <label>Assessment type<input name="assessmentType" value="${result.assessmentTitle}" readonly></label>
+        </div>
+        <label>Main goal<textarea name="mainGoal" rows="3" required></textarea></label>
+        <label>Biggest challenge<textarea name="biggestChallenge" rows="3" required></textarea></label>
+        <label>Best time to contact<input name="bestTime" placeholder="Example: Weekday afternoons" required></label>
+        <button class="button primary" type="submit">Request Support</button>
+        <p class="form-status" data-support-status role="status"></p>
+      </form>
+    </section>
   `;
+
+  const supportSection = resultBox.querySelector("[data-support-request]");
+  const supportForm = resultBox.querySelector("[data-support-form]");
+  const supportStatus = resultBox.querySelector("[data-support-status]");
+
+  const showSupportForm = (option = "") => {
+    supportSection.hidden = false;
+    if (option) {
+      const selected = supportForm.querySelector(`input[name="supportOption"][value="${option}"]`);
+      if (selected) selected.checked = true;
+    }
+    supportSection.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "nearest" });
+  };
+
+  resultBox.querySelector("[data-show-support]")?.addEventListener("click", () => showSupportForm());
+  resultBox.querySelectorAll("[data-support-shortcut]").forEach((button) => {
+    button.addEventListener("click", () => showSupportForm(button.dataset.supportShortcut));
+  });
+
+  resultBox.querySelector("[data-email-results]")?.addEventListener("click", async () => {
+    await sendAssessmentEmails(result);
+    supportStatus.textContent = "Your results were sent to the email automation.";
+  });
+
+  resultBox.querySelector("[data-download-results]")?.addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(result, null, 2)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `ceam-results-${result.resultId}.json`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
+
+  supportForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formData = new FormData(supportForm);
+    const supportRequest = Object.fromEntries(formData.entries());
+    const response = await sendSupportRequest(result, supportRequest);
+    supportStatus.textContent = response.sent
+      ? "Thank you. Your request was received. We will review your results and follow up with next steps."
+      : "Thank you. Your request was saved on screen, but the email automation needs to be checked.";
+    supportForm.reset();
+  });
 };
 
 const updateGuidedAssessment = (panel, assessment) => {
@@ -950,6 +1228,7 @@ window.CEAMAssessments = {
   renderPhase,
   renderQuestion,
   sendAssessmentEmails,
+  sendSupportRequest,
 };
 
 updateHeader();
