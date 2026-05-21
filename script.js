@@ -943,24 +943,33 @@ const updateFollowUp = (question, wrapper) => {
   const selected = wrapper.querySelector(`input[name="${question.id}"]:checked`)?.value;
   const followUp = wrapper.querySelector("[data-follow-up]");
   const shouldShow = question.followUp.when.includes(selected);
+  const currentFollowUp = wrapper.querySelector(`input[name="${question.id}_followup"]:checked`)?.value;
+
   followUp.hidden = !shouldShow;
-  followUp.innerHTML = shouldShow
-    ? `
+  if (!shouldShow) {
+    followUp.innerHTML = "";
+    followUp.dataset.rendered = "false";
+    return;
+  }
+
+  if (followUp.dataset.rendered === "true") return;
+
+  followUp.innerHTML = `
       <p>${question.followUp.label}</p>
       <div class="choice-list compact">
         ${question.followUp.options
           .map(
             (option, index) => `
               <label class="choice-option">
-                <input type="radio" name="${question.id}_followup" value="${option}" ${index === 0 ? "checked" : ""}>
+                <input type="radio" name="${question.id}_followup" value="${option}" ${option === currentFollowUp || (!currentFollowUp && index === 0) ? "checked" : ""}>
                 <span>${option}</span>
               </label>
             `
           )
           .join("")}
       </div>
-    `
-    : "";
+    `;
+  followUp.dataset.rendered = "true";
 };
 
 const renderResult = (resultBox, result) => {
