@@ -740,6 +740,21 @@ article p,
   accent-color: var(--green-dark);
   background: transparent;
   border: 0;
+  cursor: pointer;
+}
+
+.guided-question input[type="range"]:focus-visible {
+  outline: 3px solid rgba(31, 111, 91, 0.18);
+  outline-offset: 4px;
+}
+
+.range-numbers {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  color: var(--green-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-align: center;
 }
 
 .scale-labels {
