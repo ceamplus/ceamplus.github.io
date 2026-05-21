@@ -735,7 +735,7 @@ article p,
 
 .guided-question input[type="range"] {
   width: 100%;
-  min-height: 28px;
+  min-height: 34px;
   padding: 0;
   accent-color: var(--green-dark);
   background: transparent;
@@ -748,11 +748,29 @@ article p,
   outline-offset: 4px;
 }
 
-.range-numbers {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+.range-ticks {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
-  margin-top: -2px;
+  padding: 0 8px;
+  margin-top: -8px;
+  pointer-events: none;
+}
+
+.range-ticks span {
+  display: block;
+  width: 2px;
+  height: 9px;
+  background: rgba(23, 76, 65, 0.72);
+  border-radius: 999px;
+}
+
+.range-numbers {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 1px;
+  margin-top: 0;
   color: var(--green-dark);
   font-size: 0.78rem;
   font-weight: 800;
@@ -760,30 +778,28 @@ article p,
 }
 
 .range-numbers span {
-  min-width: 1.6em;
-}
-
-.range-numbers span:nth-child(1) {
-  justify-self: start;
-}
-
-.range-numbers span:nth-child(2),
-.range-numbers span:nth-child(3),
-.range-numbers span:nth-child(4) {
-  justify-self: center;
-}
-
-.range-numbers span:nth-child(5) {
-  justify-self: end;
+  flex: 0 0 auto;
+  width: 1.25rem;
+  text-align: center;
 }
 
 .scale-labels {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 14px;
   color: var(--muted);
   font-size: 0.78rem;
   font-weight: 700;
+  line-height: 1.25;
+}
+
+.scale-labels span {
+  min-width: 0;
+}
+
+.scale-labels span:last-child {
+  justify-self: end;
+  text-align: right;
 }
 
 .guided-result {
