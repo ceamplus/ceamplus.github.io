@@ -751,10 +751,30 @@ article p,
 .range-numbers {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  margin-top: -2px;
   color: var(--green-dark);
   font-size: 0.78rem;
   font-weight: 800;
-  text-align: center;
+  line-height: 1;
+}
+
+.range-numbers span {
+  min-width: 1.6em;
+}
+
+.range-numbers span:nth-child(1) {
+  justify-self: start;
+}
+
+.range-numbers span:nth-child(2),
+.range-numbers span:nth-child(3),
+.range-numbers span:nth-child(4) {
+  justify-self: center;
+}
+
+.range-numbers span:nth-child(5) {
+  justify-self: end;
 }
 
 .scale-labels {
