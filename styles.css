@@ -914,7 +914,8 @@ article p,
 }
 
 .profile-tags,
-.layer-summary {
+.layer-summary,
+.implementation-plan {
   display: grid;
   gap: 10px;
 }
@@ -933,11 +934,13 @@ article p,
   text-transform: none;
 }
 
-.layer-summary {
+.layer-summary,
+.implementation-plan {
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
 
-.layer-summary article {
+.layer-summary article,
+.implementation-plan article {
   display: grid;
   gap: 6px;
   padding: 14px;
