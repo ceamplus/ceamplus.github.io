@@ -57,16 +57,25 @@ const profileRules = [
 
 const profileDescriptions = {
   "Guided Support Preferred":
-    "This profile suggests the person may benefit from slower setup, fewer steps, clear examples, and a trusted support person nearby.",
+    "Your answers point toward a need for simple first steps, less clutter, and someone available for questions while new tools are being introduced.",
   "Needs Simplified Systems":
-    "This profile suggests the current process may be carrying too much confusion, too many choices, or too many unclear expectations.",
+    "Your answers suggest that the current routine may have too many moving parts. Simplifying the day-to-day process should come before adding more technology.",
   "Implementation Ready With Support":
-    "This profile suggests there is enough readiness to try AI or a new tool, as long as support, feedback, and pause points stay visible.",
+    "You appear ready to try AI in a practical way, especially if the first task is specific, low-pressure, and easy to review with another person.",
   "Strong Long-Term Growth Potential":
-    "This profile suggests the person or team has strong learning habits and may be ready to build a careful, people-centered rollout plan.",
+    "Your answers show useful learning habits and follow-through. The next step is choosing the right first workflow instead of trying to change everything at once.",
 };
 
 const contextCopy = {
+  personal: {
+    title: "Personal CEAM+ Daily Life Assessment",
+    icon: "person",
+    description: "Use this to understand daily routines, stress patterns, learning style, technology comfort, and where simple AI tools may help.",
+    person: "you",
+    setting: "daily routine",
+    stakeholder: "you or people who support you",
+    support: "someone you trust",
+  },
   business: {
     title: "Work / Business AI Readiness Assessment",
     icon: "briefcase",
@@ -152,6 +161,42 @@ const questionTemplates = [
       label: "What would make that moment easier?",
       options: ["A shorter list", "A clear first step", "Help from a person", "More time", "Fewer interruptions"],
     },
+  },
+  {
+    id: "time_consuming_tasks",
+    phase: "cognitive",
+    type: "choice",
+    label: "What takes up the most time right now?",
+    options: [
+      "Scheduling or appointments",
+      "Emails or messages",
+      "Paperwork or forms",
+      "Organizing information",
+      "Remembering follow-up tasks",
+      "Repeated manual steps",
+      "Planning what to do next",
+      "Talking through the same questions",
+    ],
+    score: [3, 3, 2, 2, 2, 2, 3, 3],
+    indicator: "time_pressure",
+  },
+  {
+    id: "energy_draining_tasks",
+    phase: "cognitive",
+    type: "choice",
+    label: "What drains the most mental energy?",
+    options: [
+      "Too many tasks at once",
+      "Unclear instructions",
+      "Interruptions",
+      "Time pressure",
+      "Forgetting details",
+      "Disorganization",
+      "Too many decisions",
+      "Lack of support",
+    ],
+    score: [2, 2, 2, 2, 2, 2, 2, 1],
+    indicator: "cognitive_overload",
   },
   {
     id: "unfinished_tasks",
@@ -261,8 +306,26 @@ const questionTemplates = [
     followUp: {
       when: ["Too many options", "Unclear instructions", "Fear of mistakes", "Not enough support"],
       label: "What part feels hardest?",
-      options: ["Too many buttons", "Not knowing where to start", "Fear of breaking something", "Too much information", "No one to ask"],
+      options: ["Too many buttons", "Not knowing where to start", "Fear of something going wrong", "Too much information", "No one to ask"],
     },
+  },
+  {
+    id: "tasks_to_simplify",
+    phase: "adoption",
+    type: "choice",
+    label: "What would you most like help simplifying first?",
+    options: [
+      "Reminders",
+      "Messages",
+      "Scheduling",
+      "Notes or records",
+      "Planning steps",
+      "Checklists",
+      "Repeated questions",
+      "Tracking progress",
+    ],
+    score: [4, 4, 4, 4, 4, 4, 4, 4],
+    indicator: "quick_win_task",
   },
   {
     id: "learning_style",
@@ -344,6 +407,24 @@ const questionTemplates = [
     indicator: "cognitive_overload",
   },
   {
+    id: "long_term_improvements",
+    phase: "plus",
+    type: "choice",
+    label: "What would make daily progress easier to keep up with?",
+    options: [
+      "Small reminders",
+      "A simple routine",
+      "Short checklists",
+      "Someone checking in",
+      "Seeing small wins",
+      "Fewer steps",
+      "Better instructions",
+      "More time to practice",
+    ],
+    score: [4, 5, 5, 4, 5, 4, 4, 4],
+    indicator: "growth_potential",
+  },
+  {
     id: "confusing_workflow",
     phase: "environment",
     type: "choice",
@@ -359,6 +440,24 @@ const questionTemplates = [
     label: "What slows things down most during daily tasks?",
     options: ["Waiting for answers", "Searching for information", "Repeating the same steps", "Interruptions", "Tools that do not fit the routine"],
     score: [2, 2, 2, 2, 1],
+    indicator: "workflow_friction",
+  },
+  {
+    id: "repetitive_tasks",
+    phase: "environment",
+    type: "choice",
+    label: "What gets repeated over and over?",
+    options: [
+      "Answering the same questions",
+      "Entering the same information",
+      "Finding the same files",
+      "Writing similar messages",
+      "Making similar plans",
+      "Repeating reminders",
+      "Checking the same status updates",
+      "Explaining the same steps",
+    ],
+    score: [2, 2, 2, 3, 3, 3, 2, 2],
     indicator: "workflow_friction",
   },
   {
@@ -391,6 +490,35 @@ const questionTemplates = [
 ];
 
 const categoryQuestionAdditions = {
+  personal: [
+    {
+      id: "daily_life_tasks",
+      phase: "environment",
+      type: "choice",
+      label: "Which daily-life tasks feel hardest to keep up with?",
+      options: ["Routines", "Reminders", "Budgeting", "Paperwork", "Household tasks", "Communication", "Planning meals", "Goal tracking"],
+      score: [2, 3, 2, 2, 2, 3, 3, 3],
+      indicator: "personal_barrier",
+    },
+    {
+      id: "personal_stress_sources",
+      phase: "cognitive",
+      type: "choice",
+      label: "What usually makes the week feel overwhelming?",
+      options: ["Too many responsibilities", "Unexpected changes", "Unfinished tasks", "Messy information", "Constant messages", "Low energy", "No clear routine", "Too many choices"],
+      score: [2, 2, 2, 2, 2, 2, 1, 2],
+      indicator: "cognitive_overload",
+    },
+    {
+      id: "technology_comfort",
+      phase: "trust",
+      type: "choice",
+      label: "What would make technology feel less stressful?",
+      options: ["Simple steps", "Clear examples", "Privacy details", "A person to ask", "Time to practice", "Fewer settings", "Less information at once"],
+      score: [5, 5, 5, 5, 5, 4, 4],
+      indicator: "support_need",
+    },
+  ],
   business: [
     {
       id: "customer_trust",
@@ -408,6 +536,24 @@ const categoryQuestionAdditions = {
       options: ["Clear owner", "Short trial period", "Training time", "Simple rules", "Feedback space"],
       score: [5, 5, 5, 5, 5],
       indicator: "support_need",
+    },
+    {
+      id: "business_time_tasks",
+      phase: "environment",
+      type: "choice",
+      label: "Which work tasks take up the most time?",
+      options: ["Invoices", "Estimates", "Customer messages", "Scheduling", "Training employees", "Organizing files", "Social media", "Bookkeeping"],
+      score: [2, 2, 3, 3, 3, 2, 3, 2],
+      indicator: "time_pressure",
+    },
+    {
+      id: "business_repeated_explanations",
+      phase: "environment",
+      type: "choice",
+      label: "Where do people repeat the same explanations most often?",
+      options: ["Customer questions", "Employee training", "Process steps", "Policies", "Scheduling details", "File locations", "Payment questions"],
+      score: [2, 2, 2, 3, 3, 2, 3],
+      indicator: "workflow_friction",
     },
   ],
   education: [
@@ -428,6 +574,15 @@ const categoryQuestionAdditions = {
       label: "How clear are the rules for honest AI use?",
       indicator: "trust_sensitivity",
     },
+    {
+      id: "education_time_tasks",
+      phase: "environment",
+      type: "choice",
+      label: "Which learning tasks take up the most time?",
+      options: ["Studying", "Organizing notes", "Planning assignments", "Research", "Writing", "Managing due dates", "Asking instructors questions", "Finding class resources"],
+      score: [3, 2, 3, 3, 3, 3, 4, 2],
+      indicator: "time_pressure",
+    },
   ],
   healthcare: [
     {
@@ -447,6 +602,15 @@ const categoryQuestionAdditions = {
       reverse: true,
       indicator: "cognitive_overload",
     },
+    {
+      id: "healthcare_time_tasks",
+      phase: "environment",
+      type: "choice",
+      label: "Which care tasks take the most time?",
+      options: ["Documentation", "Scheduling", "Finding records", "Follow-up reminders", "Explaining instructions", "Preparing visits", "Care notes", "Insurance or billing forms"],
+      score: [2, 3, 2, 3, 4, 3, 2, 2],
+      indicator: "time_pressure",
+    },
   ],
   rehabilitation: [
     {
@@ -465,6 +629,15 @@ const categoryQuestionAdditions = {
       options: ["Fewer reminders", "Clear choice options", "Caregiver support", "Private feedback", "Simple language"],
       score: [4, 5, 4, 5, 5],
       indicator: "support_need",
+    },
+    {
+      id: "rehab_time_tasks",
+      phase: "environment",
+      type: "choice",
+      label: "Which support tasks take the most time?",
+      options: ["Goal tracking", "Appointment scheduling", "Reminders", "Coping plans", "Daily routines", "Progress notes", "Paperwork", "Communication"],
+      score: [3, 3, 3, 3, 2, 3, 2, 3],
+      indicator: "time_pressure",
     },
   ],
 };
@@ -505,8 +678,8 @@ const getQuestionScore = (question, value) => {
     return selectedScores.reduce((sum, score) => sum + score, 0) / selectedScores.length;
   }
 
-  const number = Number(value || 3);
-  return question.reverse ? 6 - number : number;
+  const number = Number(value ?? 0);
+  return question.reverse ? 5 - number : number;
 };
 
 const calculateScore = (responses, questions = []) => {
@@ -551,6 +724,9 @@ const indicatorLabels = {
   growth_potential: "Long-term growth potential is present",
   environmental_barrier: "The environment may be making focus harder",
   current_ai_use: "Current AI use can shape the next step",
+  time_pressure: "Time-consuming tasks are a good place to start",
+  quick_win_task: "A simple first task is already visible",
+  personal_barrier: "Daily routines may need simpler support",
 };
 
 const answerInsightRules = [
@@ -579,8 +755,8 @@ const answerInsightRules = [
     message: "The user may need fewer steps and a clear first action before adding more tools.",
   },
   {
-    match: ["Fear of mistakes", "Fear of breaking something"],
-    message: "The user may need a safe practice space and reassurance that mistakes can be corrected.",
+    match: ["Fear of mistakes", "Fear of something going wrong"],
+    message: "The user may need a low-pressure practice step and reassurance that mistakes can be corrected.",
   },
   {
     match: ["No explanation", "Ask for an explanation", "Clear explanation"],
@@ -614,6 +790,7 @@ const analyzeSelectedAnswers = (responses) => {
     .map((rule) => rule.message);
 
   return {
+    responses,
     selectedAnswerCount: values.length,
     currentAiTools: values.filter((value) =>
       [
@@ -643,13 +820,18 @@ const getLayerSummary = (phaseScores) =>
     score: phaseScores[phase.id],
     message:
       phaseScores[phase.id] >= 75
-        ? "This area looks like a helpful starting strength."
+        ? "Your answers point to useful habits in this area."
         : phaseScores[phase.id] >= 55
-          ? "This area may work better with clearer examples and support."
-          : "This area may need simpler steps before adding AI or a new tool.",
+          ? "A few practical changes could make this part easier to use."
+          : "This is a good place to simplify before adding more tools.",
   }));
 
 const aiStartingPoints = {
+  personal: {
+    label: "Personal use",
+    task: "Start with routines, reminders, planning, budgeting, organizing paperwork, or goal tracking.",
+    examples: ["organize reminders", "plan a routine", "sort paperwork", "draft messages", "track goals"],
+  },
   business: {
     label: "Business use",
     task: "Start with customer messages, estimates, invoices, scheduling, FAQs, training guides, or recordkeeping.",
@@ -700,6 +882,183 @@ const supportLevels = [
   },
 ];
 
+const taskKeywords = [
+  "Scheduling or appointments",
+  "Emails or messages",
+  "Paperwork or forms",
+  "Organizing information",
+  "Remembering follow-up tasks",
+  "Repeated manual steps",
+  "Planning what to do next",
+  "Talking through the same questions",
+  "Reminders",
+  "Messages",
+  "Scheduling",
+  "Notes or records",
+  "Planning steps",
+  "Checklists",
+  "Repeated questions",
+  "Tracking progress",
+  "Invoices",
+  "Estimates",
+  "Customer messages",
+  "Training employees",
+  "Organizing files",
+  "Social media",
+  "Bookkeeping",
+  "Studying",
+  "Organizing notes",
+  "Planning assignments",
+  "Research",
+  "Writing",
+  "Managing due dates",
+  "Documentation",
+  "Finding records",
+  "Follow-up reminders",
+  "Explaining instructions",
+  "Goal tracking",
+  "Appointment scheduling",
+  "Coping plans",
+  "Daily routines",
+  "Progress notes",
+  "Routines",
+  "Budgeting",
+  "Household tasks",
+  "Communication",
+  "Planning meals",
+];
+
+const makeNaturalList = (items) => {
+  const unique = [...new Set(items)].filter(Boolean);
+  if (!unique.length) return "";
+  if (unique.length === 1) return unique[0].toLowerCase();
+  if (unique.length === 2) return `${unique[0].toLowerCase()} and ${unique[1].toLowerCase()}`;
+  return `${unique.slice(0, -1).map((item) => item.toLowerCase()).join(", ")}, and ${unique.at(-1).toLowerCase()}`;
+};
+
+const getSelectedTasks = (responses) =>
+  flattenResponseValues(responses)
+    .filter((value) => taskKeywords.includes(value))
+    .slice(0, 8);
+
+const getAiToolSuggestions = (assessmentId, selectedTasks = [], answerAnalysis = {}) => {
+  const values = [...selectedTasks, ...(answerAnalysis.currentAiTools || [])];
+  const suggestions = [];
+  const add = (name, reason) => {
+    if (!suggestions.some((item) => item.name === name)) suggestions.push({ name, reason });
+  };
+
+  if (values.some((item) => /message|email|writing|customer/i.test(item))) {
+    add("ChatGPT or Grammarly", "for drafting messages, rewriting unclear text, and creating a first version you can review.");
+  }
+  if (values.some((item) => /schedule|appointment|due date|reminder|routine/i.test(item))) {
+    add("Google Calendar or reminder apps", "for turning plans into reminders so fewer details have to stay in your head.");
+  }
+  if (values.some((item) => /paperwork|forms|documentation|records|notes|files|information/i.test(item))) {
+    add("ChatGPT, Notion, or document summarizers", "for turning long notes, forms, or records into shorter checklists and summaries.");
+  }
+  if (values.some((item) => /progress|goal|habit|tracking/i.test(item))) {
+    add("Todoist, Trello, or a habit tracker", "for showing progress in small steps without needing a complicated system.");
+  }
+  if (values.some((item) => /social|visual|examples|communication/i.test(item))) {
+    add("Canva", "for making simple visual guides, plans, and communication materials.");
+  }
+  if (values.some((item) => /training|explaining|questions|steps/i.test(item))) {
+    add("ChatGPT", "for creating repeatable guides, simple instructions, and answers to common questions.");
+  }
+  if (assessmentId === "personal") {
+    add("Voice-to-text tools", "for capturing thoughts quickly when typing or organizing ideas feels like too much.");
+  }
+  if (!suggestions.length) {
+    add("ChatGPT", "for organizing ideas, creating checklists, and testing one simple task before using more advanced tools.");
+    add("Google Calendar", "for reminders, routines, appointments, and follow-up tasks.");
+  }
+
+  return suggestions.slice(0, 5);
+};
+
+const buildLayerNarratives = (phaseScores, indicatorSummary, selectedTasks = [], answerAnalysis = {}) => {
+  const lowIndicators = new Set(indicatorSummary.filter((item) => item.score < 65).map((item) => item.id));
+  const taskText = makeNaturalList(selectedTasks.slice(0, 4));
+
+  return phases.map((phase) => {
+    const score = phaseScores[phase.id] || 0;
+    const observations = [];
+    const barriers = [];
+    const recommendations = [];
+    const tools = [];
+    const implementation = [];
+
+    if (phase.id === "cognitive") {
+      observations.push(
+        score >= 70
+          ? "You seem to do better when tasks have a clear order and a realistic starting point."
+          : "Mental energy may get used up quickly when too many steps or choices show up at once."
+      );
+      if (taskText) observations.push(`You pointed to ${taskText} as areas that take time or attention.`);
+      barriers.push("Trying to manage too many details mentally can make simple tasks feel heavier than they need to be.");
+      recommendations.push("Choose one repeated task and turn it into a short checklist before adding a new tool.");
+      tools.push("ChatGPT can turn scattered notes into a simple plan or checklist.");
+      implementation.push("Spend 15 minutes testing one task, then write down what felt easier and what still felt confusing.");
+    }
+
+    if (phase.id === "trust") {
+      observations.push(
+        answerAnalysis.insights.some((item) => /explanation/i.test(item))
+          ? "You seem to trust tools more when the reason behind a suggestion is easy to see."
+          : "Trust will grow faster when the tool is clear about what it can do and what still needs a person."
+      );
+      barriers.push("Confidence can drop when a tool gives an answer without showing how it got there.");
+      recommendations.push("Use AI for drafts, summaries, and planning first, then have a person review anything important.");
+      tools.push("ChatGPT is useful when you ask it to explain its steps or list what should be checked by a person.");
+      implementation.push("For the first few uses, compare the AI answer with your own judgment before relying on it.");
+    }
+
+    if (phase.id === "adoption") {
+      observations.push(
+        answerAnalysis.currentAiTools?.includes("I do not use AI tools yet")
+          ? "You may be starting from the beginning with AI, so the first tool should be simple and low-pressure."
+          : "You already have some tool experience, so the next step can build from what feels familiar."
+      );
+      barriers.push("Learning something new can become frustrating when there are too many features before the basic steps feel clear.");
+      recommendations.push("Pick one tool, one task, and one short practice window instead of trying several tools at once.");
+      tools.push("Templates and examples can make ChatGPT, calendars, or task apps easier to use at the beginning.");
+      implementation.push("Practice the same small task three times before deciding whether the tool is useful.");
+    }
+
+    if (phase.id === "plus") {
+      observations.push("Small wins and visible progress are important for keeping momentum after the first try.");
+      barriers.push("Progress often slows when routines are too complicated or when feedback comes too late.");
+      recommendations.push("Track one simple measure, such as time saved, fewer missed steps, or more confidence.");
+      tools.push("Todoist, Trello, or a habit tracker can make progress visible without a heavy setup.");
+      implementation.push("Review what changed after one week, then adjust the routine before adding another task.");
+    }
+
+    if (phase.id === "environment") {
+      observations.push(
+        lowIndicators.has("workflow_friction")
+          ? "The surrounding routine may be creating extra work through repeated steps, unclear handoffs, or too many places to look."
+          : "The environment can support AI use better when instructions, roles, and routines are easy to find."
+      );
+      if (taskText) observations.push(`The quickest improvement is likely connected to ${taskText}.`);
+      barriers.push("If the routine is already messy, adding AI can create more confusion instead of reducing it.");
+      recommendations.push("Clean up the most confusing step first, then use AI to draft, organize, remind, or summarize.");
+      tools.push("Notion, Trello, or shared checklists can keep repeated steps in one place.");
+      implementation.push("Create one shared example of the new process so people know what good use looks like.");
+    }
+
+    return {
+      title: phase.title,
+      score,
+      observations: observations.slice(0, 4),
+      barriers: barriers.slice(0, 3),
+      recommendations: recommendations.slice(0, 4),
+      tools: tools.slice(0, 3),
+      implementation: implementation.slice(0, 3),
+    };
+  });
+};
+
 const getSupportLevel = (score, indicatorSummary) => {
   const highNeed = indicatorSummary.some((indicator) =>
     ["cognitive_overload", "support_need", "adoption_barrier"].includes(indicator.id) && indicator.score < 55
@@ -737,15 +1096,18 @@ const getImplementationPath = (assessmentId, indicatorSummary, answerAnalysis = 
 
 const getPlainBarrier = (indicatorId) => {
   const barriers = {
-    cognitive_overload: "Too many steps, interruptions, or unclear choices may be making the day feel heavier.",
-    workflow_friction: "The routine may have confusing steps that should be simplified before adding AI.",
-    trust_sensitivity: "People may need clearer explanations before they feel comfortable using AI suggestions.",
-    learning_preference: "People may need examples, videos, written steps, or hands-on practice before they feel confident.",
-    adoption_barrier: "Trying a new tool may feel easier with setup help and a safe first task.",
-    support_need: "A clear support person or help option should be available before the tool is used.",
-    environmental_barrier: "Noise, interruptions, unclear priorities, or missing resources may be getting in the way.",
+    cognitive_overload: "Too many steps, interruptions, or unclear choices can make the day feel heavier than it needs to be.",
+    workflow_friction: "The routine has places where repeated steps, unclear handoffs, or scattered information can slow things down.",
+    trust_sensitivity: "Trust depends on seeing what the tool used, why it made a suggestion, and who reviews important decisions.",
+    learning_preference: "Learning will work better when people can use examples, practice, written steps, or a person to ask.",
+    adoption_barrier: "New tools can become frustrating when the first steps are rushed or unclear.",
+    support_need: "A named person, guide, or help option should be easy to find when questions come up.",
+    environmental_barrier: "Noise, interruptions, unclear priorities, or missing resources can make focus harder.",
+    time_pressure: "Time-consuming tasks are taking attention away from higher-value work or daily priorities.",
+    quick_win_task: "There are clear starter tasks that can be simplified before trying anything advanced.",
+    personal_barrier: "Daily routines may need simpler reminders, planning, or organization before adding more tools.",
   };
-  return barriers[indicatorId] || "Nothing here means failure. It simply points to where support may help most.";
+  return barriers[indicatorId] || "Nothing here means failure. It points to the part of the process that deserves attention first.";
 };
 
 // Recommendations are generated from the same result data used for on-screen output and email templates.
@@ -755,31 +1117,93 @@ const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSumma
   const topIndicator = indicatorSummary[0]?.id;
   const startingPoint = aiStartingPoints[assessmentId] || aiStartingPoints.business;
   const supportLevel = getSupportLevel(score, indicatorSummary);
+  const selectedTasks = getSelectedTasks(answerAnalysis.responses || {});
+  const taskText = makeNaturalList(selectedTasks.slice(0, 4));
+  const aiTools = getAiToolSuggestions(assessmentId, selectedTasks, answerAnalysis);
+  const layerNarratives = buildLayerNarratives(phaseScores, indicatorSummary, selectedTasks, answerAnalysis);
 
   const recommendations = [
-    `Start with one simple task, like ${startingPoint.examples.slice(0, 3).join(", ")}.`,
-    "People learn differently. Offer examples, written steps, videos, or hands-on practice before expecting full use.",
-    "Clearly explain how the AI works, what information it uses, and who users can contact if they need help.",
+    taskText
+      ? `Start with ${taskText}. Those answers point to tasks where AI could reduce repeated work without changing everything at once.`
+      : `Start with one simple task, like ${startingPoint.examples.slice(0, 3).join(", ")}.`,
+    "Use AI to create a first draft, summary, checklist, reminder, or plan. Review it before using it for anything important.",
+    "Keep the first test small. One task, one tool, and one week of practice will teach more than a large rollout.",
+    "Explain what the tool does, what information it uses, and when a person should review the result.",
   ];
 
   if (topIndicator === "cognitive_overload") {
-    recommendations.unshift("Start by simplifying the most frustrating part of the daily routine before adding new AI tools.");
+    recommendations.unshift("Simplify the most mentally tiring step before adding a new tool.");
   }
   if (topIndicator === "trust_sensitivity") {
-    recommendations.unshift("Use AI suggestions with human review until people feel comfortable trusting the process.");
+    recommendations.unshift("Choose tools that explain their answers and keep human review visible.");
   }
   if (topIndicator === "workflow_friction") {
-    recommendations.unshift("Pick one task that takes extra time each week and make that task easier first.");
+    recommendations.unshift("Fix one repeated or confusing task before trying to automate a larger process.");
   }
+  if (topIndicator === "time_pressure" || selectedTasks.length) {
+    recommendations.unshift("Look for the task that wastes the most time each week and make that task easier first.");
+  }
+
+  const observations = [
+    score >= 75
+      ? "You seem ready to try AI in a practical way, especially when the first use is specific and easy to review."
+      : "Your answers point to a need for simpler steps before adding too many tools.",
+    taskText
+      ? `You mentioned ${taskText}, which gives a realistic place to begin instead of guessing where AI belongs.`
+      : "The strongest next step is to choose one real task from the day and test whether AI makes it easier.",
+    answerAnalysis.currentAiTools?.includes("I do not use AI tools yet")
+      ? "Because AI is still new here, the first experience should be calm, clear, and easy to undo."
+      : "Because some tools are already familiar, the next step can improve what is already being used.",
+  ];
+
+  const barriers = [
+    getPlainBarrier(topIndicator),
+    "Trying to change too much at once can make a good idea feel stressful or hard to maintain.",
+    "People are more likely to keep using a tool when the first result solves a real daily problem.",
+  ];
+
+  const implementationPlan = [
+    {
+      title: "Week 1",
+      steps: [
+        taskText ? `Choose one task from your answers, such as ${taskText}.` : `Choose one small task, such as ${startingPoint.examples[0]}.`,
+        "Test one AI tool for 15 to 20 minutes at a time.",
+        "Write down what felt easier, what felt confusing, and what still needed human review.",
+      ],
+    },
+    {
+      title: "Week 2",
+      steps: [
+        "Turn the best result into a repeatable checklist, prompt, reminder, or template.",
+        "Use the same process several times before adding another tool.",
+        "Track simple wins like time saved, fewer missed steps, or more confidence.",
+      ],
+    },
+    {
+      title: "Week 3",
+      steps: [
+        "Keep what worked, remove what added confusion, and adjust the instructions.",
+        "Expand only if the first task feels manageable.",
+      ],
+    },
+  ];
 
   return {
     profile: profile.label,
     description: profileDescriptions[profile.label],
+    observations: [...new Set(observations)],
+    barriers: [...new Set(barriers)],
     recommendations: [...new Set(recommendations)].slice(0, 4),
     implementationPath: getImplementationPath(assessmentId, indicatorSummary, answerAnalysis),
+    implementationPlan,
     startingPoint,
     supportLevel,
-    nextStep: `Start with one simple task, like ${startingPoint.examples[0]} or ${startingPoint.examples[1]}. Try it with ${copy.support} before using it for bigger tasks.`,
+    aiTools,
+    selectedTasks,
+    layerNarratives,
+    nextStep: taskText
+      ? `Start with ${taskText}. Try one small version with ${copy.support} before using it for bigger tasks.`
+      : `Start with one simple task, like ${startingPoint.examples[0]} or ${startingPoint.examples[1]}. Try it with ${copy.support} before using it for bigger tasks.`,
     barrier: getPlainBarrier(topIndicator),
     layerSummary: getLayerSummary(phaseScores),
   };
@@ -830,14 +1254,14 @@ const emailTemplates = {
     return {
       to: result.participant.email,
       subject: `Your CEAM+ ${result.assessmentTitle} Results`,
-      body: `Hi ${name},\n\nThank you for completing the ${result.assessmentTitle}.\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat your answers point to:\n${result.answerAnalysis.insights.map((item) => `- ${item}`).join("\n") || "- No single pattern stood out yet."}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nBest starting point:\n${result.recommendation.startingPoint.task}\n\nNext step: ${result.recommendation.nextStep}\n\nYour results will be reviewed if you request follow-up support.\n`,
+      body: `Hi ${name},\n\nThank you for completing the ${result.assessmentTitle}.\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat we noticed:\n${result.recommendation.observations.map((item) => `- ${item}`).join("\n")}\n\nWhat may be getting in the way:\n${result.recommendation.barriers.map((item) => `- ${item}`).join("\n")}\n\nTasks you selected:\n${result.recommendation.selectedTasks.join(", ") || "No task selections yet"}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nAI tools that may fit:\n${result.recommendation.aiTools.map((tool) => `- ${tool.name}: ${tool.reason}`).join("\n")}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nYour results will be reviewed if you request follow-up support.\n`,
     };
   },
   admin(result) {
     return {
       to: "briggsfaye@icloud.com",
       subject: `New CEAM+ Assessment: ${result.assessmentTitle}`,
-      body: `Client: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nTop support needs: ${result.profileTags.join(", ")}\nAI tools already used: ${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\nAnswer insights: ${result.answerAnalysis.insights.join(" | ") || "No single pattern stood out yet."}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nResponses:\n${Object.entries(result.responses).map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(", ") : value}`).join("\n")}`,
+      body: `Client: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nSelected tasks: ${result.recommendation.selectedTasks.join(", ") || "None selected"}\nTop support needs: ${result.profileTags.join(", ")}\nAI tools already used: ${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\nObservations: ${result.recommendation.observations.join(" | ")}\nAnswer insights: ${result.answerAnalysis.insights.join(" | ") || "No single pattern stood out yet."}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nResponses:\n${Object.entries(result.responses).map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(", ") : value}`).join("\n")}`,
     };
   },
   supportAdmin(result, supportRequest) {
@@ -955,6 +1379,8 @@ const getIconMarkup = (icon) => {
       '<path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7V3Z"></path>',
     path:
       '<path d="M5 19c5-1 3-7 8-7 4 0 4-5 7-7"></path><path d="M5 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path><path d="M20 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path><path d="M13 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>',
+    person:
+      '<path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"></path><path d="M4 21a8 8 0 0 1 16 0"></path>',
   };
   return `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[icon]}</svg>`;
 };
@@ -996,12 +1422,12 @@ const renderQuestion = (question, index) => {
             `
           )
           .join("")}</div>`
-      : `<input id="${question.id}" name="${question.id}" data-question-id="${question.id}" type="range" min="1" max="5" value="3" step="1" list="${sliderTicksId}">
+      : `<input id="${question.id}" name="${question.id}" data-question-id="${question.id}" type="range" min="0" max="5" value="0" step="1" list="${sliderTicksId}">
         <div class="range-ticks" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
         <div class="range-numbers" aria-hidden="true">
-          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+          <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
         </div>
         <div class="scale-labels" aria-hidden="true">
           <span>${getScale(question).low}</span>
@@ -1011,7 +1437,7 @@ const renderQuestion = (question, index) => {
   wrapper.innerHTML = `
     <div class="question-meta">
       <span>Question ${index + 1}</span>
-      ${question.type === "scale" ? `<output for="${question.id}" data-output>Selected: 3</output>` : ""}
+      ${question.type === "scale" ? `<output for="${question.id}" data-output>Selected: 0</output>` : ""}
     </div>
     ${question.scenario ? `<p class="scenario">${question.scenario}</p>` : ""}
     <label class="question-label" for="${question.id}">${question.label}</label>
@@ -1050,7 +1476,7 @@ const getResponsesFromPanel = (panel, assessment) =>
       const selected = [...panel.querySelectorAll(`input[name="${question.id}"]:checked`)].map((input) => input.value);
       if (selected.length) responses[question.id] = selected;
     } else {
-      responses[question.id] = Number(panel.querySelector(`[name="${question.id}"]`)?.value || 3);
+      responses[question.id] = Number(panel.querySelector(`[name="${question.id}"]`)?.value ?? 0);
     }
     const note = panel.querySelector(`[name="${question.id}_note"]`)?.value.trim();
     if (note) responses[`${question.id}_note`] = note;
@@ -1123,23 +1549,28 @@ const renderResult = (resultBox, result) => {
     </div>
     <section class="result-section">
       <h4>What We Noticed</h4>
+      <ul>${result.recommendation.observations.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </section>
+    <section class="result-section">
+      <h4>What May Be Making Things Harder</h4>
+      <ul>${result.recommendation.barriers.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </section>
+    <section class="result-section">
+      <h4>CEAM+ Layer Details</h4>
       <div class="layer-summary">
-        ${result.recommendation.layerSummary
+        ${result.recommendation.layerNarratives
           .map(
             (layer) => `
               <article>
                 <strong>${layer.title}</strong>
                 <span>${layer.score}%</span>
-                <p>${layer.message}</p>
+                <p>${layer.observations[0]}</p>
+                <ul>${layer.recommendations.map((item) => `<li>${item}</li>`).join("")}</ul>
               </article>
             `
           )
           .join("")}
       </div>
-    </section>
-    <section class="result-section">
-      <h4>What May Be Making Things Harder</h4>
-      <p>${result.recommendation.barrier}</p>
     </section>
     <section class="result-section">
       <h4>What Your Answers Point To</h4>
@@ -1158,16 +1589,16 @@ const renderResult = (resultBox, result) => {
     </section>
     <section class="result-section">
       <h4>Best Starting Point</h4>
-      <p>${result.recommendation.startingPoint.task}</p>
+      <p>${
+        result.recommendation.selectedTasks.length
+          ? `You selected ${makeNaturalList(result.recommendation.selectedTasks.slice(0, 5))}. Start with one of these before changing the full routine.`
+          : result.recommendation.startingPoint.task
+      }</p>
     </section>
     <section class="result-section">
-      <h4>Easy AI Tools to Start With</h4>
+      <h4>AI Tools That May Fit You</h4>
       <ul>
-        <li>ChatGPT for drafts, planning, simple explanations, and checklists.</li>
-        <li>Reminder or scheduling tools for appointments, routines, and follow-up tasks.</li>
-        <li>Email drafting tools for messages that still need human review.</li>
-        <li>Document summarizers for notes, records, instructions, or long information.</li>
-        <li>Workflow checklists for repeated steps that are easy to miss.</li>
+        ${result.recommendation.aiTools.map((tool) => `<li><strong>${tool.name}:</strong> ${tool.reason}</li>`).join("")}
       </ul>
     </section>
     <section class="result-section support-level">
@@ -1179,6 +1610,21 @@ const renderResult = (resultBox, result) => {
       <h4>Recommended First Steps</h4>
       <ul>${result.recommendation.recommendations.map((item) => `<li>${item}</li>`).join("")}</ul>
       <p><strong>Simple next step:</strong> ${result.recommendation.nextStep}</p>
+    </section>
+    <section class="result-section">
+      <h4>Simple 3-Week Plan</h4>
+      <div class="implementation-plan">
+        ${result.recommendation.implementationPlan
+          .map(
+            (week) => `
+              <article>
+                <strong>${week.title}</strong>
+                <ul>${week.steps.map((step) => `<li>${step}</li>`).join("")}</ul>
+              </article>
+            `
+          )
+          .join("")}
+      </div>
     </section>
     <section class="consultant-cta">
       <h4>Need Help Getting Started?</h4>
@@ -1294,6 +1740,7 @@ const renderAssessment = (assessment) => {
   assessmentPanel.innerHTML = `
     <article class="guided-assessment-card ${assessment.id}">
       <datalist id="${sliderTicksId}">
+        <option value="0"></option>
         <option value="1"></option>
         <option value="2"></option>
         <option value="3"></option>
