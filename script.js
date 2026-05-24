@@ -1844,8 +1844,30 @@ window.addEventListener("scroll", updateHeader, { passive: true });
 
 organizationSelect?.addEventListener("change", handleOrganizationChange);
 startAssessmentButton?.addEventListener("click", () => {
-  const assessment = getAssessmentById(organizationSelect.value);
-  if (!assessment) return;
+  const selectedContext = organizationSelect?.value;
+  const assessment = getAssessmentById(selectedContext);
+  if (!assessment) {
+    if (assessmentPanel) {
+      assessmentPanel.hidden = false;
+      assessmentPanel.classList.add("is-visible");
+      assessmentPanel.innerHTML = `
+        <article class="guided-assessment-card">
+          <header class="guided-assessment-header">
+            <div>
+              <h3>Assessment file needs updating</h3>
+              <p>
+                This category is in the page menu, but the matching assessment
+                data was not found in script.js. Upload or replace script.js in
+                the root of the GitHub branch, then refresh the page.
+              </p>
+            </div>
+          </header>
+        </article>
+      `;
+      assessmentPanel.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
+    }
+    return;
+  }
   renderAssessment(assessment);
   assessmentPanel.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
 });
