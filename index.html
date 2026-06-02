@@ -14,24 +14,24 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     >
-    <link rel="stylesheet" href="styles.css?v=20260523-start-fix">
+    <link rel="stylesheet" href="styles.css?v=20260602-pages">
   </head>
   <body>
     <header class="site-header" data-header>
-      <a class="brand" href="#top" aria-label="CEAM+ home">
+      <a class="brand" href="index.html" aria-label="CEAM+ home">
         <span class="brand-mark">
           <img src="ceam-icon.jpeg" alt="" aria-hidden="true">
         </span>
         <span>CEAM+</span>
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#framework">Framework</a>
-        <a href="#assessments">Assessments</a>
-        <a href="#applications">Applications</a>
-        <a href="#workflow">Workflow</a>
-        <a href="#contact">Contact</a>
+        <a href="framework.html">Framework</a>
+        <a href="assessments.html">Assessments</a>
+        <a href="applications.html">Applications</a>
+        <a href="workflow.html">Workflow</a>
+        <a href="contact.html">Contact</a>
       </nav>
-      <a class="header-action" href="#contact">Start a Pilot Program Today</a>
+      <a class="header-action" href="contact.html">Start a Pilot Program Today</a>
     </header>
 
     <main id="top">
@@ -45,8 +45,8 @@
               responsible use.
             </p>
             <div class="hero-actions" aria-label="Primary actions">
-              <a class="button primary" href="#framework">Explore the Model</a>
-              <a class="button secondary" href="#contact">Discuss Fit</a>
+              <a class="button primary" href="assessments.html">Take an Assessment</a>
+              <a class="button secondary" href="framework.html">Explore the Model</a>
             </div>
           </div>
           <div class="hero-visual" aria-label="CEAM+ decision support model visualization">
@@ -71,182 +71,31 @@
         </div>
       </section>
 
-      <section class="section intro" id="framework">
+      <section class="section intro">
         <div class="section-heading">
-          <h2>A practical framework for high-stakes AI decisions</h2>
+          <h2>Choose where you want to start</h2>
           <p>
-            CEAM+ brings clear thinking, ethics, and practical planning
-            into one structured path so a person, team, or organization can move
-            from uncertainty to accountable action.
+            The CEAM+ website is now split into focused pages so the framework,
+            assessments, use cases, workflow, and contact form are easier to use.
           </p>
         </div>
         <div class="principle-grid">
           <article>
-            <span class="icon-block" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 12h5l2-7 4 14 2-7h3"></path></svg>
-            </span>
-            <h3>Reduce overload</h3>
-            <p>Break complex AI choices into manageable steps with clear criteria and decision prompts.</p>
+            <h3>Understand CEAM+</h3>
+            <p>Review the core framework for reducing overload and strengthening responsible AI use.</p>
+            <p><a class="button secondary" href="framework.html">Open Framework</a></p>
           </article>
           <article>
-            <span class="icon-block" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 3 4 7v6c0 5 3.5 7.5 8 8 4.5-.5 8-3 8-8V7l-8-4Z"></path></svg>
-            </span>
-            <h3>Strengthen trust</h3>
-            <p>Surface risks early, document assumptions, and align AI use with human responsibility.</p>
+            <h3>Take an Assessment</h3>
+            <p>Choose personal, work, education, healthcare, or rehabilitation support and receive recommendations.</p>
+            <p><a class="button secondary" href="assessments.html">Open Assessments</a></p>
           </article>
           <article>
-            <span class="icon-block" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M5 19V5h14M8 16l3-3 3 2 5-7"></path></svg>
-            </span>
-            <h3>Guide adoption</h3>
-            <p>Move from readiness assessment to pilots, measurement, iteration, and sustainable scale.</p>
+            <h3>Request Support</h3>
+            <p>Ask about pilot programs, guided setup, training, or AI implementation planning.</p>
+            <p><a class="button secondary" href="contact.html">Contact CEAM+</a></p>
           </article>
         </div>
-        <div class="framework-next">
-          <p>Ready to apply the model to your context?</p>
-          <a class="button secondary" href="#assessments">Take a Readiness Assessment</a>
-        </div>
-      </section>
-
-      <section class="section assessments-section" id="assessments" aria-labelledby="assessments-title">
-        <div class="section-heading">
-          <h2 id="assessments-title">CEAM+ Readiness Assessments</h2>
-          <p>
-            Choose the environment closest to your work, then complete a
-            tailored profile built around focus, trust, learning style,
-            support needs, and everyday barriers.
-          </p>
-        </div>
-        <div class="assessment-selector-card">
-          <div>
-            <h3>Select Your Context</h3>
-            <p>
-              The assessment will adapt its questions, recommendations, risks,
-              and next steps to your life, job, team, or organizational context.
-            </p>
-          </div>
-          <div class="assessment-controls">
-            <label for="organization-type">Context type</label>
-            <select id="organization-type" data-organization-select>
-              <option value="">Choose a category</option>
-              <option value="personal">Personal / Daily Life</option>
-              <option value="business">Work / Business</option>
-              <option value="education">Learning / Education</option>
-              <option value="healthcare">Health / Care Settings</option>
-              <option value="rehabilitation">Rehabilitation / Adaptive Support</option>
-            </select>
-            <button class="button primary" type="button" data-start-assessment disabled>Start Assessment</button>
-          </div>
-        </div>
-        <div class="assessment-panel" data-assessment-panel aria-live="polite" hidden></div>
-      </section>
-
-      <section class="section split" id="applications">
-        <div class="split-copy">
-          <h2>Built for complex environments</h2>
-          <p>
-            CEAM+ is designed for situations where AI decisions affect people,
-            daily work, learning, care, and outcomes. The framework adapts to a
-            person's context as well as team and organizational settings without
-            losing ethical structure.
-          </p>
-        </div>
-        <div class="application-list">
-          <article>
-            <h3>Work / Business</h3>
-            <p>Evaluate AI opportunities, job fit, workflow efficiency, and readiness before scaling.</p>
-          </article>
-          <article>
-            <h3>Learning / Education</h3>
-            <p>Support responsible learning tools, accessibility, communication preferences, and student-centered safeguards.</p>
-          </article>
-          <article>
-            <h3>Health / Care Settings</h3>
-            <p>Map personal, clinical, or administrative AI use against risk, usability, and accountability needs.</p>
-          </article>
-          <article>
-            <h3>Rehabilitation / Adaptive Support</h3>
-            <p>Shape support tools around personal goals, daily needs, communication style, and trusted care.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section process" id="workflow">
-        <div class="section-heading">
-          <h2>From readiness to responsible scale</h2>
-          <p>
-            A CEAM+ engagement turns abstract AI ambition into a clear,
-            inspectable workflow that a person, team, or organization can repeat.
-          </p>
-        </div>
-        <ol class="timeline">
-          <li>
-            <span>01</span>
-            <div>
-              <h3>Assess context</h3>
-              <p>Name the goal, people affected, practical limits, information needs, and signs that people are ready.</p>
-            </div>
-          </li>
-          <li>
-            <span>02</span>
-            <div>
-              <h3>Map cognitive load</h3>
-              <p>Notice where people feel overwhelmed, confused, rushed, or unsure.</p>
-            </div>
-          </li>
-          <li>
-            <span>03</span>
-            <div>
-              <h3>Apply ethical checks</h3>
-              <p>Make risks, privacy needs, fairness, human review, and help paths visible.</p>
-            </div>
-          </li>
-          <li>
-            <span>04</span>
-            <div>
-              <h3>Pilot and learn</h3>
-              <p>Run bounded experiments, measure human impact, and refine the adoption plan.</p>
-            </div>
-          </li>
-        </ol>
-      </section>
-
-      <section class="section contact-section" id="contact">
-        <div class="contact-copy">
-          <h2>Bring structure to your next AI adoption decision</h2>
-          <p>
-            Use CEAM+ to evaluate a personal or workplace AI use case, prepare
-            a practical roadmap, or align people around responsible AI.
-          </p>
-        </div>
-        <form class="contact-form" data-contact-form>
-          <label>
-            Name
-            <input type="text" name="name" autocomplete="name" required>
-          </label>
-          <label>
-            Email
-            <input type="email" name="email" autocomplete="email" required>
-          </label>
-          <label>
-            Area of interest
-            <select name="interest">
-              <option>Work / business adoption</option>
-              <option>Learning / education support</option>
-              <option>Health / care workflows</option>
-              <option>Rehabilitation / adaptive technology</option>
-              <option>Personal AI support</option>
-              <option>General inquiry</option>
-            </select>
-          </label>
-          <label>
-            Message
-            <textarea name="message" rows="4" required></textarea>
-          </label>
-          <button class="button primary" type="submit">Send Inquiry</button>
-          <p class="form-status" role="status" data-form-status></p>
-        </form>
       </section>
     </main>
 
@@ -255,6 +104,6 @@
       <a href="#top">Back to top</a>
     </footer>
 
-    <script src="script.js?v=20260523-start-fix"></script>
+    <script src="script.js?v=20260602-pages"></script>
   </body>
 </html>
