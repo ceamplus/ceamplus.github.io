@@ -997,6 +997,95 @@ article p,
   margin-top: 0;
 }
 
+.visual-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+.visual-feature.reverse {
+  grid-template-columns: minmax(320px, 1fr) minmax(0, 0.9fr);
+}
+
+.visual-copy {
+  display: grid;
+  gap: 16px;
+}
+
+.visual-copy h2 {
+  margin: 0;
+  font-size: clamp(2.1rem, 4.5vw, 4rem);
+  line-height: 1.02;
+}
+
+.visual-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+.visual-image {
+  position: relative;
+  min-height: 390px;
+  overflow: hidden;
+  background: var(--mint);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.visual-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+}
+
+.visual-image::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, rgba(21, 32, 29, 0.02), rgba(21, 32, 29, 0.2));
+  pointer-events: none;
+}
+
+.value-grid,
+.story-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 38px;
+}
+
+.value-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.story-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.value-grid article,
+.story-grid article {
+  padding: 22px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 18px 44px rgba(20, 35, 31, 0.06);
+}
+
+.value-grid h3,
+.story-grid h3 {
+  margin-top: 0;
+}
+
+.value-grid p,
+.story-grid p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .process {
   border-block: 1px solid var(--line);
 }
@@ -1104,8 +1193,12 @@ textarea:focus {
 
   .hero-content,
   .split,
+  .visual-feature,
+  .visual-feature.reverse,
   .contact-section,
   .principle-grid,
+  .value-grid,
+  .story-grid,
   .assessment-selector-card,
   .guided-assessment-header,
   .field-grid {
@@ -1122,6 +1215,10 @@ textarea:focus {
 
   .application-list {
     grid-template-columns: 1fr;
+  }
+
+  .visual-image {
+    min-height: 300px;
   }
 
   .framework-next {
