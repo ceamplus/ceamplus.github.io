@@ -6,6 +6,8 @@ const startAssessmentButton = document.querySelector("[data-start-assessment]");
 const assessmentPanel = document.querySelector("[data-assessment-panel]");
 const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 const zapierWebhookUrl = "https://hooks.zapier.com/hooks/catch/27676700/4oizoy6/";
+const emailBrandName = "ClearPathway Systems";
+const emailSignature = "ClearPathway Systems | CEAM+";
 
 // CEAM+ assessment sections. Each section measures behavior and support needs in plain language.
 const phases = [
@@ -2725,30 +2727,34 @@ const emailTemplates = {
   client(result) {
     const name = result.participant.firstName || "there";
     return {
+      fromName: emailBrandName,
       to: result.participant.email,
-      subject: `Your CEAM+ ${result.assessmentTitle} Results`,
-      body: `Hi ${name},\n\nThank you for completing the ${result.assessmentTitle}.\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat we noticed:\n${result.recommendation.observations.map((item) => `- ${item}`).join("\n")}\n\nWhat may be getting in the way:\n${result.recommendation.barriers.map((item) => `- ${item}`).join("\n")}\n\nTasks you selected:\n${result.recommendation.selectedTasks.join(", ") || "No task selections yet"}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nAI tools that may fit:\n${result.recommendation.aiTools.map((tool) => `- ${tool.name}: ${tool.reason}`).join("\n")}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nYour full answers:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\nYour results will be reviewed if you request follow-up support.\n`,
+      subject: `Your ${emailBrandName} CEAM+ Assessment Results`,
+      body: `Hi ${name},\n\nThank you for completing your CEAM+ assessment with ${emailBrandName}.\n\nAssessment completed: ${result.assessmentTitle}\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat we noticed:\n${result.recommendation.observations.map((item) => `- ${item}`).join("\n")}\n\nWhat may be getting in the way:\n${result.recommendation.barriers.map((item) => `- ${item}`).join("\n")}\n\nTasks you selected:\n${result.recommendation.selectedTasks.join(", ") || "No task selections yet"}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nAI tools that may fit:\n${result.recommendation.aiTools.map((tool) => `- ${tool.name}: ${tool.reason}`).join("\n")}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nYour full answers:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\nYour results will be reviewed if you request follow-up support.\n\n${emailSignature}\n`,
     };
   },
   admin(result) {
     return {
+      fromName: emailBrandName,
       to: "briggsfaye@icloud.com",
-      subject: `New CEAM+ Assessment: ${result.assessmentTitle}`,
-      body: `Client: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nSelected tasks: ${result.recommendation.selectedTasks.join(", ") || "None selected"}\nTop support needs: ${result.profileTags.join(", ")}\nAI tools already used: ${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\nObservations: ${result.recommendation.observations.join(" | ")}\nAnswer insights: ${result.answerAnalysis.insights.join(" | ") || "No single pattern stood out yet."}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nFull assessment responses:\n${formatResponsesForEmail(result) || "No answers were recorded."}`,
+      subject: `New ${emailBrandName} CEAM+ Assessment: ${result.assessmentTitle}`,
+      body: `${emailBrandName} assessment submission\n\nClient: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nSelected tasks: ${result.recommendation.selectedTasks.join(", ") || "None selected"}\nTop support needs: ${result.profileTags.join(", ")}\nAI tools already used: ${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\nObservations: ${result.recommendation.observations.join(" | ")}\nAnswer insights: ${result.answerAnalysis.insights.join(" | ") || "No single pattern stood out yet."}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nFull assessment responses:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\n${emailSignature}`,
     };
   },
   supportAdmin(result, supportRequest) {
     return {
+      fromName: emailBrandName,
       to: "briggsfaye@icloud.com",
-      subject: `CEAM+ Support Request: ${supportRequest.supportOption}`,
-      body: `Client: ${supportRequest.firstName} ${supportRequest.lastName}\nEmail: ${supportRequest.email}\nPhone: ${supportRequest.phone}\nOrganization: ${supportRequest.organization}\nAssessment: ${result.assessmentTitle}\nProfile: ${result.recommendation.profile}\nSupport option: ${supportRequest.supportOption}\nMain goal: ${supportRequest.mainGoal}\nBiggest challenge: ${supportRequest.biggestChallenge}\nBest time to contact: ${supportRequest.bestTime}\nResult ID: ${result.resultId}`,
+      subject: `${emailBrandName} CEAM+ Support Request: ${supportRequest.supportOption}`,
+      body: `${emailBrandName} support request\n\nClient: ${supportRequest.firstName} ${supportRequest.lastName}\nEmail: ${supportRequest.email}\nPhone: ${supportRequest.phone}\nOrganization: ${supportRequest.organization}\nAssessment: ${result.assessmentTitle}\nProfile: ${result.recommendation.profile}\nSupport option: ${supportRequest.supportOption}\nMain goal: ${supportRequest.mainGoal}\nBiggest challenge: ${supportRequest.biggestChallenge}\nBest time to contact: ${supportRequest.bestTime}\nResult ID: ${result.resultId}\n\n${emailSignature}`,
     };
   },
   supportClient(result, supportRequest) {
     return {
+      fromName: emailBrandName,
       to: supportRequest.email,
-      subject: "Your CEAM+ support request was received",
-      body: `Hi ${supportRequest.firstName},\n\nThank you. Your request was received. We will review your results and follow up with next steps.\n\nSelected support option: ${supportRequest.supportOption}\nAssessment summary: ${result.recommendation.profile}\nSuggested first AI step: ${result.recommendation.nextStep}\n\nYour results will be reviewed for follow-up support.\n`,
+      subject: `Your ${emailBrandName} CEAM+ support request was received`,
+      body: `Hi ${supportRequest.firstName},\n\nThank you. ${emailBrandName} received your request. We will review your results and follow up with next steps.\n\nSelected support option: ${supportRequest.supportOption}\nAssessment summary: ${result.recommendation.profile}\nSuggested first AI step: ${result.recommendation.nextStep}\n\nYour results will be reviewed for follow-up support.\n\n${emailSignature}\n`,
     };
   },
 };
@@ -2775,12 +2781,39 @@ const buildZapierAssessmentFields = (result) => {
     recommendations: result.recommendation.recommendations.join(" | "),
     implementationPath: result.recommendation.implementationPath.join(" | "),
     fullAnswers: formatResponsesForEmail(result),
+    clientEmailFromName: clientEmail.fromName,
     clientEmailTo: clientEmail.to,
     clientEmailSubject: clientEmail.subject,
     clientEmailBody: clientEmail.body,
+    adminEmailFromName: adminEmail.fromName,
     adminEmailTo: adminEmail.to,
     adminEmailSubject: adminEmail.subject,
     adminEmailBody: adminEmail.body,
+  };
+};
+
+const buildZapierSupportFields = (result, supportRequest) => {
+  const clientEmail = emailTemplates.supportClient(result, supportRequest);
+  const adminEmail = emailTemplates.supportAdmin(result, supportRequest);
+
+  return {
+    requestType: "consultant-support-request",
+    supportOption: supportRequest.supportOption,
+    clientName: `${supportRequest.firstName} ${supportRequest.lastName}`.trim(),
+    clientEmailAddress: supportRequest.email,
+    clientPhone: supportRequest.phone,
+    organization: supportRequest.organization,
+    assessmentTitle: result.assessmentTitle,
+    readinessProfile: result.recommendation.profile,
+    resultId: result.resultId,
+    supportClientEmailFromName: clientEmail.fromName,
+    supportClientEmailTo: clientEmail.to,
+    supportClientEmailSubject: clientEmail.subject,
+    supportClientEmailBody: clientEmail.body,
+    supportAdminEmailFromName: adminEmail.fromName,
+    supportAdminEmailTo: adminEmail.to,
+    supportAdminEmailSubject: adminEmail.subject,
+    supportAdminEmailBody: adminEmail.body,
   };
 };
 
@@ -2830,17 +2863,12 @@ const sendSupportRequest = async (result, supportRequest) => {
 
   try {
     const formPayload = new URLSearchParams({
+      ...buildZapierSupportFields(result, supportRequest),
       requestType: payload.requestType,
       supportRequest: JSON.stringify(payload.supportRequest),
       clientEmail: JSON.stringify(payload.clientEmail),
       adminEmail: JSON.stringify(payload.adminEmail),
       result: JSON.stringify(payload.result),
-      clientName: `${supportRequest.firstName} ${supportRequest.lastName}`.trim(),
-      clientEmailAddress: supportRequest.email,
-      supportOption: supportRequest.supportOption,
-      assessmentTitle: result.assessmentTitle,
-      readinessProfile: result.recommendation.profile,
-      resultId: result.resultId,
     });
 
     await fetch(zapierWebhookUrl, {
@@ -3333,6 +3361,7 @@ window.CEAMAssessments = {
   assessments,
   phases,
   buildZapierAssessmentFields,
+  buildZapierSupportFields,
   buildAssessmentResult,
   calculateAssessmentResult,
   calculatePhaseScores,
