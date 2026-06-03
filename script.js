@@ -2631,20 +2631,37 @@ const calculateAssessmentResult = (values, questionCount, assessment) => {
   return buildAssessmentResult(assessment, responses);
 };
 
+const formatResponsesForEmail = (result) => {
+  const assessment = getAssessmentById(result.assessmentId);
+
+  return Object.entries(result.responses || {})
+    .map(([responseId, value]) => {
+      const isNote = responseId.endsWith("_note");
+      const isFollowUp = responseId.endsWith("_followup");
+      const questionId = responseId.replace(/_(note|followup)$/, "");
+      const question = assessment?.questions.find((item) => item.id === questionId);
+      const suffix = isNote ? " - additional note" : isFollowUp ? " - follow-up" : "";
+      const label = question ? `${question.label}${suffix}` : responseId;
+      const answer = Array.isArray(value) ? value.join(", ") : String(value);
+      return `${label}: ${answer}`;
+    })
+    .join("\n");
+};
+
 const emailTemplates = {
   client(result) {
     const name = result.participant.firstName || "there";
     return {
       to: result.participant.email,
       subject: `Your CEAM+ ${result.assessmentTitle} Results`,
-      body: `Hi ${name},\n\nThank you for completing the ${result.assessmentTitle}.\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat we noticed:\n${result.recommendation.observations.map((item) => `- ${item}`).join("\n")}\n\nWhat may be getting in the way:\n${result.recommendation.barriers.map((item) => `- ${item}`).join("\n")}\n\nTasks you selected:\n${result.recommendation.selectedTasks.join(", ") || "No task selections yet"}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nAI tools that may fit:\n${result.recommendation.aiTools.map((tool) => `- ${tool.name}: ${tool.reason}`).join("\n")}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nYour results will be reviewed if you request follow-up support.\n`,
+      body: `Hi ${name},\n\nThank you for completing the ${result.assessmentTitle}.\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat we noticed:\n${result.recommendation.observations.map((item) => `- ${item}`).join("\n")}\n\nWhat may be getting in the way:\n${result.recommendation.barriers.map((item) => `- ${item}`).join("\n")}\n\nTasks you selected:\n${result.recommendation.selectedTasks.join(", ") || "No task selections yet"}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nAI tools that may fit:\n${result.recommendation.aiTools.map((tool) => `- ${tool.name}: ${tool.reason}`).join("\n")}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nYour full answers:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\nYour results will be reviewed if you request follow-up support.\n`,
     };
   },
   admin(result) {
     return {
       to: "briggsfaye@icloud.com",
       subject: `New CEAM+ Assessment: ${result.assessmentTitle}`,
-      body: `Client: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nSelected tasks: ${result.recommendation.selectedTasks.join(", ") || "None selected"}\nTop support needs: ${result.profileTags.join(", ")}\nAI tools already used: ${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\nObservations: ${result.recommendation.observations.join(" | ")}\nAnswer insights: ${result.answerAnalysis.insights.join(" | ") || "No single pattern stood out yet."}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nResponses:\n${Object.entries(result.responses).map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(", ") : value}`).join("\n")}`,
+      body: `Client: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nSelected tasks: ${result.recommendation.selectedTasks.join(", ") || "None selected"}\nTop support needs: ${result.profileTags.join(", ")}\nAI tools already used: ${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\nObservations: ${result.recommendation.observations.join(" | ")}\nAnswer insights: ${result.answerAnalysis.insights.join(" | ") || "No single pattern stood out yet."}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nFull assessment responses:\n${formatResponsesForEmail(result) || "No answers were recorded."}`,
     };
   },
   supportAdmin(result, supportRequest) {
@@ -2663,6 +2680,37 @@ const emailTemplates = {
   },
 };
 
+const buildZapierAssessmentFields = (result) => {
+  const clientEmail = emailTemplates.client(result);
+  const adminEmail = emailTemplates.admin(result);
+
+  return {
+    requestType: "assessment-submission",
+    resultId: result.resultId,
+    assessmentTitle: result.assessmentTitle,
+    readinessProfile: result.recommendation.profile,
+    readinessLevel: result.readinessLevel,
+    score: result.score,
+    phaseScores: JSON.stringify(result.phaseScores),
+    clientName: `${result.participant.firstName} ${result.participant.lastName}`.trim(),
+    clientEmailAddress: result.participant.email,
+    clientPhone: result.participant.phone,
+    organization: result.participant.organization,
+    submittedAt: result.submittedAt,
+    selectedTasks: result.recommendation.selectedTasks.join(", "),
+    observations: result.recommendation.observations.join(" | "),
+    recommendations: result.recommendation.recommendations.join(" | "),
+    implementationPath: result.recommendation.implementationPath.join(" | "),
+    fullAnswers: formatResponsesForEmail(result),
+    clientEmailTo: clientEmail.to,
+    clientEmailSubject: clientEmail.subject,
+    clientEmailBody: clientEmail.body,
+    adminEmailTo: adminEmail.to,
+    adminEmailSubject: adminEmail.subject,
+    adminEmailBody: adminEmail.body,
+  };
+};
+
 const sendAssessmentEmails = async (result) => {
   const payload = {
     clientEmail: emailTemplates.client(result),
@@ -2679,16 +2727,10 @@ const sendAssessmentEmails = async (result) => {
 
   try {
     const formPayload = new URLSearchParams({
+      ...buildZapierAssessmentFields(result),
       clientEmail: JSON.stringify(payload.clientEmail),
       adminEmail: JSON.stringify(payload.adminEmail),
       result: JSON.stringify(payload.result),
-      assessmentTitle: result.assessmentTitle,
-      readinessProfile: result.recommendation.profile,
-      clientName: `${result.participant.firstName} ${result.participant.lastName}`.trim(),
-      clientEmailAddress: result.participant.email,
-      clientPhone: result.participant.phone,
-      organization: result.participant.organization,
-      submittedAt: result.submittedAt,
     });
 
     const response = await fetch(zapierWebhookUrl, {
@@ -3207,11 +3249,13 @@ const handleOrganizationChange = () => {
 window.CEAMAssessments = {
   assessments,
   phases,
+  buildZapierAssessmentFields,
   buildAssessmentResult,
   calculateAssessmentResult,
   calculatePhaseScores,
   calculateScore,
   emailTemplates,
+  formatResponsesForEmail,
   getAssessmentById,
   getReadinessLevel,
   getRecommendation,
