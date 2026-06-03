@@ -88,11 +88,11 @@ const contextCopy = {
   education: {
     title: "Education AI Readiness Assessment",
     icon: "book",
-    description: "Use this to understand student support, administrative workload, course tools, access needs, communication, and trust before using AI in an education setting.",
-    person: "students, administrators, faculty, or staff",
+    description: "Use this as a student, administrator, instructor, or staff member to understand school tasks, access needs, communication, and trust before using AI.",
+    person: "you",
     setting: "school, program, or learning routine",
-    stakeholder: "students, administrators, faculty, or support staff",
-    support: "administrator, instructor, advisor, or student support lead",
+    stakeholder: "a student, administrator, instructor, or support staff member",
+    support: "an administrator, instructor, advisor, or student support lead",
   },
   healthcare: {
     title: "Health / Care AI Readiness Assessment",
@@ -681,14 +681,50 @@ const categoryQuestionAdditions = {
       score: [3, 3, 3, 4, 3, 2, 3, 2],
       indicator: "quick_win_task",
     },
+    {
+      id: "business_current_systems",
+      phase: "environment",
+      type: "choice",
+      label: "What systems does the company already use to run daily work?",
+      options: ["POS or payment system", "Accounting software", "Scheduling calendar", "Customer database or CRM", "Task management board", "Inventory system", "Payroll or time clock", "Shared drive or file folders"],
+      score: [4, 4, 4, 4, 4, 3, 3, 3],
+      indicator: "workflow_friction",
+    },
+    {
+      id: "business_non_ai_tools",
+      phase: "adoption",
+      type: "choice",
+      label: "Which non-AI tools does the team rely on most?",
+      options: ["QuickBooks or accounting software", "Square or Stripe", "Google Workspace or Microsoft 365", "Canva", "Trello, Asana, or Monday", "Calendly", "Dropbox, Google Drive, or OneDrive", "Excel or Google Sheets"],
+      score: [4, 4, 4, 3, 3, 3, 3, 3],
+      indicator: "adoption_readiness",
+    },
+    {
+      id: "business_system_switching",
+      phase: "cognitive",
+      type: "choice",
+      label: "Which systems do employees switch between the most?",
+      options: ["Email", "Calendar", "Invoices", "Customer records", "File folders", "Spreadsheets", "Text messages", "Scheduling tools"],
+      score: [3, 3, 2, 2, 2, 2, 3, 3],
+      indicator: "cognitive_overload",
+    },
+    {
+      id: "business_system_delays",
+      phase: "environment",
+      type: "choice",
+      label: "Which current system causes the most delays or confusion?",
+      options: ["Accounting software", "Scheduling system", "Customer messages", "Spreadsheets", "File storage", "Website or contact forms", "Payment system", "Inventory tracking"],
+      score: [2, 2, 3, 2, 2, 3, 2, 2],
+      indicator: "workflow_friction",
+    },
   ],
   education: [
     {
       id: "student_confidence",
       phase: "cognitive",
       type: "choice",
-      label: "What helps students feel more confident with a new learning tool?",
-      options: ["Examples", "Practice prompts", "Teacher guidance", "Peer discussion", "Clear rules"],
+      label: "What helps a student feel more confident with a new learning tool?",
+      options: ["Examples", "Practice prompts", "Instructor guidance", "Peer discussion", "Clear rules"],
       score: [5, 5, 5, 4, 5],
       indicator: "learning_preference",
     },
@@ -713,8 +749,8 @@ const categoryQuestionAdditions = {
       id: "student_confusion_points",
       phase: "cognitive",
       type: "choice",
-      label: "Where do students most often get confused?",
-      options: ["Assignment directions", "Due dates", "Where to submit work", "How grades are calculated", "Which tool to use", "How to ask for help", "Academic honesty rules", "Feedback comments"],
+      label: "Where can a student get confused most often?",
+      options: ["Assignment directions", "Due dates", "Where to submit work", "How a grade is calculated", "Which tool to use", "How to ask for help", "Academic honesty rules", "Feedback comments"],
       score: [2, 2, 2, 2, 1, 3, 2, 3],
       indicator: "cognitive_overload",
     },
@@ -723,7 +759,7 @@ const categoryQuestionAdditions = {
       phase: "cognitive",
       type: "choice",
       label: "Which administrative task creates the most daily pressure?",
-      options: ["Answering repeated questions", "Updating student records", "Tracking attendance", "Following up with students", "Preparing reports", "Coordinating schedules", "Explaining policies", "Finding missing information"],
+      options: ["Answering repeated questions", "Updating student records", "Tracking attendance", "Following up with a student", "Preparing reports", "Coordinating schedules", "Explaining policies", "Finding missing information"],
       score: [2, 2, 2, 3, 3, 3, 2, 1],
       indicator: "time_pressure",
     },
@@ -768,7 +804,7 @@ const categoryQuestionAdditions = {
       phase: "environment",
       type: "choice",
       label: "Where does communication break down most often?",
-      options: ["Students missing announcements", "Unclear assignment directions", "Slow staff responses", "Unclear policy updates", "Too many message channels", "Different instructions from different people"],
+      options: ["A student misses an announcement", "Unclear assignment directions", "Slow staff responses", "Unclear policy updates", "Too many message channels", "Different instructions from different staff members"],
       score: [2, 2, 2, 2, 1, 1],
       indicator: "workflow_friction",
     },
@@ -776,7 +812,7 @@ const categoryQuestionAdditions = {
       id: "access_support_needs",
       phase: "trust",
       type: "choice",
-      label: "What student support need should be considered before AI is used?",
+      label: "What support need should be considered for a student before AI is used?",
       options: ["Accessibility needs", "Language support", "Different learning speeds", "Limited internet access", "Device access", "Testing accommodations", "Reading level", "Privacy comfort"],
       score: [2, 3, 3, 2, 2, 2, 3, 2],
       indicator: "trust_sensitivity",
@@ -795,7 +831,7 @@ const categoryQuestionAdditions = {
       phase: "plus",
       type: "choice",
       label: "What should be reviewed during the term to see if AI is actually helping?",
-      options: ["Student confidence", "Assignment completion", "Staff time saved", "Fewer repeated questions", "Fewer missed deadlines", "Quality of feedback", "Access issues", "Student stress"],
+      options: ["A student's confidence", "Assignment completion", "Staff time saved", "Fewer repeated questions", "Fewer missed deadlines", "Quality of feedback", "Access issues", "A student's stress"],
       score: [5, 5, 5, 5, 5, 5, 4, 4],
       indicator: "growth_potential",
     },
@@ -1283,7 +1319,7 @@ const categoryQuestionOverrides = {
     },
     progress_stops: {
       label: "What usually causes work improvements to slow down?",
-      options: ["Too many steps", "Staff burnout", "Unclear next step", "No feedback", "Competing customer demands"],
+      options: ["Too many steps", "Staff burnout", "Unclear next step", "No feedback", "Completing customer requests"],
       score: [2, 2, 1, 2, 2],
     },
     confusing_workflow: {
@@ -1318,7 +1354,7 @@ const categoryQuestionOverrides = {
   },
   education: {
     current_ai_tools: {
-      label: "What AI or digital tools are students, administrators, faculty, or staff already using?",
+      label: "What AI or digital tools do you already use in this education setting?",
       options: [
         "ChatGPT or another study support tool",
         "Learning management system tools",
@@ -1338,27 +1374,27 @@ const categoryQuestionOverrides = {
           "Document or lecture note summarizers",
           "Gradebook, reporting, or attendance tools",
         ],
-        label: "How are those tools helping in the school setting?",
-        options: ["Saving staff time", "Helping students organize work", "Improving communication", "Summarizing information", "Tracking deadlines"],
+        label: "How are those tools helping you in the school setting?",
+        options: ["Saving time", "Organizing schoolwork", "Improving communication", "Summarizing information", "Tracking deadlines"],
       },
     },
     many_tasks_first_response: {
-      label: "When school tasks pile up, what usually happens first?",
+      label: "When your school tasks pile up, what usually happens first?",
       options: [
-        "A clear priority gets chosen",
-        "A student, staff member, or administrator asks for help",
-        "People jump between tasks",
-        "The task gets delayed because it feels like too much",
+        "I choose a clear priority",
+        "I ask an instructor, advisor, or administrator for help",
+        "I jump between tasks",
+        "I delay the task because it feels like too much",
       ],
       score: [5, 4, 2, 1],
       followUp: {
-        when: ["People jump between tasks", "The task gets delayed because it feels like too much"],
+        when: ["I jump between tasks", "I delay the task because it feels like too much"],
         label: "What would make that school task easier?",
-        options: ["A shorter task list", "A clear first step", "Help from staff or an instructor", "More time", "Fewer platform changes"],
+        options: ["A shorter task list", "A clear first step", "Help from an instructor or staff member", "More time", "Fewer platform changes"],
       },
     },
     time_consuming_tasks: {
-      label: "What takes up the most time in the school day or semester?",
+      label: "What takes up the most time in your school day or semester?",
       options: [
         "Student emails or messages",
         "Forms or paperwork",
@@ -1372,7 +1408,7 @@ const categoryQuestionOverrides = {
       score: [3, 2, 2, 3, 2, 3, 3, 2],
     },
     energy_draining_tasks: {
-      label: "What feels most mentally draining for students or administrators?",
+      label: "What feels most mentally draining in your education setting?",
       options: [
         "Too many platforms",
         "Unclear deadlines",
@@ -1390,19 +1426,19 @@ const categoryQuestionOverrides = {
       note: "Optional: Which school tasks tend to stay on your mind?",
     },
     focus_environment: {
-      label: "What helps students or staff focus best?",
+      label: "What helps you focus best in an education setting?",
       options: ["Quiet study or work time", "Clear checklist", "Support from another person", "Short work sessions", "Flexible options"],
       score: [4, 5, 4, 4, 3],
     },
     unclear_instructions: {
       label: "When school instructions or AI rules are unclear, what usually happens?",
-      options: ["Someone asks for clarification", "People look for an example", "People try to figure it out alone", "People wait because they are unsure"],
+      options: ["I ask for clarification", "I look for an example", "I try to figure it out alone", "I wait because I am unsure"],
       score: [5, 5, 3, 1],
     },
     new_system_scenario_first: {
-      scenario: "Imagine students or administrators are asked to use a new school system with many steps and very little explanation.",
-      label: "What would people most likely do first?",
-      options: ["Look for a simple guide", "Try clicking through it", "Ask someone to show them", "Avoid it until it is required"],
+      scenario: "Imagine you are asked to use a new school system with many steps and very little explanation.",
+      label: "What would you most likely do first?",
+      options: ["Look for a simple guide", "Try clicking through it", "Ask someone to show me", "Avoid it until it is required"],
       score: [5, 3, 4, 1],
     },
     new_system_scenario_frustration: {
@@ -1411,34 +1447,34 @@ const categoryQuestionOverrides = {
       score: [2, 2, 2, 1, 1],
     },
     trust_new_tool: {
-      label: "What helps students or administrators trust a new AI tool?",
+      label: "What helps you trust a new AI tool in an education setting?",
       options: ["Clear explanation", "Human review", "Proof it works", "Privacy is explained", "Time to test it safely"],
       score: [5, 5, 4, 5, 5],
     },
     why_recommendation: {
-      label: "Students or administrators need to understand why an AI tool made a suggestion before relying on it.",
+      label: "I need to understand why an AI tool made a suggestion before relying on it.",
     },
     unexplained_decision: {
       scenario: "An AI tool recommends a school decision, but it does not explain how it reached the answer.",
-      label: "What should happen next?",
-      options: ["Ask for an explanation", "Have a person review it", "Use it if it seems right", "Avoid using the recommendation"],
+      label: "What would you do next?",
+      options: ["Ask for an explanation", "Have an instructor or administrator review it", "Use it if it seems right", "Avoid using the recommendation"],
       score: [5, 5, 3, 2],
       followUp: {
-        when: ["Ask for an explanation", "Have a person review it", "Avoid using the recommendation"],
-        label: "What would help people trust the result more?",
+        when: ["Ask for an explanation", "Have an instructor or administrator review it", "Avoid using the recommendation"],
+        label: "What would help you trust the result more?",
         options: ["Step-by-step reason", "Instructor or administrator review", "Privacy details", "Examples", "A way to correct mistakes"],
       },
     },
     automated_recommendations: {
-      label: "How confident would students or administrators feel following an automated suggestion in this school setting?",
+      label: "How confident would you feel following an automated suggestion in this school setting?",
     },
     fairness_concern: {
       label: "What makes an education AI system feel unfair or unreliable?",
-      options: ["No explanation", "Different results for similar students", "Hard-to-fix mistakes", "Privacy concerns", "No person to ask"],
+      options: ["No explanation", "Different results for a similar student", "Hard-to-fix mistakes", "Privacy concerns", "No person to ask"],
       score: [2, 1, 1, 2, 2],
     },
     trying_new_tools_barrier: {
-      label: "What usually gets in the way of students or administrators trying a new school tool?",
+      label: "What usually gets in the way of you trying a new school tool?",
       options: ["Too many options", "Unclear instructions", "Fear of mistakes", "Not enough time", "Not enough support"],
       score: [2, 2, 2, 2, 1],
       followUp: {
@@ -1462,20 +1498,20 @@ const categoryQuestionOverrides = {
       score: [4, 4, 4, 4, 4, 4, 4, 4],
     },
     learning_style: {
-      label: "Which support helps students or staff learn a new tool best?",
+      label: "Which support helps you learn a new tool best?",
       options: ["Step-by-step guidance", "Video examples", "Written instructions", "Hands-on practice", "Working with someone directly"],
       score: [5, 4, 4, 5, 5],
     },
     support_type: {
-      label: "What support would make AI use easier in the school setting?",
-      options: ["Short checklist", "Practice time", "A person to ask", "Examples from real school tasks", "A help guide people can return to"],
+      label: "What support would make AI use easier for you in the school setting?",
+      options: ["Short checklist", "Practice time", "A person to ask", "Examples from real school tasks", "A help guide I can return to"],
       score: [5, 5, 5, 5, 5],
     },
     long_term_use: {
       label: "How helpful would regular check-ins be for keeping the AI tool useful during the term?",
     },
     motivation: {
-      label: "What helps students or staff stay motivated when learning a new tool?",
+      label: "What helps you stay motivated when learning a new tool?",
       options: ["Small wins", "Encouragement", "Seeing progress", "Clear reason for using it", "Time to practice"],
       score: [5, 5, 5, 5, 5],
     },
@@ -1485,12 +1521,12 @@ const categoryQuestionOverrides = {
       score: [5, 4, 4, 4, 1],
     },
     feedback_type: {
-      label: "What kind of feedback helps students or staff improve most?",
+      label: "What kind of feedback helps you improve most?",
       options: ["Kind and direct", "Step-by-step", "Visual examples", "Private feedback", "Quick reminders"],
       score: [5, 5, 4, 4, 4],
     },
     small_wins: {
-      label: "How helpful are small wins for keeping students or staff engaged?",
+      label: "How helpful are small wins for keeping you engaged?",
     },
     progress_stops: {
       label: "What usually causes progress to slow down in a school setting?",
@@ -1517,7 +1553,7 @@ const categoryQuestionOverrides = {
       score: [1, 2, 2, 1, 1],
     },
     daily_slowdown: {
-      label: "What slows students or administrators down most?",
+      label: "What slows you down most in the school setting?",
       options: ["Waiting for answers", "Searching for information", "Repeating the same steps", "Interruptions", "Tools that do not fit the school routine"],
       score: [2, 2, 2, 2, 1],
     },
@@ -1536,7 +1572,7 @@ const categoryQuestionOverrides = {
       score: [2, 2, 2, 3, 3, 3, 2, 2],
     },
     expectation_clarity: {
-      label: "How clear are expectations for students, administrators, faculty, or staff?",
+      label: "How clear are expectations for your role in the school setting?",
     },
     missing_support: {
       label: "What support feels most missing in the school setting right now?",
@@ -1544,10 +1580,10 @@ const categoryQuestionOverrides = {
       score: [2, 2, 2, 2, 2],
     },
     environment_focus: {
-      label: "What makes it harder for students or staff to focus or stay organized?",
+      label: "What makes it harder for you to focus or stay organized?",
       options: ["Noise", "Interruptions", "Too many tools", "Unclear priorities", "Stress outside the task"],
       score: [2, 2, 1, 1, 2],
-      note: "Optional: What would make the school environment easier to work or learn in?",
+      note: "Optional: What would make the school environment easier for you?",
     },
   },
   healthcare: {
@@ -1993,6 +2029,14 @@ const answerInsightRules = [
     message: "The user already uses summarizing support, so record summaries, meeting notes, and checklist creation may be useful.",
   },
   {
+    match: ["QuickBooks or accounting software", "Square or Stripe", "Google Workspace or Microsoft 365", "Canva", "Trello, Asana, or Monday", "Calendly", "Excel or Google Sheets"],
+    message: "The business already uses everyday work tools, so AI recommendations should fit into the systems that are already familiar.",
+  },
+  {
+    match: ["Customer database or CRM", "Shared drive or file folders", "Spreadsheets", "Scheduling system", "File storage"],
+    message: "The business may need help connecting information across current systems before adding more tools.",
+  },
+  {
     match: ["I pause because it feels like too much", "Too much information at once", "Not knowing where to start"],
     message: "The user may need fewer steps and a clear first action before adding more tools.",
   },
@@ -2172,7 +2216,7 @@ const taskKeywords = [
   "Answering repeated questions",
   "Updating student records",
   "Tracking attendance",
-  "Following up with students",
+  "Following up with a student",
   "Preparing reports",
   "Coordinating schedules",
   "Explaining policies",
@@ -2265,6 +2309,35 @@ const taskKeywords = [
   "Customer intake",
   "Staff training",
   "File organization",
+  "POS or payment system",
+  "Accounting software",
+  "Scheduling calendar",
+  "Customer database or CRM",
+  "Task management board",
+  "Inventory system",
+  "Payroll or time clock",
+  "Shared drive or file folders",
+  "QuickBooks or accounting software",
+  "Square or Stripe",
+  "Google Workspace or Microsoft 365",
+  "Canva",
+  "Trello, Asana, or Monday",
+  "Calendly",
+  "Dropbox, Google Drive, or OneDrive",
+  "Excel or Google Sheets",
+  "Email",
+  "Calendar",
+  "Customer records",
+  "File folders",
+  "Spreadsheets",
+  "Text messages",
+  "Scheduling tools",
+  "Scheduling system",
+  "File storage",
+  "Website or contact forms",
+  "Payment system",
+  "Inventory tracking",
+  "Completing customer requests",
   "Patient messages",
   "Visit summaries",
   "Patient records",
@@ -3066,12 +3139,13 @@ const renderResult = (resultBox, result) => {
     <section class="support-request" data-support-request hidden>
       <h4>Guided Implementation Options</h4>
       <form data-support-form>
+        <p class="support-helper">Choose all that apply.</p>
         <div class="choice-list">
           ${supportOptions
             .map(
-              (option, index) => `
+              (option) => `
                 <label class="choice-option">
-                  <input type="radio" name="supportOption" value="${option}" ${index === 0 ? "checked" : ""}>
+                  <input type="checkbox" name="supportOption" value="${option}">
                   <span>${option}</span>
                 </label>
               `
@@ -3130,7 +3204,16 @@ const renderResult = (resultBox, result) => {
   supportForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(supportForm);
-    const supportRequest = Object.fromEntries(formData.entries());
+    const selectedSupportOptions = formData.getAll("supportOption").map((option) => String(option));
+    if (!selectedSupportOptions.length) {
+      supportStatus.textContent = "Please choose at least one guided implementation option.";
+      return;
+    }
+    const supportRequest = {
+      ...Object.fromEntries(formData.entries()),
+      supportOption: selectedSupportOptions.join(", "),
+      supportOptions: selectedSupportOptions,
+    };
     const response = await sendSupportRequest(result, supportRequest);
     supportStatus.textContent = response.sent
       ? "Thank you. Your request was received. We will review your results and follow up with next steps."
