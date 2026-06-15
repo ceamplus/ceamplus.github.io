@@ -38,8 +38,8 @@ const phases = [
   },
   {
     id: "adoption",
-    title: "Adoption & Implementation Layer",
-    description: "Identify learning preferences, change barriers, habits, practical first steps, and ways to measure progress.",
+    title: "AI Solution & Implementation Layer",
+    description: "Match goals to the right tool category, then identify learning needs, barriers, practical first steps, and ways to measure progress.",
   },
   {
     id: "partnership",
@@ -90,9 +90,9 @@ const profileDescriptions = {
 
 const contextCopy = {
   personal: {
-    title: "Personal Growth, Decisions, and AI Readiness Assessment",
+    title: "Personal Life, Growth, and AI Readiness Assessment",
     icon: "person",
-    description: "Use this to understand decisions, emotions, confidence, daily routines, goals, support needs, and where simple AI or other beneficial tools may help.",
+    description: "Use this to understand how family, children, work, money, stress, emotions, routines, setbacks, support, personal goals, and technology affect daily life and your next realistic step.",
     person: "you",
     setting: "daily routine",
     stakeholder: "you or people who support you",
@@ -439,6 +439,24 @@ const questionTemplates = [
     indicator: "partnership_clarity",
   },
   {
+    id: "solution_goal",
+    phase: "adoption",
+    type: "choice",
+    label: "What kind of result are you trying to create with AI or another digital tool?",
+    options: ["Find reliable information", "Write or communicate", "Create images or video", "Organize tasks or meetings", "Improve customer service or sales", "Analyze data", "Automate repeated steps", "Build a website or technical system"],
+    score: [5, 5, 5, 5, 5, 5, 4, 3],
+    indicator: "solution_fit",
+  },
+  {
+    id: "tool_selection_factors",
+    phase: "adoption",
+    type: "multi",
+    label: "What matters most when choosing a tool?",
+    options: ["Easy for beginners", "Free or low cost", "Works with current tools", "Strong privacy controls", "Reliable sources", "Automation features", "Team access", "Advanced customization"],
+    score: [5, 5, 5, 5, 5, 4, 4, 3],
+    indicator: "solution_fit",
+  },
+  {
     id: "validate_ai_outputs",
     phase: "partnership",
     type: "scale",
@@ -602,8 +620,8 @@ const categoryQuestionAdditions = {
       id: "daily_life_tasks",
       phase: "environment",
       type: "choice",
-      label: "Which daily-life tasks feel hardest to keep up with?",
-      options: ["Routines", "Reminders", "Budgeting", "Paperwork", "Household tasks", "Communication", "Planning meals", "Goal tracking"],
+      label: "Which part of daily life is hardest to keep up with when other people also depend on you?",
+      options: ["Morning or bedtime routines", "Children's school or activity needs", "Caring for a relative", "Bills and household money", "Cleaning, meals, or laundry", "Appointments and paperwork", "Keeping up with family messages", "Making time for my own goals"],
       score: [2, 3, 2, 2, 2, 3, 3, 3],
       indicator: "personal_barrier",
     },
@@ -611,8 +629,8 @@ const categoryQuestionAdditions = {
       id: "personal_time_tasks",
       phase: "cognitive",
       type: "choice",
-      label: "Which personal tasks take the most time each week?",
-      options: ["Appointments", "Bills or budgeting", "Forms or paperwork", "Messages", "Cleaning or household tasks", "Meal planning", "Finding information", "Remembering follow-ups"],
+      label: "Which responsibility takes more time than people around you may realize?",
+      options: ["Managing appointments", "Paying bills or watching the budget", "Completing forms or paperwork", "Answering family, school, or work messages", "Cleaning and household work", "Planning meals and shopping", "Finding services or trustworthy information", "Remembering what everyone needs next"],
       score: [3, 2, 2, 3, 2, 3, 2, 2],
       indicator: "time_pressure",
     },
@@ -620,8 +638,8 @@ const categoryQuestionAdditions = {
       id: "personal_overload_moments",
       phase: "cognitive",
       type: "choice",
-      label: "When does daily life feel most overwhelming?",
-      options: ["Morning routines", "End-of-day tasks", "Too many appointments", "Bills or deadlines", "Unexpected changes", "Too many messages", "Trying to plan ahead", "Keeping track of details"],
+      label: "When are you most likely to feel that everything is happening at once?",
+      options: ["Getting children or family ready in the morning", "Coming home from work to more responsibilities", "A week with too many appointments", "When bills or deadlines arrive together", "When a child, relative, or work situation changes suddenly", "When everyone is messaging or asking for something", "When I try to plan beyond today", "When I am afraid I have forgotten something important"],
       score: [2, 2, 2, 2, 2, 2, 3, 2],
       indicator: "cognitive_overload",
     },
@@ -629,8 +647,8 @@ const categoryQuestionAdditions = {
       id: "personal_stress_sources",
       phase: "cognitive",
       type: "choice",
-      label: "What usually makes the week feel overwhelming?",
-      options: ["Too many responsibilities", "Unexpected changes", "Unfinished tasks", "Messy information", "Constant messages", "Low energy", "No clear routine", "Too many choices"],
+      label: "What pressure is most likely to push a manageable week into an overwhelming one?",
+      options: ["Work stress follows me home", "A child or family member needs extra help", "An unexpected expense or money problem", "Conflict with a partner, relative, coworker, or supervisor", "Tasks left over from the previous week", "Poor sleep or low energy", "A routine suddenly changes", "I have to make too many decisions for other people"],
       score: [2, 2, 2, 2, 2, 2, 1, 2],
       indicator: "cognitive_overload",
     },
@@ -638,8 +656,8 @@ const categoryQuestionAdditions = {
       id: "technology_comfort",
       phase: "trust",
       type: "choice",
-      label: "What would make technology feel less stressful?",
-      options: ["Simple steps", "Clear examples", "Privacy details", "A person to ask", "Time to practice", "Fewer settings", "Less information at once"],
+      label: "What would make using technology feel safer during an already stressful day?",
+      options: ["One simple step at a time", "Examples involving a real problem I have", "Clear information about family and personal privacy", "A patient person to ask", "Time to practice without children or work interruptions", "Fewer settings and choices", "A way to stop and return later without losing progress"],
       score: [5, 5, 5, 5, 5, 4, 4],
       indicator: "support_need",
     },
@@ -647,8 +665,8 @@ const categoryQuestionAdditions = {
       id: "personal_first_ai_use",
       phase: "adoption",
       type: "choice",
-      label: "What personal task would be the easiest first AI test?",
-      options: ["Writing a reminder list", "Planning a week", "Organizing appointments", "Drafting a message", "Sorting paperwork", "Making a budget checklist", "Breaking down a goal", "Preparing questions"],
+      label: "Which low-risk personal task would feel most useful for a first AI practice?",
+      options: ["Make a family reminder list", "Plan a realistic week around work and home", "Organize appointments or school dates", "Draft a calm message for a difficult conversation", "Turn paperwork into a checklist", "Organize questions about a bill or budget", "Break a personal goal into smaller steps", "Prepare questions before an appointment or meeting"],
       score: [4, 4, 4, 4, 4, 4, 4, 4],
       indicator: "quick_win_task",
     },
@@ -656,8 +674,8 @@ const categoryQuestionAdditions = {
       id: "personal_routine_barriers",
       phase: "improvement",
       type: "choice",
-      label: "What usually makes personal routines hard to keep going?",
-      options: ["Low energy", "Unexpected plans", "Forgetting steps", "Too many responsibilities", "No reminder system", "Stress", "Unrealistic routines", "Lack of quiet time"],
+      label: "What usually causes a helpful routine to fall apart?",
+      options: ["I become exhausted", "A child, family, health, or work need changes the plan", "I miss one step and lose the rhythm", "Other people's needs come first", "The reminders stop helping", "Stress makes me avoid the routine", "The plan expects a perfect day", "I never get uninterrupted time"],
       score: [2, 2, 2, 2, 2, 2, 1, 2],
       indicator: "growth_potential",
     },
@@ -665,8 +683,8 @@ const categoryQuestionAdditions = {
       id: "personal_privacy_concerns",
       phase: "trust",
       type: "choice",
-      label: "What personal information would you want handled carefully?",
-      options: ["Health details", "Money or bills", "Family information", "Messages", "Schedules", "Personal goals", "Passwords", "Location details"],
+      label: "Which information would you be most concerned about putting into an AI tool or app?",
+      options: ["My health or medication details", "Banking, debt, bills, or income", "Information about my children or family", "Private messages or relationship concerns", "Work schedule or employment information", "Personal fears, setbacks, or goals", "Passwords or account access", "Home, school, or location details"],
       score: [2, 2, 2, 2, 3, 3, 1, 2],
       indicator: "trust_sensitivity",
     },
@@ -674,10 +692,74 @@ const categoryQuestionAdditions = {
       id: "personal_support_style",
       phase: "adoption",
       type: "choice",
-      label: "What kind of help would make daily tools easier to use?",
-      options: ["A simple setup", "Examples from my life", "A short video", "A checklist", "Practice with someone", "Reminders I can change", "A way to undo mistakes", "Less clutter on screen"],
+      label: "What kind of support would make it easier to keep using a guide or tool after the first week?",
+      options: ["Someone helps with the initial setup", "Examples that match my family and work life", "A short video I can replay", "A checklist for stressful days", "Practice with someone who will not judge me", "Reminders I can pause when life changes", "A clear way to undo mistakes", "A simple screen that does not add more mental clutter"],
       score: [5, 5, 4, 5, 5, 4, 5, 4],
       indicator: "support_need",
+    },
+    {
+      id: "family_work_collision",
+      phase: "environment",
+      type: "choice",
+      label: "When work and family responsibilities conflict, what usually happens?",
+      options: ["I set a boundary and choose the true priority", "I ask someone to share the responsibility", "I try to do both and become exhausted", "I disappoint someone no matter what I choose", "I avoid deciding until the situation becomes urgent", "I lose time meant for rest or my own needs"],
+      score: [5, 4, 2, 2, 1, 2],
+      indicator: "environmental_barrier",
+    },
+    {
+      id: "real_fear",
+      phase: "emotional",
+      type: "choice",
+      label: "Which fear has the strongest effect on your next step?",
+      options: ["Failing again", "Letting my children or family down", "Losing money or job stability", "Being judged or embarrassed", "Starting conflict in a relationship", "Finding out the problem is harder than I hoped", "I am more curious than afraid"],
+      score: [2, 2, 2, 2, 2, 2, 5],
+      indicator: "emotional_barrier",
+      note: "Optional: What experience made this fear feel real?",
+    },
+    {
+      id: "setback_trigger",
+      phase: "improvement",
+      type: "choice",
+      label: "What most often happens just before a setback or return to an old pattern?",
+      options: ["I lose sleep or become exhausted", "Work becomes unusually stressful", "A child or family member needs more from me", "Money pressure increases", "Conflict leaves me discouraged", "I miss one day and think the plan is ruined", "The routine becomes boring or too demanding", "I stop receiving support or encouragement"],
+      score: [2, 2, 2, 2, 2, 1, 2, 1],
+      indicator: "personal_barrier",
+    },
+    {
+      id: "setback_effect",
+      phase: "emotional",
+      type: "choice",
+      label: "What is the most common effect after a setback?",
+      options: ["I criticize myself", "I hide it or avoid talking about it", "I stop the whole plan", "I become irritable with people around me", "I spend more time worrying than acting", "I review what happened and adjust", "I rest and restart when I can"],
+      score: [1, 1, 1, 2, 2, 5, 5],
+      indicator: "emotional_barrier",
+    },
+    {
+      id: "restart_after_setback",
+      phase: "agency",
+      type: "choice",
+      label: "What makes restarting after a setback feel possible?",
+      options: ["A smaller version of the goal", "Knowing I do not have to erase previous progress", "Help with one practical barrier", "Encouragement without pressure", "Understanding the trigger that caused the setback", "A new deadline or fresh start date", "I usually do not know how to restart"],
+      score: [5, 5, 5, 5, 5, 4, 1],
+      indicator: "agency_strength",
+    },
+    {
+      id: "support_reliability",
+      phase: "environment",
+      type: "choice",
+      label: "How reliable is the support available when life becomes difficult?",
+      options: ["I have someone who helps consistently", "People care but may not know what I need", "Help is available only in emergencies", "I am usually the person everyone else relies on", "Asking for help often creates guilt or conflict", "I do not have dependable support right now"],
+      score: [5, 4, 3, 2, 1, 1],
+      indicator: "support_need",
+    },
+    {
+      id: "life_change_context",
+      phase: "growth",
+      type: "choice",
+      label: "Which life change is most important for your future right now?",
+      options: ["More peaceful and predictable family routines", "Better balance between work and home", "Improved financial stability", "More confidence and independence", "Healthier responses to stress", "A stronger relationship or support system", "Learning skills for a new opportunity", "Recovering momentum after a difficult season"],
+      score: [5, 5, 5, 5, 5, 5, 5, 5],
+      indicator: "purpose_alignment",
     },
   ],
   business: [
@@ -1191,14 +1273,35 @@ const categoryQuestionOverrides = {
       },
     },
     many_tasks_first_response: {
-      label: "When daily responsibilities pile up, what usually happens first?",
-      options: ["I choose one small task", "I ask someone to help me sort it out", "I bounce between tasks", "I freeze because it feels like too much"],
+      label: "When work, children, family needs, and home responsibilities pile up, what usually happens first?",
+      options: ["I choose one small task", "I ask someone to help me sort it out", "I keep switching between urgent needs", "I shut down because it feels like too much"],
       score: [5, 4, 2, 1],
       followUp: {
-        when: ["I bounce between tasks", "I freeze because it feels like too much"],
-        label: "What would make that moment easier at home or in daily life?",
-        options: ["A shorter list", "One clear first step", "Help from someone", "More time", "Fewer interruptions"],
+        when: ["I keep switching between urgent needs", "I shut down because it feels like too much"],
+        label: "What would make that moment more manageable?",
+        options: ["A shorter list", "One clear first step", "Someone taking one responsibility", "Time to rest first", "Fewer interruptions from work or family"],
       },
+    },
+    emotions_in_decisions: {
+      label: "Which feeling most often affects an important personal decision right now?",
+      options: ["Fear that I will make things worse", "Guilt about disappointing someone", "Frustration or anger", "Excitement that makes me move too quickly", "Shame from a past setback", "I feel calm enough to think it through"],
+      score: [2, 2, 2, 4, 1, 5],
+      followUp: {
+        when: ["Fear that I will make things worse", "Guilt about disappointing someone", "Frustration or anger", "Shame from a past setback"],
+        label: "What would help you respond instead of reacting?",
+        options: ["A safe first step", "Time to calm down", "Clear facts", "Reassurance from someone I trust", "Permission to start again without being judged"],
+      },
+    },
+    emotional_objectivity: {
+      label: "How confident are you that you can notice fear, guilt, anger, or stress without letting it make the whole decision?",
+    },
+    control_and_influence: {
+      label: "When family, work, money, or another life situation feels difficult, what is easiest for you to identify?",
+      options: ["A boundary I can set", "A conversation I can influence", "One action I can take today", "A skill or habit I can build", "I mostly see what other people or circumstances control"],
+      score: [5, 5, 5, 5, 1],
+    },
+    actions_matter: {
+      label: "Even after a setback, I believe one small action can help me regain stability or confidence.",
     },
     time_consuming_tasks: {
       label: "What takes up the most time in your personal routine?",
@@ -1207,7 +1310,7 @@ const categoryQuestionOverrides = {
     },
     energy_draining_tasks: {
       label: "What drains the most energy during a normal week?",
-      options: ["Too many responsibilities", "Unclear plans", "Interruptions", "Time pressure", "Forgetting details", "Disorganization", "Too many choices", "Not enough help"],
+      options: ["Balancing work and family", "Caring for children or relatives", "Money worries", "Conflict or tension at home", "Not getting enough rest", "Keeping track of appointments and details", "Making decisions for everyone", "Feeling like I have no reliable help"],
       score: [2, 2, 2, 2, 2, 2, 2, 1],
     },
     unfinished_tasks: {
@@ -1237,8 +1340,11 @@ const categoryQuestionOverrides = {
     },
     trust_new_tool: {
       label: "What helps you trust a new personal tool?",
-      options: ["Simple explanation", "Someone reviews it with me", "Proof it works", "Privacy is clear", "Time to test it first"],
+      options: ["A simple explanation", "Someone I trust reviews it with me", "Proof it works for a situation like mine", "Clear privacy rules for family and personal information", "Time to test it without risking money or important records"],
       score: [5, 5, 4, 5, 5],
+    },
+    why_recommendation: {
+      label: "I need to understand why an app or AI tool suggested something before I use it for my family, money, work, health, or another important decision.",
     },
     unexplained_decision: {
       scenario: "An app gives you advice about a task, but it does not explain why.",
@@ -1261,12 +1367,12 @@ const categoryQuestionOverrides = {
     },
     trying_new_tools_barrier: {
       label: "What usually gets in the way of trying a new personal tool?",
-      options: ["Too many options", "Unclear steps", "Fear of mistakes", "Not enough time", "No one to ask"],
+      options: ["I already have too much to manage", "The steps are unclear", "I am afraid of losing money or information", "I do not have uninterrupted time", "I do not have anyone patient to ask"],
       score: [2, 2, 2, 2, 1],
       followUp: {
-        when: ["Too many options", "Unclear steps", "Fear of mistakes", "No one to ask"],
+        when: ["I already have too much to manage", "The steps are unclear", "I am afraid of losing money or information", "I do not have anyone patient to ask"],
         label: "What part feels hardest?",
-        options: ["Too many buttons", "Not knowing where to start", "Fear of something going wrong", "Too much information", "No one to ask"],
+        options: ["Finding time around work or family", "Not knowing where to start", "Fear that one mistake will create another problem", "Too much information when I am already tired", "Feeling embarrassed to ask for help"],
       },
     },
     tasks_to_simplify: {
@@ -1276,13 +1382,73 @@ const categoryQuestionOverrides = {
     },
     support_type: {
       label: "What support would make a personal tool easier to learn?",
-      options: ["Short checklist", "Practice time", "Someone to ask", "Examples from my life", "A guide I can return to"],
+      options: ["A short checklist", "Practice time without interruptions", "A patient person I can ask", "Examples involving real family or work situations", "A guide I can return to after I forget a step"],
       score: [5, 5, 5, 5, 5],
     },
+    learning_style: {
+      label: "When you are already tired or stressed, what is the most realistic way for you to learn something new?",
+      options: ["One step at a time", "A short video I can replay", "Written instructions with pictures", "Trying it on a real personal task", "Having someone walk through it with me"],
+      score: [5, 4, 4, 5, 5],
+    },
+    stop_when_frustrating: {
+      label: "How often do you stop using a personal tool after it causes confusion, embarrassment, or one bad experience?",
+    },
+    long_term_use: {
+      label: "How helpful would a check-in be after a difficult week or setback, when a new routine is easiest to abandon?",
+    },
+    human_ai_roles: {
+      label: "For personal life, which division of responsibility between AI and you feels safest?",
+      options: ["AI helps draft or organize, and I make the final choice", "AI reminds me, and I decide what still fits that day", "AI lists options, and I verify facts with a trusted source", "AI handles low-risk routine steps while I check it regularly", "I am not yet sure what personal decisions should stay fully human"],
+      score: [5, 5, 5, 4, 1],
+    },
+    solution_goal: {
+      label: "What personal result would you most like a tool or guide to help with?",
+      options: ["Find trustworthy information", "Communicate better with family, school, or work", "Organize children, appointments, or caregiving", "Reduce household or money stress", "Build or restart a habit", "Learn a skill or prepare for work", "Handle repeated paperwork or reminders", "Make progress on a personal goal"],
+      score: [5, 5, 5, 5, 5, 5, 4, 5],
+    },
+    tool_selection_factors: {
+      label: "What matters most when choosing a personal tool?",
+      options: ["Easy when I am tired or distracted", "Free or affordable", "Works on the phone I already use", "Protects family and personal information", "Explains where information came from", "Does not create another complicated routine", "Can be shared with someone who supports me", "Can be adjusted when life changes"],
+      score: [5, 5, 5, 5, 5, 4, 4, 4],
+    },
+    validate_ai_outputs: {
+      label: "How confident are you that you can check AI advice before using it for money, work, health, children, relationships, or another important personal matter?",
+    },
+    purpose_and_values: {
+      label: "What would make a personal change worth continuing even when life becomes difficult again?",
+      options: ["It gives me more stable time with my family", "It protects my health or peace of mind", "It helps me become more independent", "It supports the kind of parent, partner, worker, or person I want to be", "I have not connected the change to a strong reason yet"],
+      score: [5, 5, 5, 5, 1],
+    },
+    goal_connection: {
+      label: "How clear is the connection between the change you want and the life, family, work situation, or future you are trying to build?",
+    },
+    motivation: {
+      label: "What helps you restart after motivation drops or life interrupts your plan?",
+      options: ["A very small win", "Encouragement without judgment", "Seeing what I already accomplished", "Remembering who or what the goal is for", "A chance to practice again without starting perfectly"],
+      score: [5, 5, 5, 5, 5],
+    },
+    track_progress: {
+      label: "How do you realistically notice personal progress during a busy or stressful week?",
+      options: ["I check off one or two important actions", "I write short notes about what helped", "I use calendar or phone reminders", "Someone supportive checks in", "I usually notice only when something goes wrong"],
+      score: [5, 4, 4, 4, 1],
+    },
+    feedback_type: {
+      label: "What kind of response helps you learn from a setback without feeling judged or giving up?",
+      options: ["Kind and honest feedback", "One next step at a time", "An example of how to try again", "A private conversation", "A reminder of what I did right"],
+      score: [5, 5, 4, 4, 4],
+    },
+    small_wins: {
+      label: "How helpful is it to count small wins, such as making one call, paying one bill, taking one break, or restarting one routine?",
+    },
     progress_stops: {
-      label: "What usually causes personal progress to slow down?",
-      options: ["Too many steps", "Low energy", "No clear next step", "No feedback", "Too many responsibilities"],
+      label: "What most often causes a setback or return to an old habit?",
+      options: ["The plan has too many steps", "I become exhausted or lose sleep", "A family or work crisis takes over", "I feel ashamed after missing a day", "I try to handle too many responsibilities alone"],
       score: [2, 2, 1, 2, 2],
+    },
+    long_term_improvements: {
+      label: "What would make personal progress easier to maintain through stressful seasons?",
+      options: ["Reminders I can pause or change", "A routine with a smaller backup version", "A short restart checklist", "Someone who checks in without criticizing", "Seeing evidence of small wins", "Permission to remove unnecessary steps", "Clear instructions for difficult days", "More realistic time to rest and practice"],
+      score: [4, 5, 5, 4, 5, 4, 4, 4],
     },
     confusing_workflow: {
       label: "What part of your daily routine feels most confusing?",
@@ -1300,16 +1466,16 @@ const categoryQuestionOverrides = {
       score: [3, 2, 2, 3, 3, 3, 2, 2],
     },
     expectation_clarity: {
-      label: "How clear are the expectations in your daily routine?",
+      label: "How clear is what family members, work, and other responsibilities expect from you, and what you can realistically expect from yourself?",
     },
     missing_support: {
       label: "What support feels most missing in daily life right now?",
-      options: ["Clear steps", "Enough time", "Someone to ask", "Better tool setup", "Privacy guidance"],
+      options: ["Clear priorities", "Time to rest or focus", "Reliable help with children, family, or home", "Someone safe to talk to", "Affordable practical help"],
       score: [2, 2, 2, 2, 2],
     },
     environment_focus: {
       label: "What makes it harder to focus or stay organized in daily life?",
-      options: ["Noise", "Interruptions", "Too many tools", "Unclear priorities", "Stress outside the task"],
+      options: ["Children or other people need me", "Work messages continue after hours", "Conflict or worry follows me into the task", "The home or schedule is unpredictable", "I am physically or emotionally exhausted"],
       score: [2, 2, 1, 1, 2],
       note: "Optional: What would make daily life feel easier to manage?",
     },
@@ -2032,7 +2198,7 @@ const makeQuestion = (categoryId, template) => ({
 
 const assessments = Object.entries(contextCopy).map(([id, copy]) => ({
   id,
-  version: "3.0",
+  version: "3.2",
   title: copy.title,
   icon: copy.icon,
   description: copy.description,
@@ -2105,6 +2271,7 @@ const indicatorLabels = {
   trust_sensitivity: "Trust and transparency matter here",
   learning_preference: "Learning preferences are important",
   adoption_barrier: "Trying new tools may feel easier with support",
+  solution_fit: "The solution should match the real goal, resources, and skill level",
   support_need: "Support should be planned before starting",
   growth_potential: "Long-term growth potential is present",
   environmental_barrier: "The environment may be making focus harder",
@@ -2115,7 +2282,7 @@ const indicatorLabels = {
   purpose_alignment: "The change may need a stronger connection to goals and values",
   time_pressure: "Time-consuming tasks are a good place to start",
   quick_win_task: "A simple first task is already visible",
-  personal_barrier: "Daily routines may need simpler support",
+  personal_barrier: "Family, work, energy, money, or other life pressures may be affecting consistency",
 };
 
 const answerInsightRules = [
@@ -2171,6 +2338,56 @@ const answerInsightRules = [
     match: ["Noise", "Interruptions", "Too many tools", "Unclear priorities"],
     message: "The environment may need small changes before AI feels easy to use.",
   },
+  {
+    priority: 2,
+    match: ["I try to do both and become exhausted", "Work stress follows me home", "Work messages continue after hours"],
+    message: "Your answers suggest that work and family demands may be competing for the same limited energy. Your plan should include boundaries, a smaller daily version, and a backup for high-pressure days.",
+  },
+  {
+    priority: 2,
+    match: ["A child or family member needs more from me", "Caring for children or relatives", "Children or other people need me"],
+    message: "Your answers show that caregiving and family needs shape the time and attention you have available. Your guide should fit around those responsibilities instead of assuming uninterrupted time.",
+  },
+  {
+    priority: 2,
+    match: ["An unexpected expense or money problem", "Money pressure increases", "Losing money or job stability"],
+    message: "Your answers suggest that financial pressure may be affecting confidence or decision-making. Your recommendations should favor free or low-cost steps and avoid creating another subscription burden.",
+  },
+  {
+    priority: 2,
+    match: ["I miss one day and think the plan is ruined", "I feel ashamed after missing a day", "I criticize myself", "I hide it or avoid talking about it"],
+    message: "Your answers suggest that a setback can lead to shame or the feeling that all previous progress was lost. Your recovery plan should protect what you already accomplished and make restarting smaller and easier.",
+  },
+  {
+    priority: 2,
+    match: ["I stop the whole plan", "I usually do not know how to restart"],
+    message: "Your answers show that restarting after disruption needs its own clear process. Your personalized guide should include a short reset checklist for difficult days.",
+  },
+  {
+    priority: 2,
+    match: ["I am usually the person everyone else relies on", "I do not have dependable support right now", "Feeling like I have no reliable help"],
+    message: "Your answers suggest that you may be carrying responsibility without dependable backup. Your plan should not depend on support that is not realistically available.",
+  },
+  {
+    priority: 2,
+    match: ["A smaller version of the goal", "Knowing I do not have to erase previous progress", "Understanding the trigger that caused the setback"],
+    message: "Your answers point toward flexible recovery strategies. Your guide should include a minimum version of the routine and a simple way to learn from triggers.",
+  },
+  {
+    priority: 2,
+    match: ["Failing again", "Being judged or embarrassed", "Starting conflict in a relationship", "Finding out the problem is harder than I hoped", "Shame from a past setback"],
+    message: "Your answers identify a fear with a real personal history behind it. The next step should be private, low-risk, easy to undo, and small enough to rebuild confidence.",
+  },
+  {
+    priority: 2,
+    match: ["I become irritable with people around me", "I spend more time worrying than acting", "Conflict leaves me discouraged"],
+    message: "Your answers suggest that setbacks can affect both your energy and your relationships. A useful reset should include time to settle, one practical repair step, and a smaller next action.",
+  },
+  {
+    priority: 2,
+    match: ["Asking for help often creates guilt or conflict", "I do not have anyone patient to ask", "Feeling embarrassed to ask for help"],
+    message: "Your answers suggest that asking for help may carry guilt, conflict, or embarrassment. Support should feel respectful, specific, and available without judgment.",
+  },
 ];
 
 const flattenResponseValues = (responses) =>
@@ -2184,6 +2401,7 @@ const analyzeSelectedAnswers = (responses) => {
   const values = flattenResponseValues(responses);
   const insights = answerInsightRules
     .filter((rule) => rule.match.some((answer) => values.includes(answer)))
+    .sort((a, b) => (b.priority || 0) - (a.priority || 0))
     .map((rule) => rule.message);
 
   return {
@@ -2194,6 +2412,11 @@ const analyzeSelectedAnswers = (responses) => {
         "ChatGPT or another AI chat tool",
         "Email writing or reply suggestions",
         "Scheduling or reminder tools",
+        "Calendar or reminder apps",
+        "Budgeting or bill tools",
+        "Notes, lists, or task apps",
+        "Voice-to-text tools",
+        "Email or message help",
         "Document or note summarizers",
         "Invoice, billing, or record tools",
         "I do not use AI tools yet",
@@ -2493,6 +2716,20 @@ const taskKeywords = [
   "What caused stress",
   "Behavior support steps",
   "Choice and control",
+  "Make a family reminder list",
+  "Plan a realistic week around work and home",
+  "Organize appointments or school dates",
+  "Draft a calm message for a difficult conversation",
+  "Turn paperwork into a checklist",
+  "Organize questions about a bill or budget",
+  "Break a personal goal into smaller steps",
+  "Prepare questions before an appointment or meeting",
+  "Organize children, appointments, or caregiving",
+  "Reduce household or money stress",
+  "Build or restart a habit",
+  "Learn a skill or prepare for work",
+  "Handle repeated paperwork or reminders",
+  "Make progress on a personal goal",
 ];
 
 const makeNaturalList = (items) => {
@@ -2508,40 +2745,179 @@ const getSelectedTasks = (responses) =>
     .filter((value) => taskKeywords.includes(value))
     .slice(0, 8);
 
+const assessmentToolkitCatalog = {
+  assistants: {
+    name: "AI Assistants",
+    tools: "ChatGPT, Claude, Gemini, Microsoft Copilot, or Perplexity",
+    reason: "for flexible planning, drafting, questions, summaries, and first-pass thinking.",
+    whatItDoes: "Supports general knowledge work that changes from task to task.",
+    whenToUse: "Use when a person can give clear instructions and review the result.",
+    benefits: "Fast to test and useful across many everyday tasks.",
+    limitations: "Can invent facts, miss context, or sound more certain than the evidence supports.",
+    cost: "Free and paid tiers are common. Pay only after a repeated use case proves useful.",
+    oversight: "Verify facts, calculations, advice, and anything shared with another person.",
+    skill: "Beginner",
+    options: { beginner: "ChatGPT or Claude", intermediate: "Gemini or Microsoft Copilot in an existing workspace", advanced: "A governed assistant using approved business knowledge", lowCost: "One assistant subscription only after a free pilot", free: "Free tiers of major assistants" },
+  },
+  research: {
+    name: "Research & Knowledge Tools",
+    tools: "Perplexity, Elicit, Consensus, Semantic Scholar, or Connected Papers",
+    reason: "for finding sources, comparing evidence, and exploring research.",
+    whatItDoes: "Helps discover and organize source-based information.",
+    whenToUse: "Use when citations and evidence matter more than polished prose.",
+    benefits: "Speeds discovery and helps users scan complex topics.",
+    limitations: "Coverage varies and summaries can miss important nuance.",
+    cost: "Free search options exist; premium plans may add volume or advanced features.",
+    oversight: "Open the original sources and evaluate their quality before relying on a conclusion.",
+    skill: "Beginner to intermediate",
+    options: { beginner: "Perplexity or Consensus", intermediate: "Elicit with Semantic Scholar", advanced: "A documented multi-database evidence review", lowCost: "Semantic Scholar plus limited free searches", free: "Semantic Scholar" },
+  },
+  writing: {
+    name: "Writing & Content Tools",
+    tools: "ChatGPT, Claude, Jasper, Grammarly, or Copy.ai",
+    reason: "for drafting, editing, rewriting, and creating repeatable content.",
+    whatItDoes: "Creates or improves text from instructions and examples.",
+    whenToUse: "Use for first drafts when a person owns the facts, audience, and final voice.",
+    benefits: "Reduces blank-page time and supports consistent formatting.",
+    limitations: "May sound generic, repeat errors, or invent unsupported details.",
+    cost: "Start with free editing and assistant tiers before adding a specialized content subscription.",
+    oversight: "Review claims, names, dates, tone, originality, and audience fit.",
+    skill: "Beginner",
+    options: { beginner: "Grammarly with ChatGPT or Claude", intermediate: "Jasper or Copy.ai", advanced: "A reviewed template and approval workflow", lowCost: "One general assistant plus existing documents", free: "Free Grammarly and assistant tiers" },
+  },
+  marketing: {
+    name: "Marketing & Social Media Tools",
+    tools: "Canva AI, Buffer AI, Hootsuite AI, HubSpot AI, or Ocoya",
+    reason: "for planning, creating, scheduling, and measuring outreach.",
+    whatItDoes: "Supports visual content, campaign planning, social scheduling, and customer communication.",
+    whenToUse: "Use after the audience, offer, brand voice, and approval process are clear.",
+    benefits: "Improves consistency and reduces repetitive production work.",
+    limitations: "Automated content can be inaccurate, repetitive, or poorly timed.",
+    cost: "Combine tools only when each removes a specific repeated task.",
+    oversight: "Approve brand claims, offers, targeting, and public replies.",
+    skill: "Beginner to intermediate",
+    options: { beginner: "Canva AI with Buffer", intermediate: "Hootsuite AI or HubSpot AI", advanced: "A CRM-connected campaign workflow", lowCost: "Canva plus a simple scheduler", free: "Free Canva and Buffer tiers where available" },
+  },
+  productivity: {
+    name: "Productivity & Meeting Tools",
+    tools: "Notion AI, ClickUp AI, Motion, Todoist AI, Otter, Fireflies, Fathom, or Zoom AI",
+    reason: "for organizing tasks, schedules, notes, meetings, and follow-up.",
+    whatItDoes: "Turns scattered work into visible tasks, summaries, priorities, and reminders.",
+    whenToUse: "Use when remembering, coordinating, scheduling, or finding information is the main problem.",
+    benefits: "Reduces mental load and missed follow-up.",
+    limitations: "A complicated setup can become another system people avoid.",
+    cost: "Use features already included in current task or meeting tools before adding subscriptions.",
+    oversight: "Review automated priorities and meeting summaries, and obtain appropriate recording consent.",
+    skill: "Beginner",
+    options: { beginner: "Todoist AI, Fathom, or Otter", intermediate: "Notion AI, ClickUp AI, or Fireflies", advanced: "Motion or a connected workspace", lowCost: "Use AI inside tools already in use", free: "Available free tiers of Todoist, Notion, Fathom, Otter, or Fireflies" },
+  },
+  customer: {
+    name: "Customer Service, Sales & CRM Tools",
+    tools: "Tidio, Intercom, Zendesk AI, Drift, HubSpot AI, Salesforce Einstein, Apollo, or Clay",
+    reason: "for intake, common questions, lead organization, follow-up, and customer support.",
+    whatItDoes: "Routes conversations and helps teams respond, track, and follow up.",
+    whenToUse: "Use when service rules, sales stages, escalation paths, and approved information are clear.",
+    benefits: "Can improve response speed and follow-up consistency.",
+    limitations: "Bad data or unclear rules can scale frustrating or incorrect responses.",
+    cost: "Pilot one high-volume workflow before paying for a larger CRM or support platform.",
+    oversight: "Keep a visible human option and review targeting, claims, escalations, and conversation quality.",
+    skill: "Beginner to advanced",
+    options: { beginner: "Tidio or HubSpot AI", intermediate: "Intercom, Zendesk AI, or Apollo", advanced: "Salesforce Einstein or Clay with governed data", lowCost: "Automate only one common question or follow-up stage", free: "Tidio, HubSpot, or Apollo free tiers where available" },
+  },
+  data: {
+    name: "Data Analysis Tools",
+    tools: "ChatGPT Advanced Data Analysis, Excel Copilot, Power BI Copilot, or Tableau AI",
+    reason: "for exploring spreadsheets, finding patterns, creating visuals, and supporting reports.",
+    whatItDoes: "Helps ask questions of data and produce summaries, calculations, or visual explanations.",
+    whenToUse: "Use when the source data and field definitions are understood.",
+    benefits: "Speeds routine analysis and makes data more approachable.",
+    limitations: "Weak data, filters, formulas, or assumptions can produce misleading results.",
+    cost: "Start with one exported, non-sensitive report before connecting live systems.",
+    oversight: "Validate source data, calculations, filters, charts, and interpretations.",
+    skill: "Intermediate",
+    options: { beginner: "ChatGPT Advanced Data Analysis with practice data", intermediate: "Excel Copilot", advanced: "Power BI Copilot or Tableau AI", lowCost: "Analyze one exported report", free: "Spreadsheet formulas and limited free assistant analysis" },
+  },
+  automation: {
+    name: "Automation & Agentic AI",
+    tools: "Zapier, Make, n8n, Relay, OpenAI Agents, Claude Projects, Microsoft Copilot Studio, CrewAI, or LangGraph",
+    reason: "for connecting systems and coordinating repeated multi-step work.",
+    whatItDoes: "Moves information or coordinates actions across defined steps and applications.",
+    whenToUse: "Use after the process is stable and simpler manual or assistant-based methods are not enough.",
+    benefits: "Reduces repeated transfers and can coordinate more complex work.",
+    limitations: "Failures can duplicate, lose, expose, or misroute information at scale.",
+    cost: "Costs can include usage, hosting, setup, monitoring, maintenance, and technical support.",
+    oversight: "Use permissions, logs, approval gates, error alerts, spending limits, and a named owner.",
+    skill: "Intermediate to advanced",
+    options: { beginner: "Zapier", intermediate: "Make, Relay, or Claude Projects", advanced: "n8n, OpenAI Agents, Copilot Studio, CrewAI, or LangGraph", lowCost: "Prove one workflow manually before automating it", free: "Free automation tiers or open-source n8n, CrewAI, and LangGraph for technical users" },
+  },
+  creative: {
+    name: "Image & Video Creation Tools",
+    tools: "ChatGPT Image Generation, Midjourney, Adobe Firefly, Leonardo AI, Synthesia, HeyGen, Runway, or Veo",
+    reason: "for creating visual concepts, marketing assets, explainers, and generated media.",
+    whatItDoes: "Creates images, presenters, clips, scenes, or effects from instructions.",
+    whenToUse: "Use when custom media supports a real communication goal and synthetic content is appropriate.",
+    benefits: "Allows rapid visual exploration and revision.",
+    limitations: "Details, products, people, text, rights, and factual representations may be wrong.",
+    cost: "Generation credits and revision time can add up; approve the brief before producing many versions.",
+    oversight: "Review rights, likeness, brand accuracy, disclosure, factual claims, and every visible frame.",
+    skill: "Beginner to advanced",
+    options: { beginner: "ChatGPT Image Generation, Adobe Firefly, Synthesia, or HeyGen", intermediate: "Midjourney, Leonardo AI, or Runway", advanced: "Veo or a multi-tool production workflow", lowCost: "Plan the final asset before generating variations", free: "Available free tiers or credits" },
+  },
+  web: {
+    name: "Website Development Tools",
+    tools: "GitHub Copilot, Replit, Lovable, Bolt, or Cursor",
+    reason: "for prototyping, editing, explaining, testing, and maintaining website code.",
+    whatItDoes: "Generates and revises code, interfaces, and technical explanations.",
+    whenToUse: "Use when someone can review security, accessibility, maintainability, and deployment.",
+    benefits: "Speeds prototypes, debugging, and repetitive coding tasks.",
+    limitations: "Generated code can contain bugs, security issues, or inaccessible interfaces.",
+    cost: "Include hosting, maintenance, testing, and future editing, not only the generator subscription.",
+    oversight: "Use version control, protect credentials, review changes, and test desktop and mobile deployments.",
+    skill: "Beginner to intermediate",
+    options: { beginner: "Lovable, Bolt, or Replit", intermediate: "GitHub Copilot or Cursor", advanced: "A reviewed coding-agent workflow with automated tests", lowCost: "Improve one page in an existing repository", free: "Available free tiers of Replit, Lovable, Bolt, or Cursor" },
+  },
+};
+
 const getAiToolSuggestions = (assessmentId, selectedTasks = [], answerAnalysis = {}) => {
-  const values = [...selectedTasks, ...(answerAnalysis.currentAiTools || [])];
+  const responses = answerAnalysis.responses || {};
+  const solutionAnswers = Object.entries(responses)
+    .filter(([key]) => key.endsWith("_solution_goal") || key.endsWith("_tool_selection_factors"))
+    .flatMap(([, value]) => (Array.isArray(value) ? value : [value]));
+  const values = [
+    ...selectedTasks,
+    ...(answerAnalysis.currentAiTools || []),
+    ...solutionAnswers,
+  ].filter(Boolean);
+  const text = values.join(" ").toLowerCase();
   const suggestions = [];
-  const add = (name, reason) => {
-    if (!suggestions.some((item) => item.name === name)) suggestions.push({ name, reason });
+  const add = (key) => {
+    const recommendation = assessmentToolkitCatalog[key];
+    if (recommendation && !suggestions.some((item) => item.name === recommendation.name)) {
+      suggestions.push({ ...recommendation });
+    }
   };
 
-  if (values.some((item) => /message|email|writing|customer/i.test(item))) {
-    add("ChatGPT or Grammarly", "for drafting messages, rewriting unclear text, and creating a first version you can review.");
-  }
-  if (values.some((item) => /schedule|appointment|due date|reminder|routine/i.test(item))) {
-    add("Google Calendar or reminder apps", "for turning plans into reminders so fewer details have to stay in your head.");
-  }
-  if (values.some((item) => /paperwork|forms|documentation|records|notes|files|information/i.test(item))) {
-    add("ChatGPT, Notion, or document summarizers", "for turning long notes, forms, or records into shorter checklists and summaries.");
-  }
-  if (values.some((item) => /progress|goal|habit|tracking/i.test(item))) {
-    add("Todoist, Trello, or a habit tracker", "for showing progress in small steps without needing a complicated system.");
-  }
-  if (values.some((item) => /social|visual|examples|communication/i.test(item))) {
-    add("Canva", "for making simple visual guides, plans, and communication materials.");
-  }
-  if (values.some((item) => /training|explaining|questions|steps/i.test(item))) {
-    add("ChatGPT", "for creating repeatable guides, simple instructions, and answers to common questions.");
-  }
-  if (assessmentId === "personal") {
-    add("Voice-to-text tools", "for capturing thoughts quickly when typing or organizing ideas feels like too much.");
+  if (/reliable information|research|source|evidence|finding information/.test(text)) add("research");
+  if (/write|email|message|communication|content|document|notes|training|explaining/.test(text)) add("writing");
+  if (/social|marketing|promotion|review request|visual guide/.test(text)) add("marketing");
+  if (/image|video|visual|create images or video/.test(text)) add("creative");
+  if (/schedule|appointment|meeting|reminder|routine|goal|task|organize/.test(text)) add("productivity");
+  if (/customer|sales|lead|crm|faq|intake|follow-up/.test(text)) add("customer");
+  if (/data|spreadsheet|report|analyze|inventory count|employee hours/.test(text)) add("data");
+  if (/automate|automation|connect|repeated steps|advanced customization/.test(text)) add("automation");
+  if (/website|technical system|code|development/.test(text)) add("web");
+  if (/question|plan|summary|brainstorm|assistant|chatgpt|claude|gemini|copilot/.test(text)) add("assistants");
+
+  if (assessmentId === "business" && !suggestions.length) {
+    add("productivity");
+    add("customer");
   }
   if (!suggestions.length) {
-    add("ChatGPT", "for organizing ideas, creating checklists, and testing one simple task before using more advanced tools.");
-    add("Google Calendar", "for reminders, routines, appointments, and follow-up tasks.");
+    add("assistants");
+    add("productivity");
   }
 
-  return suggestions.slice(0, 5);
+  return suggestions.slice(0, 4);
 };
 
 const buildLayerNarratives = (phaseScores, indicatorSummary, selectedTasks = [], answerAnalysis = {}) => {
@@ -2624,10 +3000,10 @@ const buildLayerNarratives = (phaseScores, indicatorSummary, selectedTasks = [],
           ? "You may be starting from the beginning with AI, so the first tool should be simple and low-pressure."
           : "You already have some tool experience, so the next step can build from what feels familiar."
       );
-      barriers.push("Learning something new can become frustrating when there are too many features before the basic steps feel clear.");
-      recommendations.push("Pick one tool, one task, and one short practice window instead of trying several tools at once.");
-      tools.push("Templates and examples can make ChatGPT, calendars, or task apps easier to use at the beginning.");
-      implementation.push("Practice the same small task three times before deciding whether the tool is useful.");
+      barriers.push("Learning becomes harder when the tool category does not match the real goal or when too many products are introduced together.");
+      recommendations.push("Compare categories first, then pick one tool, one task, and one short practice window.");
+      tools.push("Use the AI Solution Guide to compare assistants, research tools, productivity systems, automation, and specialized platforms.");
+      implementation.push("Practice the same small task three times and compare the result, effort, cost, and review needs before expanding.");
     }
 
     if (phase.id === "partnership") {
@@ -2684,9 +3060,11 @@ const getSupportLevel = (score, indicatorSummary) => {
 
 const getImplementationPath = (assessmentId, indicatorSummary, answerAnalysis = {}) => {
   const start = aiStartingPoints[assessmentId] || aiStartingPoints.business;
+  const insightText = (answerAnalysis.insights || []).join(" ").toLowerCase();
   const steps = [
     `Choose one repeated task first, such as ${start.examples.slice(0, 2).join(" or ")}.`,
-    "Use AI to make a first draft, summary, checklist, reminder, or plan. Treat it as a helper, not the final answer.",
+    "Compare the categories that could solve the task. A general assistant, specialized tool, and automation platform solve different kinds of problems.",
+    "Choose the simplest option that fits current skills, systems, budget, privacy needs, and human-review capacity.",
     "Have a person review the AI suggestion before using it for anything important.",
     "Track simple results: time saved, mistakes reduced, confidence gained, and steps completed.",
   ];
@@ -2706,7 +3084,14 @@ const getImplementationPath = (assessmentId, indicatorSummary, answerAnalysis = 
     steps.unshift("Build from the AI tools already being used instead of introducing too many new tools at once.");
   }
 
-  return [...new Set(steps)].slice(0, 5);
+  if (assessmentId === "personal" && /setback|restart|shame|previous progress/.test(insightText)) {
+    steps.unshift("Create a three-step restart plan for difficult days: name what interrupted the routine, choose the smallest useful version, and continue without erasing earlier progress.");
+  }
+  if (assessmentId === "personal" && /family|caregiving|limited energy|backup/.test(insightText)) {
+    steps.unshift("Plan around real family and work demands by creating a normal version and a shorter backup version of the next step.");
+  }
+
+  return [...new Set(steps)].slice(0, 6);
 };
 
 const getPlainBarrier = (indicatorId) => {
@@ -2716,11 +3101,12 @@ const getPlainBarrier = (indicatorId) => {
     trust_sensitivity: "Trust depends on seeing what the tool used, why it made a suggestion, and who reviews important decisions.",
     learning_preference: "Learning will work better when people can use examples, practice, written steps, or a person to ask.",
     adoption_barrier: "New tools can become frustrating when the first steps are rushed or unclear.",
+    solution_fit: "The tool category may not yet be clearly matched to the goal, available resources, technical ability, or oversight needs.",
     support_need: "A named person, guide, or help option should be easy to find when questions come up.",
     environmental_barrier: "Noise, interruptions, unclear priorities, or missing resources can make focus harder.",
     time_pressure: "Time-consuming tasks are taking attention away from higher-value work or daily priorities.",
     quick_win_task: "There are clear starter tasks that can be simplified before trying anything advanced.",
-    personal_barrier: "Daily routines may need simpler reminders, planning, or organization before adding more tools.",
+    personal_barrier: "Family, work, money, energy, or other life pressures may be making consistency harder. The next step should reduce pressure and support a realistic restart.",
   };
   return barriers[indicatorId] || "Nothing here means failure. It points to the part of the process that deserves attention first.";
 };
@@ -2770,6 +3156,10 @@ const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSumma
       ? "Because AI is still new here, the first experience should be calm, clear, and easy to undo."
       : "Because some tools are already familiar, the next step can improve what is already being used.",
   ];
+
+  if (assessmentId === "personal") {
+    observations.splice(1, 0, ...(answerAnalysis.insights || []).filter((item) => item.startsWith("Your answers")).slice(0, 2));
+  }
 
   const barriers = [
     getPlainBarrier(topIndicator),
@@ -2880,6 +3270,28 @@ const formatResponsesForEmail = (result) => {
     .join("\n");
 };
 
+const formatToolkitForEmail = (tools = []) =>
+  tools
+    .map(
+      (tool) =>
+        `${tool.name}\n` +
+        `Examples: ${tool.tools}\n` +
+        `Why it may fit: ${tool.reason}\n` +
+        `What it does: ${tool.whatItDoes}\n` +
+        `When to use it: ${tool.whenToUse}\n` +
+        `Benefits: ${tool.benefits}\n` +
+        `Limitations: ${tool.limitations}\n` +
+        `Cost considerations: ${tool.cost}\n` +
+        `Human oversight: ${tool.oversight}\n` +
+        `Recommended skill level: ${tool.skill}\n` +
+        `Beginner option: ${tool.options.beginner}\n` +
+        `Intermediate option: ${tool.options.intermediate}\n` +
+        `Advanced option: ${tool.options.advanced}\n` +
+        `Low-cost option: ${tool.options.lowCost}\n` +
+        `Free option: ${tool.options.free}`
+    )
+    .join("\n\n");
+
 const emailTemplates = {
   client(result) {
     const name = result.participant.firstName || "there";
@@ -2887,7 +3299,7 @@ const emailTemplates = {
       fromName: emailBrandName,
       to: result.participant.email,
       subject: `Your ${emailBrandName} CEAM+ Assessment Results`,
-      body: `Hi ${name},\n\nThank you for completing your CEAM+ assessment with ${emailBrandName}.\n\nAssessment completed: ${result.assessmentTitle}\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat we noticed:\n${result.recommendation.observations.map((item) => `- ${item}`).join("\n")}\n\nWhat may be getting in the way:\n${result.recommendation.barriers.map((item) => `- ${item}`).join("\n")}\n\nTasks you selected:\n${result.recommendation.selectedTasks.join(", ") || "No task selections yet"}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nAI tools that may fit:\n${result.recommendation.aiTools.map((tool) => `- ${tool.name}: ${tool.reason}`).join("\n")}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nYour full answers:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\nFor follow-up support, contact support at briggsfaye@clearpathtechnologies.org.\n\n${emailSignature}\n`,
+      body: `Hi ${name},\n\nThank you for completing your CEAM+ assessment with ${emailBrandName}.\n\nAssessment completed: ${result.assessmentTitle}\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat we noticed:\n${result.recommendation.observations.map((item) => `- ${item}`).join("\n")}\n\nWhat may be getting in the way:\n${result.recommendation.barriers.map((item) => `- ${item}`).join("\n")}\n\nTasks you selected:\n${result.recommendation.selectedTasks.join(", ") || "No task selections yet"}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nAI toolkit categories to compare:\n${formatToolkitForEmail(result.recommendation.aiTools)}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nYour full answers:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\nFor follow-up support, contact support at briggsfaye@clearpathtechnologies.org.\n\n${emailSignature}\n`,
     };
   },
   admin(result) {
@@ -2895,7 +3307,7 @@ const emailTemplates = {
       fromName: emailBrandName,
       to: "briggsfaye@icloud.com",
       subject: `New ${emailBrandName} CEAM+ Assessment: ${result.assessmentTitle}`,
-      body: `${emailBrandName} assessment submission\n\nClient: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nSelected tasks: ${result.recommendation.selectedTasks.join(", ") || "None selected"}\nTop support needs: ${result.profileTags.join(", ")}\nAI tools already used: ${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\nObservations: ${result.recommendation.observations.join(" | ")}\nAnswer insights: ${result.answerAnalysis.insights.join(" | ") || "No single pattern stood out yet."}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nFull assessment responses:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\n${emailSignature}`,
+      body: `${emailBrandName} assessment submission\n\nClient: ${result.participant.firstName} ${result.participant.lastName}\nEmail: ${result.participant.email}\nPhone: ${result.participant.phone || "Not provided"}\nOrganization: ${result.participant.organization || "Not provided"}\nAssessment: ${result.assessmentTitle}\nSubmitted: ${result.submittedAt}\nResult ID: ${result.resultId}\nProfile: ${result.recommendation.profile}\nSupport level: ${result.recommendation.supportLevel.label}\nMain barrier: ${result.recommendation.barrier}\nSelected tasks: ${result.recommendation.selectedTasks.join(", ") || "None selected"}\nTop support needs: ${result.profileTags.join(", ")}\nAI tools already used: ${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\nObservations: ${result.recommendation.observations.join(" | ")}\nAnswer insights: ${result.answerAnalysis.insights.join(" | ") || "No single pattern stood out yet."}\n\nAI toolkit categories to compare:\n${formatToolkitForEmail(result.recommendation.aiTools)}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nFull assessment responses:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\n${emailSignature}`,
     };
   },
   supportAdmin(result, supportRequest) {
@@ -3105,7 +3517,7 @@ const renderQuestion = (question, index) => {
             `
           )
           .join("")}</div>`
-      : `<input id="${question.id}" name="${question.id}" data-question-id="${question.id}" type="range" min="0" max="5" value="0" step="1" list="${sliderTicksId}">
+      : `<input id="${question.id}" name="${question.id}" data-question-id="${question.id}" data-touched="false" type="range" min="0" max="5" value="0" step="1" list="${sliderTicksId}">
         <div class="range-ticks" aria-hidden="true">
           <span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
@@ -3120,7 +3532,7 @@ const renderQuestion = (question, index) => {
   wrapper.innerHTML = `
     <div class="question-meta">
       <span>Question ${index + 1}</span>
-      ${question.type === "scale" ? `<output for="${question.id}" data-output>Selected: 0</output>` : ""}
+      ${question.type === "scale" ? `<output for="${question.id}" data-output>Not answered</output>` : ""}
     </div>
     ${question.scenario ? `<p class="scenario">${question.scenario}</p>` : ""}
     <label class="question-label" for="${question.id}">${question.label}</label>
@@ -3159,7 +3571,8 @@ const getResponsesFromPanel = (panel, assessment) =>
       const selected = [...panel.querySelectorAll(`input[name="${question.id}"]:checked`)].map((input) => input.value);
       if (selected.length) responses[question.id] = selected;
     } else {
-      responses[question.id] = Number(panel.querySelector(`[name="${question.id}"]`)?.value ?? 0);
+      const range = panel.querySelector(`[name="${question.id}"]`);
+      if (range?.dataset.touched === "true") responses[question.id] = Number(range.value);
     }
     const note = panel.querySelector(`[name="${question.id}_note"]`)?.value.trim();
     if (note) responses[`${question.id}_note`] = note;
@@ -3279,10 +3692,40 @@ const renderResult = (resultBox, result) => {
       }</p>
     </section>
     <section class="result-section">
-      <h4>AI and Digital Tools That May Fit</h4>
-      <ul>
-        ${result.recommendation.aiTools.map((tool) => `<li><strong>${tool.name}:</strong> ${tool.reason}</li>`).join("")}
-      </ul>
+      <h4>Your AI Toolkit Options</h4>
+      <p>These are categories to compare, not automatic endorsements. Verify current pricing, privacy terms, integrations, and features before choosing a product.</p>
+      <div class="toolkit-recommendations">
+        ${result.recommendation.aiTools
+          .map(
+            (tool) => `
+              <article>
+                <header>
+                  <h5>${tool.name}</h5>
+                  <span>${tool.skill}</span>
+                </header>
+                <p><strong>Examples:</strong> ${tool.tools}</p>
+                <p><strong>Why it may fit:</strong> ${tool.reason}</p>
+                <dl>
+                  <div><dt>What it does</dt><dd>${tool.whatItDoes}</dd></div>
+                  <div><dt>When to use it</dt><dd>${tool.whenToUse}</dd></div>
+                  <div><dt>Benefits</dt><dd>${tool.benefits}</dd></div>
+                  <div><dt>Limitations</dt><dd>${tool.limitations}</dd></div>
+                  <div><dt>Cost considerations</dt><dd>${tool.cost}</dd></div>
+                  <div><dt>Human oversight</dt><dd>${tool.oversight}</dd></div>
+                </dl>
+                <div class="toolkit-levels">
+                  <p><strong>Beginner:</strong> ${tool.options.beginner}</p>
+                  <p><strong>Intermediate:</strong> ${tool.options.intermediate}</p>
+                  <p><strong>Advanced:</strong> ${tool.options.advanced}</p>
+                  <p><strong>Low cost:</strong> ${tool.options.lowCost}</p>
+                  <p><strong>Free:</strong> ${tool.options.free}</p>
+                </div>
+              </article>
+            `
+          )
+          .join("")}
+      </div>
+      <a class="text-link" href="ai-solutions.html">Compare all AI solution categories</a>
     </section>
     <section class="result-section support-level">
       <h4>Recommended Support Level</h4>
@@ -3479,6 +3922,7 @@ const renderAssessment = (assessment) => {
     wrapper.addEventListener("input", () => {
       const output = wrapper.querySelector("[data-output]");
       const slider = wrapper.querySelector('input[type="range"]');
+      if (slider) slider.dataset.touched = "true";
       if (output && slider) output.textContent = `Selected: ${slider.value}`;
       updateFollowUp(question, wrapper);
       updateGuidedAssessment(assessmentPanel, assessment);
