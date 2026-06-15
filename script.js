@@ -14,27 +14,47 @@ const phases = [
   {
     id: "cognitive",
     title: "Cognitive Layer",
-    description: "Notice focus patterns, overwhelm, planning needs, and what helps people complete tasks.",
+    description: "Understand information, mental load, assumptions, evidence, and how decisions are made.",
+  },
+  {
+    id: "emotional",
+    title: "Emotional Layer",
+    description: "Notice how fear, uncertainty, frustration, excitement, shame, and confidence affect action.",
+  },
+  {
+    id: "agency",
+    title: "Agency Layer",
+    description: "Identify what you can control, influence, choose, learn, and act on next.",
   },
   {
     id: "trust",
-    title: "Trust Layer",
-    description: "Understand what makes tools feel clear, fair, reliable, and safe enough to use.",
-  },
-  {
-    id: "adoption",
-    title: "Adoption Layer",
-    description: "Identify learning preferences, change comfort, support needs, and barriers to trying new tools.",
-  },
-  {
-    id: "plus",
-    title: "Plus Layer",
-    description: "Look at motivation, feedback, consistency, and what helps progress continue over time.",
+    title: "Trust & Ethics Layer",
+    description: "Examine transparency, privacy, accountability, fairness, risk, and verification.",
   },
   {
     id: "environment",
     title: "Environment Layer",
-    description: "Spot work, learning, care, or daily-life barriers that make systems harder than they need to be.",
+    description: "Spot cultural, social, family, workplace, community, and system factors that affect success.",
+  },
+  {
+    id: "adoption",
+    title: "Adoption & Implementation Layer",
+    description: "Identify learning preferences, change barriers, habits, practical first steps, and ways to measure progress.",
+  },
+  {
+    id: "partnership",
+    title: "Human-AI Partnership Layer",
+    description: "Clarify what AI should do, what people should do, how outputs are checked, and where judgment remains human.",
+  },
+  {
+    id: "growth",
+    title: "Growth & Meaning Layer",
+    description: "Connect goals, motivation, values, purpose, and the future you are trying to create.",
+  },
+  {
+    id: "improvement",
+    title: "CEAM+ Continuous Improvement Layer",
+    description: "Use reflection, feedback loops, learning cycles, and small adjustments to sustain progress.",
   },
 ];
 
@@ -70,18 +90,18 @@ const profileDescriptions = {
 
 const contextCopy = {
   personal: {
-    title: "Personal CEAM+ Daily Life Assessment",
+    title: "Personal Growth, Decisions, and AI Readiness Assessment",
     icon: "person",
-    description: "Use this to understand daily routines, mental energy, planning, personal paperwork, communication, and where simple AI tools may help.",
+    description: "Use this to understand decisions, emotions, confidence, daily routines, goals, support needs, and where simple AI or other beneficial tools may help.",
     person: "you",
     setting: "daily routine",
     stakeholder: "you or people who support you",
     support: "someone you trust",
   },
   business: {
-    title: "Work / Business AI Readiness Assessment",
+    title: "Small Business Human Adaptation and AI Readiness Assessment",
     icon: "briefcase",
-    description: "Use this to understand customer communication, invoices, estimates, scheduling, staffing, bookkeeping, team support, and operational barriers before trying AI.",
+    description: "Use this to understand decisions, staff and customer needs, operations, trust, implementation barriers, human-AI roles, and sustainable improvement before scaling change.",
     person: "you or your team",
     setting: "workday",
     stakeholder: "employees or customers",
@@ -163,6 +183,45 @@ const questionTemplates = [
       label: "What would make that moment easier?",
       options: ["A shorter list", "A clear first step", "Help from a person", "More time", "Fewer interruptions"],
     },
+  },
+  {
+    id: "emotions_in_decisions",
+    phase: "emotional",
+    type: "choice",
+    label: "What feeling is most likely to affect an important decision or change right now?",
+    options: ["Fear of making a mistake", "Uncertainty", "Frustration", "Excitement", "Low confidence", "I feel calm and ready"],
+    score: [2, 2, 2, 4, 2, 5],
+    indicator: "emotional_barrier",
+    followUp: {
+      when: ["Fear of making a mistake", "Uncertainty", "Frustration", "Low confidence"],
+      label: "What would help that feeling become easier to manage?",
+      options: ["A safe practice step", "Clearer information", "Encouragement", "More time", "Help from someone I trust"],
+    },
+  },
+  {
+    id: "emotional_objectivity",
+    phase: "emotional",
+    type: "scale",
+    scale: "confidence",
+    label: "How confident are you that you can notice your emotions without letting them make the whole decision?",
+    indicator: "emotional_barrier",
+  },
+  {
+    id: "control_and_influence",
+    phase: "agency",
+    type: "choice",
+    label: "When a situation feels difficult, what is easiest for you to identify?",
+    options: ["What I can control", "What I can influence", "One action I can take", "A skill I can build", "I mostly see what is outside my control"],
+    score: [5, 5, 5, 5, 1],
+    indicator: "agency_strength",
+  },
+  {
+    id: "actions_matter",
+    phase: "agency",
+    type: "scale",
+    scale: "agreement",
+    label: "I believe that small, consistent actions can improve the situation even when I cannot control everything.",
+    indicator: "agency_strength",
   },
   {
     id: "time_consuming_tasks",
@@ -365,8 +424,54 @@ const questionTemplates = [
     indicator: "growth_potential",
   },
   {
+    id: "human_ai_roles",
+    phase: "partnership",
+    type: "choice",
+    label: "When AI is used, which division of responsibility feels safest and most useful?",
+    options: [
+      "AI drafts and a person reviews",
+      "AI organizes information and a person decides",
+      "AI suggests options and a person verifies facts",
+      "AI handles routine steps with regular human checks",
+      "I am not sure what AI should do versus what a person should do",
+    ],
+    score: [5, 5, 5, 4, 1],
+    indicator: "partnership_clarity",
+  },
+  {
+    id: "validate_ai_outputs",
+    phase: "partnership",
+    type: "scale",
+    scale: "confidence",
+    label: "How confident are you that you can check an AI output before using it for an important task?",
+    indicator: "partnership_clarity",
+  },
+  {
+    id: "purpose_and_values",
+    phase: "growth",
+    type: "choice",
+    label: "What makes a change worth continuing over time?",
+    options: [
+      "It supports an important personal goal",
+      "It reflects my values",
+      "It creates a better future for my family or business",
+      "It gives me more independence or confidence",
+      "I have not connected the change to a clear purpose yet",
+    ],
+    score: [5, 5, 5, 5, 1],
+    indicator: "purpose_alignment",
+  },
+  {
+    id: "goal_connection",
+    phase: "growth",
+    type: "scale",
+    scale: "clarity",
+    label: "How clear is the connection between the change you want and the future you are trying to create?",
+    indicator: "purpose_alignment",
+  },
+  {
     id: "motivation",
-    phase: "plus",
+    phase: "improvement",
     type: "choice",
     label: "What helps you stay motivated when learning something new?",
     options: ["Small wins", "Encouragement", "Seeing progress", "Clear reason for using it", "Time to practice"],
@@ -375,7 +480,7 @@ const questionTemplates = [
   },
   {
     id: "track_progress",
-    phase: "plus",
+    phase: "improvement",
     type: "choice",
     label: "How do you usually track progress toward a goal?",
     options: ["Checklist", "Notes", "Calendar reminders", "Someone checks in", "I do not track it often"],
@@ -384,7 +489,7 @@ const questionTemplates = [
   },
   {
     id: "feedback_type",
-    phase: "plus",
+    phase: "improvement",
     type: "choice",
     label: "What kind of feedback helps you improve most?",
     options: ["Kind and direct", "Step-by-step", "Visual examples", "Private feedback", "Quick reminders"],
@@ -393,7 +498,7 @@ const questionTemplates = [
   },
   {
     id: "small_wins",
-    phase: "plus",
+    phase: "improvement",
     type: "scale",
     scale: "helpfulness",
     label: "How helpful are small wins for keeping you going?",
@@ -401,7 +506,7 @@ const questionTemplates = [
   },
   {
     id: "progress_stops",
-    phase: "plus",
+    phase: "improvement",
     type: "choice",
     label: "What usually causes progress to slow down?",
     options: ["Too many steps", "Low energy", "Unclear next step", "No feedback", "Competing priorities"],
@@ -410,7 +515,7 @@ const questionTemplates = [
   },
   {
     id: "long_term_improvements",
-    phase: "plus",
+    phase: "improvement",
     type: "choice",
     label: "What would make daily progress easier to keep up with?",
     options: [
@@ -549,7 +654,7 @@ const categoryQuestionAdditions = {
     },
     {
       id: "personal_routine_barriers",
-      phase: "plus",
+      phase: "improvement",
       type: "choice",
       label: "What usually makes personal routines hard to keep going?",
       options: ["Low energy", "Unexpected plans", "Forgetting steps", "Too many responsibilities", "No reminder system", "Stress", "Unrealistic routines", "Lack of quiet time"],
@@ -640,7 +745,7 @@ const categoryQuestionAdditions = {
     },
     {
       id: "business_progress_measure",
-      phase: "plus",
+      phase: "improvement",
       type: "choice",
       label: "What would show that AI is helping the business?",
       options: ["Faster replies", "Fewer missed follow-ups", "Less paperwork", "More consistent estimates", "Fewer repeated questions", "Less staff confusion", "Time saved each week", "Better recordkeeping"],
@@ -830,7 +935,7 @@ const categoryQuestionAdditions = {
     },
     {
       id: "term_feedback_loop",
-      phase: "plus",
+      phase: "improvement",
       type: "choice",
       label: "What should be reviewed during the term to see if AI is actually helping?",
       options: ["A student's confidence", "Assignment completion", "Staff time saved", "Fewer repeated questions", "Fewer missed deadlines", "Quality of feedback", "Access issues", "A student's stress"],
@@ -903,7 +1008,7 @@ const categoryQuestionAdditions = {
     },
     {
       id: "healthcare_progress_measure",
-      phase: "plus",
+      phase: "improvement",
       type: "choice",
       label: "What would show that AI support is helping care workflows?",
       options: ["Less documentation time", "Clearer instructions", "Fewer missed follow-ups", "Fewer repeated questions", "Better handoffs", "Less portal confusion", "More consistent checklists", "More staff confidence"],
@@ -1012,7 +1117,7 @@ const categoryQuestionAdditions = {
     },
     {
       id: "rehab_progress_measure",
-      phase: "plus",
+      phase: "improvement",
       type: "choice",
       label: "What would show that support is working over time?",
       options: ["More independence", "Less stress", "Fewer missed appointments", "More completed routines", "Clearer communication", "Better goal tracking", "More confidence", "Fewer confusing prompts"],
@@ -1048,7 +1153,7 @@ const categoryQuestionAdditions = {
     },
     {
       id: "rehab_feedback_loop",
-      phase: "plus",
+      phase: "improvement",
       type: "choice",
       label: "What should be reviewed to keep support useful over time?",
       options: ["How the person feels", "Goal progress", "Missed appointments", "Stress from reminders", "Caregiver feedback", "Staff notes", "Routine changes", "Choice and control"],
@@ -1927,7 +2032,7 @@ const makeQuestion = (categoryId, template) => ({
 
 const assessments = Object.entries(contextCopy).map(([id, copy]) => ({
   id,
-  version: "2.0",
+  version: "3.0",
   title: copy.title,
   icon: copy.icon,
   description: copy.description,
@@ -2004,6 +2109,10 @@ const indicatorLabels = {
   growth_potential: "Long-term growth potential is present",
   environmental_barrier: "The environment may be making focus harder",
   current_ai_use: "Current AI use can shape the next step",
+  emotional_barrier: "Emotions may be affecting confidence or action",
+  agency_strength: "A clearer sense of control may help progress",
+  partnership_clarity: "Human and AI responsibilities should be clearer",
+  purpose_alignment: "The change may need a stronger connection to goals and values",
   time_pressure: "Time-consuming tasks are a good place to start",
   quick_win_task: "A simple first task is already visible",
   personal_barrier: "Daily routines may need simpler support",
@@ -2460,6 +2569,30 @@ const buildLayerNarratives = (phaseScores, indicatorSummary, selectedTasks = [],
       implementation.push("Spend 15 minutes testing one task, then write down what felt easier and what still felt confusing.");
     }
 
+    if (phase.id === "emotional") {
+      observations.push(
+        score >= 70
+          ? "You appear able to notice emotions while still considering the practical facts of a decision."
+          : "Fear, uncertainty, frustration, or low confidence may be making the next step feel riskier than it is."
+      );
+      barriers.push("Strong emotions can narrow attention and make an unfamiliar change feel harder to evaluate.");
+      recommendations.push("Name the feeling, identify the specific concern behind it, and choose a low-risk practice step.");
+      tools.push("A private journal, notes app, or guided AI prompt can help separate facts, concerns, and assumptions.");
+      implementation.push("Before acting, write down what you feel, what you know, and what still needs to be verified.");
+    }
+
+    if (phase.id === "agency") {
+      observations.push(
+        score >= 70
+          ? "You can usually identify useful choices and actions even when parts of the situation are outside your control."
+          : "The situation may feel controlled by outside forces, making it harder to see where your own actions can matter."
+      );
+      barriers.push("Progress can stall when the problem feels too large or the controllable part is not clearly defined.");
+      recommendations.push("Separate what you control, what you can influence, and what you need to accept or plan around.");
+      tools.push("A simple action list or decision worksheet can turn a broad challenge into one controllable next move.");
+      implementation.push("Choose one action that can be completed today and one skill that can be strengthened this month.");
+    }
+
     if (phase.id === "trust") {
       observations.push(
         answerAnalysis.insights.some((item) => /explanation/i.test(item))
@@ -2470,6 +2603,19 @@ const buildLayerNarratives = (phaseScores, indicatorSummary, selectedTasks = [],
       recommendations.push("Use AI for drafts, summaries, and planning first, then have a person review anything important.");
       tools.push("ChatGPT is useful when you ask it to explain its steps or list what should be checked by a person.");
       implementation.push("For the first few uses, compare the AI answer with your own judgment before relying on it.");
+    }
+
+    if (phase.id === "environment") {
+      observations.push(
+        lowIndicators.has("workflow_friction")
+          ? "The surrounding routine may be creating extra work through repeated steps, unclear handoffs, or too many places to look."
+          : "The environment can support change better when instructions, roles, resources, and routines are easy to find."
+      );
+      if (taskText) observations.push(`The quickest improvement is likely connected to ${taskText}.`);
+      barriers.push("If the routine is already messy, adding a new tool can create more confusion instead of reducing it.");
+      recommendations.push("Improve the most confusing environmental or workflow step before adding more technology.");
+      tools.push("Shared checklists, calendars, or simple process boards can keep repeated steps in one place.");
+      implementation.push("Create one clear example of the improved process so everyone involved knows what success looks like.");
     }
 
     if (phase.id === "adoption") {
@@ -2484,25 +2630,36 @@ const buildLayerNarratives = (phaseScores, indicatorSummary, selectedTasks = [],
       implementation.push("Practice the same small task three times before deciding whether the tool is useful.");
     }
 
-    if (phase.id === "plus") {
+    if (phase.id === "partnership") {
+      observations.push(
+        score >= 70
+          ? "You have a useful sense of where AI can assist and where human review and judgment should remain."
+          : "The roles of AI and people may need to be defined more clearly before important work is delegated."
+      );
+      barriers.push("AI output can look confident even when information is incomplete, outdated, or wrong.");
+      recommendations.push("Define what AI may draft, organize, or suggest and what a person must verify, approve, or decide.");
+      tools.push("Use checklists, source links, comparison prompts, and human review to validate important outputs.");
+      implementation.push("Write a two-column rule for the first use case: what AI does and what the person checks.");
+    }
+
+    if (phase.id === "growth") {
+      observations.push(
+        score >= 70
+          ? "The change appears connected to goals, values, or a future that matters to you."
+          : "Motivation may be harder to sustain until the change has a clearer personal or business purpose."
+      );
+      barriers.push("A tool or habit is easier to abandon when it is not connected to a meaningful goal.");
+      recommendations.push("Describe why the change matters, whose life it improves, and what future outcome it supports.");
+      tools.push("A goal tracker or short purpose statement can keep daily actions connected to the larger reason.");
+      implementation.push("Write one sentence that connects the next action to an important value, goal, or future outcome.");
+    }
+
+    if (phase.id === "improvement") {
       observations.push("Small wins and visible progress are important for keeping momentum after the first try.");
       barriers.push("Progress often slows when routines are too complicated or when feedback comes too late.");
       recommendations.push("Track one simple measure, such as time saved, fewer missed steps, or more confidence.");
       tools.push("Todoist, Trello, or a habit tracker can make progress visible without a heavy setup.");
       implementation.push("Review what changed after one week, then adjust the routine before adding another task.");
-    }
-
-    if (phase.id === "environment") {
-      observations.push(
-        lowIndicators.has("workflow_friction")
-          ? "The surrounding routine may be creating extra work through repeated steps, unclear handoffs, or too many places to look."
-          : "The environment can support AI use better when instructions, roles, and routines are easy to find."
-      );
-      if (taskText) observations.push(`The quickest improvement is likely connected to ${taskText}.`);
-      barriers.push("If the routine is already messy, adding AI can create more confusion instead of reducing it.");
-      recommendations.push("Clean up the most confusing step first, then use AI to draft, organize, remind, or summarize.");
-      tools.push("Notion, Trello, or shared checklists can keep repeated steps in one place.");
-      implementation.push("Create one shared example of the new process so people know what good use looks like.");
     }
 
     return {
@@ -2730,7 +2887,7 @@ const emailTemplates = {
       fromName: emailBrandName,
       to: result.participant.email,
       subject: `Your ${emailBrandName} CEAM+ Assessment Results`,
-      body: `Hi ${name},\n\nThank you for completing your CEAM+ assessment with ${emailBrandName}.\n\nAssessment completed: ${result.assessmentTitle}\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat we noticed:\n${result.recommendation.observations.map((item) => `- ${item}`).join("\n")}\n\nWhat may be getting in the way:\n${result.recommendation.barriers.map((item) => `- ${item}`).join("\n")}\n\nTasks you selected:\n${result.recommendation.selectedTasks.join(", ") || "No task selections yet"}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nAI tools that may fit:\n${result.recommendation.aiTools.map((tool) => `- ${tool.name}: ${tool.reason}`).join("\n")}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nYour full answers:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\nYour results will be reviewed if you request follow-up support.\n\n${emailSignature}\n`,
+      body: `Hi ${name},\n\nThank you for completing your CEAM+ assessment with ${emailBrandName}.\n\nAssessment completed: ${result.assessmentTitle}\n\nReadiness profile: ${result.recommendation.profile}\n\n${result.recommendation.description}\n\nWhat we noticed:\n${result.recommendation.observations.map((item) => `- ${item}`).join("\n")}\n\nWhat may be getting in the way:\n${result.recommendation.barriers.map((item) => `- ${item}`).join("\n")}\n\nTasks you selected:\n${result.recommendation.selectedTasks.join(", ") || "No task selections yet"}\n\nAI tools already used:\n${result.answerAnalysis.currentAiTools.join(", ") || "None selected"}\n\nAI tools that may fit:\n${result.recommendation.aiTools.map((tool) => `- ${tool.name}: ${tool.reason}`).join("\n")}\n\nRecommended support level: ${result.recommendation.supportLevel.label}\n${result.recommendation.supportLevel.message}\n\nRecommended AI steps:\n${result.recommendation.implementationPath.map((item) => `- ${item}`).join("\n")}\n\nNext step: ${result.recommendation.nextStep}\n\nYour full answers:\n${formatResponsesForEmail(result) || "No answers were recorded."}\n\nFor follow-up support, contact support at briggsfaye@clearpathtechnologies.org.\n\n${emailSignature}\n`,
     };
   },
   admin(result) {
@@ -2754,7 +2911,7 @@ const emailTemplates = {
       fromName: emailBrandName,
       to: supportRequest.email,
       subject: `Your ${emailBrandName} CEAM+ support request was received`,
-      body: `Hi ${supportRequest.firstName},\n\nThank you. ${emailBrandName} received your request. We will review your results and follow up with next steps.\n\nSelected support option: ${supportRequest.supportOption}\nAssessment summary: ${result.recommendation.profile}\nSuggested first AI step: ${result.recommendation.nextStep}\n\nYour results will be reviewed for follow-up support.\n\n${emailSignature}\n`,
+      body: `Hi ${supportRequest.firstName},\n\nThank you. ${emailBrandName} received your request. We will review your results and follow up with next steps.\n\nSelected support option: ${supportRequest.supportOption}\nAssessment summary: ${result.recommendation.profile}\nSuggested first AI step: ${result.recommendation.nextStep}\n\nFor follow-up support, contact support at briggsfaye@clearpathtechnologies.org.\n\n${emailSignature}\n`,
     };
   },
 };
@@ -3063,7 +3220,7 @@ const renderResult = (resultBox, result) => {
   resultBox.innerHTML = `
     <div class="result-heading">
       <span>${result.recommendation.profile}</span>
-      <strong>${result.score}% support readiness</strong>
+      <strong>${result.score}% implementation readiness</strong>
     </div>
     <section class="result-section">
       <h4>Your Readiness Summary</h4>
@@ -3110,7 +3267,7 @@ const renderResult = (resultBox, result) => {
       }</p>
     </section>
     <section class="result-section">
-      <h4>Recommended AI Implementation Path</h4>
+      <h4>Recommended Implementation Path</h4>
       <ol>${result.recommendation.implementationPath.map((item) => `<li>${item}</li>`).join("")}</ol>
     </section>
     <section class="result-section">
@@ -3122,7 +3279,7 @@ const renderResult = (resultBox, result) => {
       }</p>
     </section>
     <section class="result-section">
-      <h4>AI Tools That May Fit You</h4>
+      <h4>AI and Digital Tools That May Fit</h4>
       <ul>
         ${result.recommendation.aiTools.map((tool) => `<li><strong>${tool.name}:</strong> ${tool.reason}</li>`).join("")}
       </ul>
@@ -3153,10 +3310,10 @@ const renderResult = (resultBox, result) => {
       </div>
     </section>
     <section class="consultant-cta">
-      <h4>Need Help Getting Started?</h4>
-      <p>Want help turning these results into a real implementation plan?</p>
+      <h4>Need Support Getting Started?</h4>
+      <p>Get help turning these results into a practical personal or business action plan.</p>
       <div class="result-actions">
-        <button class="button primary" type="button" data-show-support>Contact a Consultant</button>
+        <button class="button primary" type="button" data-show-support>Request Support</button>
         <button class="button secondary" type="button" data-support-shortcut="I want a guided walkthrough">Guided Setup Help</button>
         <button class="button secondary" type="button" data-support-shortcut="I want training for my team">Team Training</button>
         <button class="button secondary" type="button" data-support-shortcut="I want step-by-step written instructions">Step-by-Step Help</button>

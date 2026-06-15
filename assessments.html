@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Take a CEAM+ readiness assessment for personal life, work, education, healthcare, or rehabilitation support.">
-    <title>CEAM+ Readiness Assessments</title>
+    <meta name="description" content="Take a CEAM+ Human Adaptation assessment for personal growth, small-business improvement, AI literacy, decisions, and implementation readiness.">
+    <title>CEAM+ Human Adaptation Assessments</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260602-mission-values">
+    <link rel="stylesheet" href="styles.css?v=20260615-human-adaptation">
   </head>
   <body>
     <header class="site-header" data-header>
@@ -24,25 +24,30 @@
         <a href="workflow.html">Workflow</a>
         <a href="contact.html">Contact</a>
       </nav>
-      <a class="header-action" href="contact.html">Start a Pilot Program Today</a>
+      <a class="header-action" href="assessments.html">Start Assessment</a>
     </header>
 
     <main id="top">
       <section class="section assessments-section" id="assessments" aria-labelledby="assessments-title">
         <div class="section-heading">
-          <h2 id="assessments-title">CEAM+ Readiness Assessments</h2>
+          <h1 id="assessments-title">CEAM+ Human Adaptation Assessments</h1>
           <p>
-            Choose the environment closest to your life, work, learning, or care
-            context. The assessment will build a personalized profile around
-            focus, trust, learning style, support needs, and everyday barriers.
+            Understand how information, emotions, agency, trust, environment,
+            implementation, human-AI roles, purpose, and improvement affect your
+            next decision.
+          </p>
+          <p>
+            Start with Personal / Daily Life or Work / Business. Existing
+            education, care, and adaptive-support assessments remain available
+            as broader applications of the framework.
           </p>
         </div>
         <div class="assessment-selector-card">
           <div>
             <h3>Select Your Context</h3>
             <p>
-              Recommendations will adapt to your selected context and your
-              answers. Pick one category to begin.
+              Recommendations use all nine expanded CEAM+ layers and adapt to
+              your selected context. Pick one category to begin.
             </p>
           </div>
           <div class="assessment-controls">
@@ -50,10 +55,12 @@
             <select id="organization-type" data-organization-select>
               <option value="">Choose a category</option>
               <option value="personal">Personal / Daily Life</option>
-              <option value="business">Work / Business</option>
-              <option value="education">Learning / Education</option>
-              <option value="healthcare">Health / Care Settings</option>
-              <option value="rehabilitation">Rehabilitation / Adaptive Support</option>
+              <option value="business">Small Business / Work</option>
+              <optgroup label="Additional framework applications">
+                <option value="education">Learning / Education</option>
+                <option value="healthcare">Health / Care Settings</option>
+                <option value="rehabilitation">Rehabilitation / Adaptive Support</option>
+              </optgroup>
             </select>
             <button class="button primary" type="button" data-start-assessment disabled>Start Assessment</button>
           </div>
@@ -67,6 +74,6 @@
       <a href="#top">Back to top</a>
     </footer>
 
-    <script src="script.js?v=20260603-clearpathway-email-branding"></script>
+    <script src="script.js?v=20260615-human-adaptation"></script>
   </body>
 </html>
