@@ -4,6 +4,7 @@ const statusMessage = document.querySelector("[data-form-status]");
 const organizationSelect = document.querySelector("[data-organization-select]");
 const startAssessmentButton = document.querySelector("[data-start-assessment]");
 const assessmentPanel = document.querySelector("[data-assessment-panel]");
+const currentNavigationTab = document.querySelector('.nav-links a[aria-current="page"]');
 const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 const zapierWebhookUrl = "https://hooks.zapier.com/hooks/catch/27676700/4oizoy6/";
 const emailBrandName = "ClearPathway Systems";
@@ -3980,6 +3981,7 @@ window.CEAMAssessments = {
 };
 
 updateHeader();
+currentNavigationTab?.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
 window.addEventListener("scroll", updateHeader, { passive: true });
 
 organizationSelect?.addEventListener("change", handleOrganizationChange);
