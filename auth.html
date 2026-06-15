@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Request registered access to CEAM+ guides and AI tools.">
+    <title>Client Access | CEAM+</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=20260615-registered-access">
+  </head>
+  <body>
+    <header class="site-header" data-header>
+      <a class="brand" href="index.html" aria-label="CEAM+ home">
+        <span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span>
+        <span>CEAM+</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="framework.html">Layers</a>
+        <a href="mission.html">Mission</a>
+        <a href="values.html">Values</a>
+        <a href="assessments.html">Assessments</a>
+        <a href="workflow.html">Guides</a>
+        <a href="ai-solutions.html">AI Tools</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact a Consultant</a>
+      </nav>
+      <a class="header-action" href="assessments.html">Start Assessment</a>
+    </header>
+
+    <main id="top">
+      <section class="section auth-hero">
+        <div class="section-heading">
+          <h1>Client Access</h1>
+          <p>
+            Request registered access to CEAM+ Guides and AI Tools. Accounts
+            require email verification and manual approval before full content
+            unlocks.
+          </p>
+        </div>
+        <div class="auth-status" data-auth-status>
+          Checking access settings...
+        </div>
+      </section>
+
+      <section class="section auth-layout">
+        <article class="auth-card">
+          <h2>Sign in</h2>
+          <p>Use this if your account has already been approved.</p>
+          <form data-login-form>
+            <label>Email
+              <input type="email" name="email" autocomplete="email" required>
+            </label>
+            <label>Password
+              <input type="password" name="password" autocomplete="current-password" required>
+            </label>
+            <button class="button primary" type="submit">Sign In</button>
+          </form>
+        </article>
+
+        <article class="auth-card">
+          <h2>Request access</h2>
+          <p>Create an account and request approval. You will need to verify your email.</p>
+          <form data-register-form>
+            <label>Name
+              <input type="text" name="fullName" autocomplete="name" required>
+            </label>
+            <label>Email
+              <input type="email" name="email" autocomplete="email" required>
+            </label>
+            <label>Password
+              <input type="password" name="password" autocomplete="new-password" minlength="8" required>
+            </label>
+            <fieldset class="checkbox-group">
+              <legend>Access requested</legend>
+              <label><input type="checkbox" name="sections" value="Guides" checked> Guides</label>
+              <label><input type="checkbox" name="sections" value="AI Tools" checked> AI Tools</label>
+            </fieldset>
+            <button class="button primary" type="submit">Create Account and Request Access</button>
+          </form>
+        </article>
+      </section>
+
+      <section class="section auth-session" data-session-panel hidden>
+        <div>
+          <h2>Your account</h2>
+          <p data-session-copy></p>
+        </div>
+        <div class="auth-actions">
+          <a class="button secondary" href="workflow.html">Open Guides</a>
+          <a class="button secondary" href="ai-solutions.html">Open AI Tools</a>
+          <button class="button primary" type="button" data-request-approval>Send Approval Request</button>
+          <button class="button secondary" type="button" data-sign-out>Sign Out</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>ClearPathway Systems | CEAM+</p>
+      <a href="#top">Back to top</a>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth-config.js?v=20260615-registered-access"></script>
+    <script src="auth.js?v=20260615-registered-access"></script>
+    <script src="script.js?v=20260615-ai-solutions"></script>
+  </body>
+</html>

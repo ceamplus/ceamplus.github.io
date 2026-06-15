@@ -326,30 +326,44 @@ const renderSolutions = () => {
   if (solutionCount) solutionCount.textContent = `${visible.length} of ${solutionCategories.length} categories shown`;
 };
 
-if (solutionFilter) {
-  solutionCategories.forEach((category) => {
-    const option = document.createElement("option");
-    option.value = category.id;
-    option.textContent = category.title;
-    solutionFilter.append(option);
-  });
-  solutionFilter.addEventListener("change", renderSolutions);
+const initializeAiSolutions = () => {
+  if (solutionFilter && !solutionFilter.dataset.loaded) {
+    solutionCategories.forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category.id;
+      option.textContent = category.title;
+      solutionFilter.append(option);
+    });
+    solutionFilter.dataset.loaded = "true";
+    solutionFilter.addEventListener("change", renderSolutions);
+  }
+
+  solutionSearch?.addEventListener("input", renderSolutions);
+
+  if (pathwayList) {
+    pathwayList.innerHTML = implementationPathways
+      .map(
+        ([title, focus, steps]) => `
+          <article>
+            <h3>${title}</h3>
+            <p>${focus}</p>
+            <ol>${steps.map((step) => `<li>${step}</li>`).join("")}</ol>
+          </article>
+        `
+      )
+      .join("");
+  }
+
+  renderSolutions();
+};
+
+if (document.body?.dataset.requiresApproval === "true") {
+  if (solutionCount) solutionCount.textContent = "Sign in and receive approval to explore all categories.";
+  if (document.body.dataset.authApproved === "true") {
+    initializeAiSolutions();
+  } else {
+    document.addEventListener("ceamplus:auth-approved", initializeAiSolutions, { once: true });
+  }
+} else {
+  initializeAiSolutions();
 }
-
-solutionSearch?.addEventListener("input", renderSolutions);
-
-if (pathwayList) {
-  pathwayList.innerHTML = implementationPathways
-    .map(
-      ([title, focus, steps]) => `
-        <article>
-          <h3>${title}</h3>
-          <p>${focus}</p>
-          <ol>${steps.map((step) => `<li>${step}</li>`).join("")}</ol>
-        </article>
-      `
-    )
-    .join("");
-}
-
-renderSolutions();

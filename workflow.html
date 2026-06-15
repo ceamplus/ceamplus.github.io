@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=20260615-logo-palette">
   </head>
-  <body>
+  <body data-requires-approval="true" data-requested-sections="Guides">
     <header class="site-header" data-header>
       <a class="brand" href="index.html" aria-label="CEAM+ home">
         <span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span>
@@ -25,13 +25,39 @@
         <a href="workflow.html" aria-current="page">Guides</a>
         <a href="ai-solutions.html">AI Tools</a>
         <a href="about.html">About</a>
-        <a href="contact.html">Contact Me</a>
+        <a href="contact.html">Contact a Consultant</a>
       </nav>
       <a class="header-action" href="assessments.html">Start Assessment</a>
     </header>
 
     <main id="top">
-      <section class="section process">
+      <section class="section access-preview">
+        <div class="section-heading">
+          <h1>CEAM+ Guides</h1>
+          <p>
+            Practical guides help approved clients turn assessment results into
+            small steps, implementation plans, routines, and follow-up actions.
+          </p>
+        </div>
+        <div class="criteria-grid">
+          <article><strong>Personal guidance</strong><p>Support for habits, productivity, decisions, family stress, setbacks, and realistic next steps.</p></article>
+          <article><strong>Business guidance</strong><p>Support for workflows, customer service, marketing, operations, AI adoption, and practical implementation.</p></article>
+          <article><strong>Personalized requests</strong><p>Approved users can request a guide based on their assessment, needs, goals, and support preferences.</p></article>
+        </div>
+      </section>
+
+      <section class="section access-gate" data-auth-gate>
+        <div>
+          <h2>Registered access required</h2>
+          <p data-auth-status>Sign in or request access to unlock the full guide section.</p>
+        </div>
+        <div class="auth-actions">
+          <a class="button primary" href="auth.html">Sign In or Request Access</a>
+          <a class="button secondary" href="contact.html">Contact a Consultant</a>
+        </div>
+      </section>
+
+      <section class="section process" data-protected-content hidden>
         <div class="section-heading">
           <h1>From Awareness to Sustainable Action</h1>
           <p>
@@ -114,7 +140,7 @@
         </ol>
       </section>
 
-      <section class="section guide-examples">
+      <section class="section guide-examples" data-protected-content hidden>
         <div class="section-heading">
           <h2>Practical Starting Guides</h2>
           <p>Choose the example closest to your situation and keep the first test small.</p>
@@ -156,6 +182,9 @@
       <a href="#top">Back to top</a>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth-config.js?v=20260615-registered-access"></script>
+    <script src="auth.js?v=20260615-registered-access"></script>
     <script src="script.js?v=20260615-ai-solutions"></script>
   </body>
 </html>

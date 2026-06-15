@@ -23,7 +23,7 @@ $requiredNavigation = @{
   "workflow.html" = "Guides"
   "ai-solutions.html" = "AI Tools"
   "about.html" = "About"
-  "contact.html" = "Contact Me"
+  "contact.html" = "Contact a Consultant"
 }
 
 foreach ($page in $mainPages) {

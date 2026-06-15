@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=20260615-logo-palette">
   </head>
-  <body>
+  <body data-requires-approval="true" data-requested-sections="AI Tools">
     <header class="site-header" data-header>
       <a class="brand" href="index.html" aria-label="CEAM+ home">
         <span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span>
@@ -25,7 +25,7 @@
         <a href="workflow.html">Guides</a>
         <a href="ai-solutions.html" aria-current="page">AI Tools</a>
         <a href="about.html">About</a>
-        <a href="contact.html">Contact Me</a>
+        <a href="contact.html">Contact a Consultant</a>
       </nav>
       <a class="header-action" href="assessments.html">Start Assessment</a>
     </header>
@@ -52,7 +52,18 @@
         </div>
       </section>
 
-      <section class="section solution-criteria">
+      <section class="section access-gate" data-auth-gate>
+        <div>
+          <h2>Registered access required</h2>
+          <p data-auth-status>Sign in or request access to unlock the full AI Tools section.</p>
+        </div>
+        <div class="auth-actions">
+          <a class="button primary" href="auth.html">Sign In or Request Access</a>
+          <a class="button secondary" href="contact.html">Contact a Consultant</a>
+        </div>
+      </section>
+
+      <section class="section solution-criteria" data-protected-content hidden>
         <div class="section-heading">
           <h2>Evaluate the problem before the product</h2>
           <p>Use these questions before opening a free trial or paying for another subscription.</p>
@@ -67,7 +78,7 @@
         </div>
       </section>
 
-      <section class="section solution-catalog">
+      <section class="section solution-catalog" data-protected-content hidden>
         <div class="section-heading">
           <h2>Explore AI tool categories</h2>
           <p>
@@ -92,7 +103,7 @@
         <div class="solution-list" data-solution-list></div>
       </section>
 
-      <section class="section pathway-section">
+      <section class="section pathway-section" data-protected-content hidden>
         <div class="section-heading">
           <h2>Implementation pathways</h2>
           <p>
@@ -104,7 +115,7 @@
         <div class="pathway-list" data-pathway-list></div>
       </section>
 
-      <section class="section solution-beyond-bots">
+      <section class="section solution-beyond-bots" data-protected-content hidden>
         <div class="section-heading">
           <h2>AI is more than chatbots</h2>
           <p>
@@ -140,7 +151,7 @@
         </div>
       </section>
 
-      <section class="section solution-checklist">
+      <section class="section solution-checklist" data-protected-content hidden>
         <div class="section-heading">
           <h2>Build a toolkit that can last</h2>
         </div>
@@ -166,6 +177,9 @@
       <a href="#top">Back to top</a>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth-config.js?v=20260615-registered-access"></script>
+    <script src="auth.js?v=20260615-registered-access"></script>
     <script src="script.js?v=20260615-ai-solutions"></script>
     <script src="ai-solutions.js?v=20260615-ai-solutions"></script>
   </body>

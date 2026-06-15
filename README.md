@@ -145,6 +145,71 @@ Continue publishing the existing website through GitHub Pages as before. The new
 
 Supabase integration with website forms and the future client portal should be completed as a separate, tested update.
 
+## Registered Guides and AI Tools Access
+
+The Guides and AI Tools pages now include a public preview and a registered
+access gate. Full page content is hidden until Supabase confirms that the signed
+in user's `profiles.approval_status` is `approved`.
+
+### Website files
+
+- `auth.html`: Client sign-in and account request page.
+- `auth.js`: Browser-side email/password login, registration, approval status
+  checks, and Zapier access request notification.
+- `auth-config.js`: Public browser configuration. This file is committed with
+  empty Supabase placeholders.
+- `auth-config.example.js`: Example values and field names.
+
+To connect the live site:
+
+1. Open your Supabase project dashboard.
+2. Copy the Project URL.
+3. Copy the browser-safe anon or publishable key.
+4. Paste those values into `auth-config.js`.
+5. Do not paste the service role key, secret key, database password, or personal
+   access token into website files.
+
+### Supabase setup
+
+The migration `supabase/migrations/202606150001_registered_access.sql` prepares:
+
+- `profiles`
+- `access_requests`
+- `approval_tokens`
+- Row Level Security for client-owned reads
+- A pending profile record when a user signs up
+
+Apply it after linking the project:
+
+```powershell
+supabase db push
+```
+
+### Zapier approval email
+
+The website can send Zapier a `registered-access-request` payload when a visitor
+creates an account. Zapier can add a Google Sheets row and email you the request.
+
+For the secure email-button approval flow, deploy these Supabase Edge Function
+templates:
+
+- `supabase/functions/request-access`
+- `supabase/functions/approve-access`
+
+Set the required function secrets in Supabase:
+
+```text
+SUPABASE_SERVICE_ROLE_KEY
+SUPABASE_URL
+ZAPIER_ACCESS_WEBHOOK_URL
+APPROVAL_SECRET
+SITE_URL
+```
+
+The email approval button should use the `approvalUrl` field from the Zapier
+payload. Clicking that link marks the user approved through the server-side
+function, not through public website JavaScript.
+
 ## Official References
 
 - [Supabase CLI local development](https://supabase.com/docs/guides/local-development/cli/getting-started)
