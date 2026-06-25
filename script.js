@@ -15,7 +15,7 @@ const phases = [
   {
     id: "cognitive",
     title: "Cognitive Layer",
-    description: "Understand information, mental load, assumptions, evidence, and how decisions are made.",
+    description: "Understand information, mental load, assumptions, evidence, and the Conditions for Change shaping decisions.",
   },
   {
     id: "emotional",
@@ -25,7 +25,7 @@ const phases = [
   {
     id: "agency",
     title: "Agency Layer",
-    description: "Identify what you can control, influence, choose, learn, and act on next.",
+    description: "Identify meaningful choices that remain despite barriers and what you can control, influence, learn, and act on next.",
   },
   {
     id: "trust",
@@ -2936,12 +2936,12 @@ const buildLayerNarratives = (phaseScores, indicatorSummary, selectedTasks = [],
     if (phase.id === "cognitive") {
       observations.push(
         score >= 70
-          ? "You seem to do better when tasks have a clear order and a realistic starting point."
-          : "Mental energy may get used up quickly when too many steps or choices show up at once."
+          ? "Your Conditions for Change look stronger when tasks have a clear order and a realistic starting point."
+          : "Time, resources, or mental energy may get used up quickly when too many steps or choices show up at once."
       );
       if (taskText) observations.push(`You pointed to ${taskText} as areas that take time or attention.`);
-      barriers.push("Trying to manage too many details mentally can make simple tasks feel heavier than they need to be.");
-      recommendations.push("Choose one repeated task and turn it into a short checklist before adding a new tool.");
+      barriers.push("Trying to manage too many details mentally can make meaningful choices harder to recognize.");
+      recommendations.push("Name the condition creating the most friction, then turn one repeated task into a short checklist before adding a new tool.");
       tools.push("ChatGPT can turn scattered notes into a simple plan or checklist.");
       implementation.push("Spend 15 minutes testing one task, then write down what felt easier and what still felt confusing.");
     }
@@ -2964,8 +2964,8 @@ const buildLayerNarratives = (phaseScores, indicatorSummary, selectedTasks = [],
           ? "You can usually identify useful choices and actions even when parts of the situation are outside your control."
           : "The situation may feel controlled by outside forces, making it harder to see where your own actions can matter."
       );
-      barriers.push("Progress can stall when the problem feels too large or the controllable part is not clearly defined.");
-      recommendations.push("Separate what you control, what you can influence, and what you need to accept or plan around.");
+      barriers.push("Progress can stall when the problem feels too large or the meaningful choices that remain are not clearly defined.");
+      recommendations.push("Separate what you control, what you can influence, and what meaningful choices remain despite barriers.");
       tools.push("A simple action list or decision worksheet can turn a broad challenge into one controllable next move.");
       implementation.push("Choose one action that can be completed today and one skill that can be strengthened this month.");
     }
@@ -3032,9 +3032,9 @@ const buildLayerNarratives = (phaseScores, indicatorSummary, selectedTasks = [],
     }
 
     if (phase.id === "improvement") {
-      observations.push("Small wins and visible progress are important for keeping momentum after the first try.");
-      barriers.push("Progress often slows when routines are too complicated or when feedback comes too late.");
-      recommendations.push("Track one simple measure, such as time saved, fewer missed steps, or more confidence.");
+      observations.push("Small wins and visible progress help turn action into learning, adaptation, and sustained change.");
+      barriers.push("Progress often slows when routines are too complicated, feedback comes too late, or learning is not made visible.");
+      recommendations.push("Track one simple measure, such as time saved, fewer missed steps, more confidence, or a clearer choice next time.");
       tools.push("Todoist, Trello, or a habit tracker can make progress visible without a heavy setup.");
       implementation.push("Review what changed after one week, then adjust the routine before adding another task.");
     }
@@ -3063,11 +3063,12 @@ const getImplementationPath = (assessmentId, indicatorSummary, answerAnalysis = 
   const start = aiStartingPoints[assessmentId] || aiStartingPoints.business;
   const insightText = (answerAnalysis.insights || []).join(" ").toLowerCase();
   const steps = [
-    `Choose one repeated task first, such as ${start.examples.slice(0, 2).join(" or ")}.`,
+    "Start by naming the Conditions for Change: time, resources, cognitive capacity, emotional readiness, social environment, habits, routines, and agency.",
+    `Choose one meaningful choice inside those conditions, such as simplifying ${start.examples.slice(0, 2).join(" or ")}.`,
     "Compare the categories that could solve the task. A general assistant, specialized tool, and automation platform solve different kinds of problems.",
     "Choose the simplest option that fits current skills, systems, budget, privacy needs, and human-review capacity.",
     "Have a person review the AI suggestion before using it for anything important.",
-    "Track simple results: time saved, mistakes reduced, confidence gained, and steps completed.",
+    "Track learning: what changed, what choice became clearer, what action helped, and what needs to adapt.",
   ];
 
   const firstBarrier = indicatorSummary[0]?.id;
@@ -3126,10 +3127,11 @@ const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSumma
 
   const recommendations = [
     taskText
-      ? `Start with ${taskText}. Those answers point to tasks where AI could reduce repeated work without changing everything at once.`
-      : `Start with one simple task, like ${startingPoint.examples.slice(0, 3).join(", ")}.`,
+      ? `Start by understanding the conditions around ${taskText}. Those answers point to tasks where AI could reduce repeated work without changing everything at once.`
+      : `Start by naming the conditions around one simple task, like ${startingPoint.examples.slice(0, 3).join(", ")}.`,
     "Use AI to create a first draft, summary, checklist, reminder, or plan. Review it before using it for anything important.",
     "Keep the first test small. One task, one tool, and one week of practice will teach more than a large rollout.",
+    "Use the sequence Conditions for Change, Agency, Choices, Actions, Learning, Adaptation, and Sustained Change to review what happened.",
     "Explain what the tool does, what information it uses, and when a person should review the result.",
   ];
 
@@ -3148,14 +3150,15 @@ const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSumma
 
   const observations = [
     score >= 75
-      ? "You seem ready to try AI in a practical way, especially when the first use is specific and easy to review."
-      : "Your answers point to a need for simpler steps before adding too many tools.",
+      ? "Your conditions suggest readiness to try AI in a practical way, especially when the first use is specific and easy to review."
+      : "Your answers point to conditions that may need simpler steps before adding too many tools.",
     taskText
       ? `You mentioned ${taskText}, which gives a realistic place to begin instead of guessing where AI belongs.`
       : "The strongest next step is to choose one real task from the day and test whether AI makes it easier.",
     answerAnalysis.currentAiTools?.includes("I do not use AI tools yet")
       ? "Because AI is still new here, the first experience should be calm, clear, and easy to undo."
       : "Because some tools are already familiar, the next step can improve what is already being used.",
+    "CEAM+ does not tell people what to choose. It helps people understand the conditions shaping their choices so they can exercise greater agency.",
   ];
 
   if (assessmentId === "personal") {
@@ -3165,7 +3168,7 @@ const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSumma
   const barriers = [
     getPlainBarrier(topIndicator),
     "Trying to change too much at once can make a good idea feel stressful or hard to maintain.",
-    "People are more likely to keep using a tool when the first result solves a real daily problem.",
+    "People are more likely to sustain change when the first result helps them learn, adapt, and see the next meaningful choice.",
   ];
 
   const implementationPlan = [
@@ -3173,6 +3176,7 @@ const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSumma
       title: "Week 1",
       steps: [
         taskText ? `Choose one task from your answers, such as ${taskText}.` : `Choose one small task, such as ${startingPoint.examples[0]}.`,
+        "Name the conditions shaping that task before choosing an intervention.",
         "Test one AI tool for 15 to 20 minutes at a time.",
         "Write down what felt easier, what felt confusing, and what still needed human review.",
       ],
@@ -3189,6 +3193,7 @@ const getRecommendation = (assessmentId, score, phaseScores = {}, indicatorSumma
       title: "Week 3",
       steps: [
         "Keep what worked, remove what added confusion, and adjust the instructions.",
+        "Ask what the test revealed about agency, choices, action, learning, and adaptation.",
         "Expand only if the first task feels manageable.",
       ],
     },
@@ -3640,6 +3645,11 @@ const renderResult = (resultBox, result) => {
       <h4>Your Readiness Summary</h4>
       <p>${result.answeredCount} of ${result.questionCount} questions answered.</p>
       <p>${result.recommendation.description}</p>
+    </section>
+    <section class="result-section">
+      <h4>CEAM+ Philosophy</h4>
+      <p>CEAM+ does not tell people what to choose. It helps people and organizations understand the conditions shaping their choices so they can exercise greater agency through understanding, reflection, and intentional decision-making.</p>
+      <p>The purpose of CEAM+ is understanding before intervention.</p>
     </section>
     <div class="profile-tags">
       ${result.profileTags.map((tag) => `<span>${tag}</span>`).join("")}

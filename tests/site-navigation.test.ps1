@@ -72,6 +72,36 @@ if ($framework -match 'http-equiv="refresh"') {
   }
 }
 
+if ($framework -notmatch [regex]::Escape("Understanding how people and organizations adopt, resist, and sustain change in an increasingly AI-driven world.")) {
+  throw "framework.html is missing the stable CEAM+ research identity."
+}
+
+@(
+  "Conditions for Change",
+  "Agency is not the absence of barriers",
+  "Foundational Anchors",
+  "Research Library",
+  "Explorations",
+  "Research Agenda",
+  "Level 1 - Timeless Questions",
+  "Level 2 - Decade Questions",
+  "Level 3 - Emerging Questions"
+) | ForEach-Object {
+  if ($framework -notmatch [regex]::Escape($_)) {
+    throw "framework.html is missing foundational framework content: $_"
+  }
+}
+
+$mission = Get-Content (Join-Path $root "mission.html") -Raw
+if ($mission -notmatch [regex]::Escape("The purpose of CEAM+ is understanding before intervention.")) {
+  throw "mission.html is missing the understanding before intervention philosophy."
+}
+
+$workflow = Get-Content (Join-Path $root "workflow.html") -Raw
+if ($workflow -notmatch [regex]::Escape("Conditions for Change")) {
+  throw "workflow.html does not begin from Conditions for Change."
+}
+
 $values = Get-Content (Join-Path $root "values.html") -Raw
 if ($values -match 'http-equiv="refresh"') {
   throw "values.html still redirects instead of showing the Values page."
