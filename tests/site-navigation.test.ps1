@@ -5,6 +5,7 @@ $mainPages = @(
   "index.html",
   "framework.html",
   "mission.html",
+  "philosophy.html",
   "values.html",
   "about.html",
   "assessments.html",
@@ -18,6 +19,7 @@ $requiredNavigation = @{
   "index.html" = "Home"
   "framework.html" = "Layers"
   "mission.html" = "Mission"
+  "philosophy.html" = "Philosophy"
   "values.html" = "Values"
   "assessments.html" = "Assessments"
   "workflow.html" = "Guides"
