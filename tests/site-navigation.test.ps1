@@ -4,7 +4,6 @@ $root = Split-Path -Parent $PSScriptRoot
 $mainPages = @(
   "index.html",
   "framework.html",
-  "philosophy.html",
   "values.html",
   "about.html",
   "assessments.html",
@@ -17,8 +16,7 @@ $mainPages = @(
 $requiredNavigation = @{
   "index.html" = "Home"
   "framework.html" = "Layers"
-  "philosophy.html" = "Philosophy"
-  "values.html" = "Mission &amp; Values"
+  "values.html" = "Mission, Values &amp; Philosophy"
   "assessments.html" = "Assessments"
   "workflow.html" = "Guides"
   "ai-solutions.html" = "AI Tools"
@@ -103,8 +101,11 @@ if ($values -match 'http-equiv="refresh"') {
 }
 
 @(
-  "Our Mission &amp; Values",
+  "Our Mission, Values &amp; Philosophy",
   "The purpose of CEAM+ is understanding before intervention.",
+  "Adaptive Wisdom Learning Loop",
+  "The Overload Question",
+  "Marketing and Interdisciplinary Research",
   "Human First",
   "Clarity Over Complexity",
   "Progress Over Perfection"
@@ -116,7 +117,12 @@ if ($values -match 'http-equiv="refresh"') {
 
 $mission = Get-Content (Join-Path $root "mission.html") -Raw
 if ($mission -notmatch 'http-equiv="refresh" content="0; url=values\.html"') {
-  throw "mission.html should redirect to the combined Mission & Values page."
+  throw "mission.html should redirect to the combined Mission, Values & Philosophy page."
+}
+
+$philosophy = Get-Content (Join-Path $root "philosophy.html") -Raw
+if ($philosophy -notmatch 'http-equiv="refresh" content="0; url=values\.html#philosophy"') {
+  throw "philosophy.html should redirect to the combined Mission, Values & Philosophy page."
 }
 
 $styles = Get-Content (Join-Path $root "styles.css") -Raw
