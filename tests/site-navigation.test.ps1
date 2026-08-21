@@ -4,7 +4,6 @@ $root = Split-Path -Parent $PSScriptRoot
 $mainPages = @(
   "index.html",
   "framework.html",
-  "mission.html",
   "philosophy.html",
   "values.html",
   "about.html",
@@ -18,9 +17,8 @@ $mainPages = @(
 $requiredNavigation = @{
   "index.html" = "Home"
   "framework.html" = "Layers"
-  "mission.html" = "Mission"
   "philosophy.html" = "Philosophy"
-  "values.html" = "Values"
+  "values.html" = "Mission &amp; Values"
   "assessments.html" = "Assessments"
   "workflow.html" = "Guides"
   "ai-solutions.html" = "AI Tools"
@@ -94,11 +92,6 @@ if ($framework -notmatch [regex]::Escape("Understanding how people and organizat
   }
 }
 
-$mission = Get-Content (Join-Path $root "mission.html") -Raw
-if ($mission -notmatch [regex]::Escape("The purpose of CEAM+ is understanding before intervention.")) {
-  throw "mission.html is missing the understanding before intervention philosophy."
-}
-
 $workflow = Get-Content (Join-Path $root "workflow.html") -Raw
 if ($workflow -notmatch [regex]::Escape("Conditions for Change")) {
   throw "workflow.html does not begin from Conditions for Change."
@@ -106,13 +99,24 @@ if ($workflow -notmatch [regex]::Escape("Conditions for Change")) {
 
 $values = Get-Content (Join-Path $root "values.html") -Raw
 if ($values -match 'http-equiv="refresh"') {
-  throw "values.html still redirects instead of showing the Values page."
+  throw "values.html still redirects instead of showing the Mission & Values page."
 }
 
-@("Human First", "Clarity Over Complexity", "Progress Over Perfection") | ForEach-Object {
+@(
+  "Our Mission &amp; Values",
+  "The purpose of CEAM+ is understanding before intervention.",
+  "Human First",
+  "Clarity Over Complexity",
+  "Progress Over Perfection"
+) | ForEach-Object {
   if ($values -notmatch [regex]::Escape($_)) {
     throw "values.html is missing: $_"
   }
+}
+
+$mission = Get-Content (Join-Path $root "mission.html") -Raw
+if ($mission -notmatch 'http-equiv="refresh" content="0; url=values\.html"') {
+  throw "mission.html should redirect to the combined Mission & Values page."
 }
 
 $styles = Get-Content (Join-Path $root "styles.css") -Raw
