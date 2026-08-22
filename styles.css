@@ -441,7 +441,19 @@ svg {
 }
 
 .section {
-  padding: clamp(70px, 10vw, 118px) clamp(18px, 4vw, 52px);
+  padding: clamp(58px, 8vw, 96px) clamp(18px, 4vw, 52px);
+}
+
+.section + .section {
+  padding-top: clamp(42px, 6vw, 72px);
+}
+
+.mission-intro {
+  padding-bottom: clamp(32px, 4vw, 52px);
+}
+
+.mission-intro + .visual-feature {
+  padding-top: clamp(20px, 3vw, 36px);
 }
 
 .section-heading {
