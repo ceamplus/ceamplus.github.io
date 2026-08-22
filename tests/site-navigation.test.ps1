@@ -102,7 +102,6 @@ if ($values -match 'http-equiv="refresh"') {
 
 @(
   "Our Mission, Values &amp; Philosophy",
-  "The purpose of CEAM+ is understanding before intervention.",
   "Adaptive Wisdom Learning Loop",
   "The Overload Question",
   "Marketing and Interdisciplinary Research",
