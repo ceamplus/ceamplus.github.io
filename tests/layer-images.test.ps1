@@ -13,7 +13,7 @@ $expectedImages = @(
   "continuous-improvement"
 )
 
-foreach ($page in @("framework.html", "applications.html")) {
+foreach ($page in @("framework.html")) {
   $html = Get-Content (Join-Path $root $page) -Raw
 
   foreach ($image in $expectedImages) {
@@ -25,6 +25,14 @@ foreach ($page in @("framework.html", "applications.html")) {
       throw "$page is missing the accessible local image for $image."
     }
   }
+}
+
+$applications = Get-Content (Join-Path $root "applications.html") -Raw
+if ($applications -match 'The Nine Expanded CEAM\+ Layers') {
+  throw "applications.html should reference the framework archive instead of duplicating the expanded layer gallery."
+}
+if ($applications -notmatch 'href="framework\.html"[^>]*>View Framework Layers</a>') {
+  throw "applications.html is missing its link to the framework archive."
 }
 
 $styles = Get-Content (Join-Path $root "styles.css") -Raw
