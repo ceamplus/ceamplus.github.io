@@ -9,6 +9,9 @@ const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduc
 const zapierWebhookUrl = "https://hooks.zapier.com/hooks/catch/27676700/4oizoy6/";
 const emailBrandName = "ClearPathway Systems";
 const emailSignature = "ClearPathway Systems | CEAM+";
+const assessmentLimitation =
+  "This developmental result is a discussion indicator, not a diagnosis or proof of character, motivation, willingness, capability, or an internal state. AI-assisted interpretation may be incomplete or mistaken; a human reviewer retains responsibility for checking evidence, alternatives, context, and consequential decisions.";
+const responseStatusOptions = ["Uncertain", "Not applicable", "Insufficient information"];
 
 // CEAM+ assessment sections. Each section measures behavior and support needs in plain language.
 const phases = [
@@ -2251,6 +2254,21 @@ const calculatePhaseScores = (assessment, responses) =>
     return scores;
   }, {});
 
+const findContradictoryIndicators = (assessment, responses) => {
+  const grouped = assessment.questions.reduce((result, question) => {
+    if (!question.indicator) return result;
+    const score = getQuestionScore(question, responses[question.id]);
+    if (score === null) return result;
+    if (!result[question.indicator]) result[question.indicator] = [];
+    result[question.indicator].push(score);
+    return result;
+  }, {});
+
+  return Object.entries(grouped)
+    .filter(([, scores]) => scores.length > 1 && Math.max(...scores) - Math.min(...scores) >= 3)
+    .map(([indicator]) => indicator.replaceAll("_", " "));
+};
+
 const collectIndicators = (assessment, responses) =>
   assessment.questions.reduce((indicators, question) => {
     if (!question.indicator) return indicators;
@@ -3227,7 +3245,16 @@ const buildAssessmentResult = (assessment, responses, participant = {}) => {
   const indicatorSummary = summarizeIndicators(collectIndicators(assessment, responses));
   const answerAnalysis = analyzeSelectedAnswers(responses);
   const recommendation = getRecommendation(assessment.id, score, phaseScores, indicatorSummary, answerAnalysis);
-  const answeredCount = assessment.questions.filter((question) => responses[question.id] !== undefined).length;
+  const answeredCount = assessment.questions.filter(
+    (question) => responses[question.id] !== undefined || responses[`${question.id}_status`] !== undefined
+  ).length;
+  const scoredAnswerCount = assessment.questions.filter(
+    (question) => getQuestionScore(question, responses[question.id]) !== null
+  ).length;
+  const responseStatuses = assessment.questions
+    .map((question) => responses[`${question.id}_status`])
+    .filter(Boolean);
+  const contradictoryIndicators = findContradictoryIndicators(assessment, responses);
 
   return {
     resultId: `${assessment.id}-${Date.now()}`,
@@ -3238,12 +3265,15 @@ const buildAssessmentResult = (assessment, responses, participant = {}) => {
     participant,
     responses,
     score,
+    scoredAnswerCount,
     answeredCount,
     questionCount: assessment.questions.length,
     readinessLevel: readiness.label,
     readinessTone: readiness.tone,
     phaseScores,
     indicators: indicatorSummary,
+    responseStatuses,
+    contradictoryIndicators,
     answerAnalysis,
     profileTags: getProfileTags(score, indicatorSummary),
     recommendation,
@@ -3266,9 +3296,10 @@ const formatResponsesForEmail = (result) => {
     .map(([responseId, value]) => {
       const isNote = responseId.endsWith("_note");
       const isFollowUp = responseId.endsWith("_followup");
-      const questionId = responseId.replace(/_(note|followup)$/, "");
+      const isStatus = responseId.endsWith("_status");
+      const questionId = responseId.replace(/_(note|followup|status)$/, "");
       const question = assessment?.questions.find((item) => item.id === questionId);
-      const suffix = isNote ? " - additional note" : isFollowUp ? " - follow-up" : "";
+      const suffix = isNote ? " - additional note" : isFollowUp ? " - follow-up" : isStatus ? " - response status" : "";
       const label = question ? `${question.label}${suffix}` : responseId;
       const answer = Array.isArray(value) ? value.join(", ") : String(value);
       return `${label}: ${answer}`;
@@ -3544,6 +3575,13 @@ const renderQuestion = (question, index) => {
     <label class="question-label" for="${question.id}">${question.label}</label>
     ${inputMarkup}
     ${question.note ? `<label class="optional-note">${question.note}<textarea name="${question.id}_note" rows="2"></textarea></label>` : ""}
+    <label class="response-status">
+      If the listed answers do not fit
+      <select name="${question.id}_status" data-response-status>
+        <option value="">Use my answer above</option>
+        ${responseStatusOptions.map((status) => `<option value="${status}">${status}</option>`).join("")}
+      </select>
+    </label>
     ${question.followUp ? `<div class="follow-up" data-follow-up hidden></div>` : ""}
   `;
 
@@ -3573,6 +3611,11 @@ const renderPhase = (phase, phaseQuestions, questionOffset = 0, isOpen = false) 
 
 const getResponsesFromPanel = (panel, assessment) =>
   assessment.questions.reduce((responses, question) => {
+    const responseStatus = panel.querySelector(`[name="${question.id}_status"]`)?.value;
+    if (responseStatus) {
+      responses[`${question.id}_status`] = responseStatus;
+      return responses;
+    }
     if (question.type === "choice") {
       const selected = [...panel.querySelectorAll(`input[name="${question.id}"]:checked`)].map((input) => input.value);
       if (selected.length) responses[question.id] = selected;
@@ -3638,13 +3681,18 @@ const renderResult = (resultBox, result) => {
   resultBox.className = `guided-result ${result.readinessTone}`;
   resultBox.innerHTML = `
     <div class="result-heading">
-      <span>${result.recommendation.profile}</span>
-      <strong>${result.score}% implementation readiness</strong>
+      <span>${result.scoredAnswerCount ? result.recommendation.profile : "Insufficient scored information"}</span>
+      <strong>${result.scoredAnswerCount ? `${result.score}% discussion indicator` : "No score calculated"}</strong>
     </div>
+    <section class="result-section assessment-limitation" aria-label="Assessment limitation">
+      <h4>How to Use This Result</h4>
+      <p>${assessmentLimitation}</p>
+      <p>This score summarizes the answered items only. Uncertain, not-applicable, and insufficient-information responses are excluded from scoring and should guide follow-up inquiry.</p>
+    </section>
     <section class="result-section">
       <h4>Your Readiness Summary</h4>
       <p>${result.answeredCount} of ${result.questionCount} questions answered.</p>
-      <p>${result.recommendation.description}</p>
+      <p>${result.scoredAnswerCount ? result.recommendation.description : "The responses provided do not support a readiness summary. Add answerable items or use the uncertainty selections to guide a human follow-up conversation."}</p>
     </section>
     <section class="result-section">
       <h4>CEAM+ Philosophy</h4>
@@ -3689,6 +3737,11 @@ const renderResult = (resultBox, result) => {
       <p><strong>AI tools already used:</strong> ${
         result.answerAnalysis.currentAiTools.length ? result.answerAnalysis.currentAiTools.join(", ") : "None selected yet"
       }</p>
+    </section>
+    <section class="result-section">
+      <h4>Uncertainty and Follow-Up Questions</h4>
+      <p>${result.responseStatuses.length ? `${result.responseStatuses.length} response${result.responseStatuses.length === 1 ? "" : "s"} indicated uncertainty, non-applicability, or insufficient information. Clarify these before drawing conclusions.` : "No special uncertainty response was selected; that does not eliminate misunderstanding, impression management, missing context, or measurement error."}</p>
+      ${result.contradictoryIndicators.length ? `<p>Answers related to ${makeNaturalList(result.contradictoryIndicators)} varied substantially. Ask what conditions, timing, roles, or interpretations explain the difference rather than treating it as dishonesty.</p>` : "<p>No large within-indicator contrast was detected in the answered items. Continue to consider structural barriers and credible alternative explanations.</p>"}
     </section>
     <section class="result-section">
       <h4>Recommended Implementation Path</h4>
@@ -3864,7 +3917,9 @@ const renderResult = (resultBox, result) => {
 const updateGuidedAssessment = (panel, assessment) => {
   const responses = getResponsesFromPanel(panel, assessment);
   const result = buildAssessmentResult(assessment, responses);
-  const answered = assessment.questions.filter((question) => responses[question.id] !== undefined).length;
+  const answered = assessment.questions.filter(
+    (question) => responses[question.id] !== undefined || responses[`${question.id}_status`] !== undefined
+  ).length;
   const progressPercent = Math.min(100, Math.round((answered / assessment.questions.length) * 100));
   const score = panel.querySelector("[data-score]");
   const progress = panel.querySelector("[data-progress]");
@@ -3939,6 +3994,12 @@ const renderAssessment = (assessment) => {
       updateGuidedAssessment(assessmentPanel, assessment);
     });
     wrapper.addEventListener("change", () => {
+      const statusSelect = wrapper.querySelector("[data-response-status]");
+      const hasStatus = Boolean(statusSelect?.value);
+      wrapper.querySelectorAll(`input[name="${question.id}"]`).forEach((input) => {
+        input.disabled = hasStatus;
+        if (hasStatus && input.type === "checkbox") input.checked = false;
+      });
       updateFollowUp(question, wrapper);
       updateGuidedAssessment(assessmentPanel, assessment);
     });
