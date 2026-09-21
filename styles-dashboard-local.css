@@ -1,0 +1,14 @@
+#assessment-insights { scroll-margin-top:150px; }
+#saved-assessment-dashboard select { display:block; width:100%; max-width:100%; padding:12px; margin:10px 0 24px; border:1px solid #a0a4a8; border-radius:5px; background:#fff; font:inherit; color:#34363a; }
+#saved-assessment-dashboard .hero-actions { margin:26px 0; flex-wrap:wrap; }
+#saved-assessment-dashboard .pilot-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; padding:0; }
+#saved-assessment-dashboard .pilot-grid article { padding:22px; background:white; border:1px solid var(--line); border-radius:8px; min-width:0; }
+#saved-assessment-dashboard h4 { font-size:1rem; margin:0 0 10px; }
+.dashboard-local-details { margin:16px 0; padding:18px; border:1px solid var(--line); border-radius:6px; background:white; }
+.dashboard-local-details>summary { font-weight:650; cursor:pointer; }
+.dashboard-local-table { overflow:auto; max-width:100%; }
+.dashboard-local-table table { width:100%; border-collapse:collapse; text-align:left; font-size:.87rem; margin-top:18px; }
+.dashboard-local-table th,.dashboard-local-table td { padding:12px; border-bottom:1px solid var(--line); vertical-align:top; }
+.dashboard-demonstration>summary { max-width:1160px; margin:auto; padding:24px; font-size:1.15rem; font-weight:650; border:1px solid var(--line); background:white; cursor:pointer; }
+@media(max-width:700px) { #saved-assessment-dashboard .pilot-grid { grid-template-columns:1fr; }.dashboard-local-details { padding:12px; } }
+@media print { .dashboard-local-table { overflow:visible; } }

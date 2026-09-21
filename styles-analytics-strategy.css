@@ -1,0 +1,84 @@
+/* Evidence worksheets extend the shared CEAM+ palette; scoped to the lab module. */
+.strategy-app { color: var(--ink, #34363a); overflow-wrap: anywhere; }
+.strategy-app h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+.strategy-app h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+.strategy-app h4 { margin: 0 0 12px; font-size: 1.15rem; }
+.strategy-app h5 { margin: 0 0 10px; font-size: 1rem; }
+.strategy-app p { max-width: 90ch; }
+.strategy-note, .strategy-field small { color: var(--muted, #676a70); font-size: .9rem; }
+.strategy-app details { border: 1px solid var(--line, #dedfe2); border-radius: 8px; padding: 18px; margin: 16px 0; background: #fff; }
+.strategy-app summary { cursor: pointer; font-weight: 700; padding: 8px 0; }
+.strategy-case > summary { font-size: 1.1rem; }
+.strategy-app details[open] > summary { margin-bottom: 18px; }
+.strategy-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
+.strategy-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.strategy-field.strategy-wide { grid-column: 1 / -1; }
+.strategy-app label { display: block; font-weight: 650; font-size: .92rem; }
+.strategy-app input, .strategy-app select, .strategy-app textarea { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; background: #fff; border: 1px solid #aeb0b5; border-radius: 5px; color: #34363a; font: inherit; font-size: .95rem; }
+.strategy-app textarea { resize: vertical; }
+.strategy-app input[type=file] { margin-top: 8px; }
+.strategy-field small { font-weight: 400; }
+.strategy-app :is(input, select, textarea, button, summary, a):focus-visible { outline: 3px solid #947126; outline-offset: 3px; }
+.strategy-app input:invalid { border-color: #a54032; }
+.strategy-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0; }
+.strategy-button { min-height: 44px; border: 1px solid #505258; background: #505258; color: white; padding: 10px 16px; border-radius: 5px; font: inherit; font-size: .88rem; font-weight: 650; cursor: pointer; white-space: normal; }
+.strategy-button:hover { background: #34363a; }
+.strategy-secondary { background: white; color: #34363a; }
+.strategy-secondary:hover { background: #f3ead2; }
+.strategy-record > .strategy-button { margin-top: 16px; }
+.strategy-subsection { margin: 28px 0; padding-top: 24px; border-top: 1px solid var(--line, #dedfe2); }
+.strategy-hierarchy { padding: 14px 18px; background: var(--mint, #f3ead2); border-left: 3px solid var(--gold, #c79b3b); font-weight: 650; }
+.strategy-select-tool { display: grid; gap: 10px; margin: 24px 0; max-width: 760px; }
+.strategy-managerial-question { font-size: 1.08rem; color: #505258; }
+.strategy-status { min-height: 1.5em; font-weight: 600; }
+.strategy-candidate { padding: 16px 0; border-bottom: 1px solid #dedfe2; }
+.strategy-candidate strong { display: block; color: #746026; }
+.strategy-validation { padding: 12px; border-left: 3px solid #9b4938; background: #fff4f0; }
+.strategy-swot-matrix { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
+.strategy-swot-matrix section { padding: 20px; border: 1px solid #dedfe2; border-top: 3px solid #b28a32; background: #fff; border-radius: 6px; min-width: 0; }
+.strategy-swot-matrix ul { margin: 0; padding-left: 18px; }
+.strategy-swot-matrix li { margin: 12px 0; }
+.strategy-swot-matrix a { text-decoration: underline; text-underline-offset: 3px; }
+.strategy-swot-matrix small { display: block; color: #676a70; margin-top: 5px; }
+.strategy-high-priority { background: #f3ead2; padding: 6px; }
+.strategy-tows-questions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.strategy-tows-questions section { min-width: 0; }
+.strategy-tows-questions ul { padding-left: 20px; }
+.strategy-tows-questions li { margin: 12px 0; }
+.strategy-forces { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
+.strategy-force, .strategy-forces-center { padding: 18px; border: 1px solid #b7b9bd; border-radius: 6px; text-align: center; display: flex; flex-direction: column; justify-content: center; gap: 8px; background: #fff; }
+.strategy-forces-center { grid-area: 2 / 2; background: #f3ead2; font-weight: 700; }
+.strategy-forces .force-0 { grid-area: 1 / 2; }
+.strategy-forces .force-1 { grid-area: 2 / 1; }
+.strategy-forces .force-2 { grid-area: 2 / 3; }
+.strategy-forces .force-3 { grid-area: 3 / 1; }
+.strategy-forces .force-4 { grid-area: 3 / 3; }
+.strategy-table-scroll { max-width: 100%; overflow-x: auto; margin: 20px 0; border: 1px solid #dedfe2; border-radius: 4px; }
+.strategy-app table { width: 100%; min-width: 440px; border-collapse: collapse; font-size: .86rem; background: #fff; }
+.strategy-app caption { text-align: left; padding: 12px; font-weight: 700; }
+.strategy-app th, .strategy-app td { padding: 12px; border-bottom: 1px solid #dedfe2; text-align: left; vertical-align: top; max-width: 360px; }
+.strategy-app th { background: #f7f5ef; }
+.strategy-app svg { width: 100%; height: auto; max-width: 760px; margin: 18px auto; }
+.strategy-generated { padding: 18px; background: #f7f5ef; border-left: 3px solid #b28a32; }
+.strategy-risk-grid { display: grid; grid-template-columns: 48px repeat(5, minmax(0, 1fr)); gap: 4px; max-width: 760px; margin: 20px 0; font-size: .75rem; }
+.strategy-risk-grid > * { min-height: 42px; display: flex; align-items: center; justify-content: center; padding: 6px; border: 1px solid #dedfe2; background: #fff; }
+.strategy-risk-grid .strategy-risk-occupied { background: #f3ead2; font-weight: 700; }
+.strategy-bar-row { margin: 12px 0; font-size: .9rem; }
+.strategy-bar-row > div { height: 10px; background: #eee; max-width: 600px; }
+.strategy-bar { display: block; height: 10px; background: #947126; }
+@media (max-width: 650px) {
+  .strategy-fields, .strategy-swot-matrix, .strategy-tows-questions { grid-template-columns: minmax(0, 1fr); }
+  .strategy-app details { padding: 14px; }
+  .strategy-forces { grid-template-columns: minmax(0, 1fr); }
+  .strategy-forces > * { grid-area: auto !important; }
+  .strategy-actions > .strategy-button { flex: 1 1 220px; }
+  .strategy-risk-grid { grid-template-columns: 30px repeat(5, minmax(0, 1fr)); gap: 2px; }
+  .strategy-risk-grid > * { padding: 3px; }
+}
+@media print {
+  .strategy-app { font-size: 10pt; }
+  .strategy-app button, .strategy-select-tool { display: none; }
+  .strategy-app .strategy-record { break-inside: avoid; }
+  .strategy-table-scroll { overflow: visible; }
+  .strategy-app table { min-width: 0; }
+}

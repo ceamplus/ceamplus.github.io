@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="description" content="Explore marketing data locally with the CEAM+ Marketing Analytics Lab. Upload spreadsheets, learn calculations, compare strategies, and connect evidence with human judgment.">
+  <title>Marketing Analytics Lab | CEAM+</title>
+  <link rel="icon" href="ceam-icon.jpeg">
+  <link rel="stylesheet" href="styles-assessment-base.css?v=20260914-evidence">
+  <link rel="stylesheet" href="styles-analytics.css?v=20260913-lab">
+  <link rel="stylesheet" href="styles-analytics-strategy.css?v=20260913-lab">
+</head>
+<body class="lab-page">
+  <a class="skip-link" href="#top">Skip to content</a>
+    <header class="site-header" data-header>
+      <a class="brand" href="index.html" aria-label="CEAM+ home"><span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span><span>CEAM+</span></a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="surveys.html">Surveys</a>
+        <a href="assessment-center.html">Assessment Center</a>
+        <a href="analytics-lab.html" aria-current="page">Marketing Analytics Lab</a>
+        <a href="research.html">Research</a>
+        <a href="ai-technology.html">AI</a>
+        <a href="consulting.html">Consulting</a>
+        <a href="about.html">About</a>
+      </nav>
+      <a class="header-action" href="consulting.html">Consulting Process</a>
+    </header>
+    <main id="top" tabindex="-1">
+      <section class="section lab-intro">
+        <span class="eyebrow">CEAM+ / Applied marketing intelligence</span>
+        <h1>Marketing Analytics Lab</h1>
+        <p class="lab-lead">Understand the numbers. Examine the evidence. Make a more informed decision.</p>
+        <p>Upload a spreadsheet or start with a few values. Connect calculations and charts to marketing questions, business context, and the CEAM+ human and adoption lens.</p>
+        <div class="evidence-pathway lab-evidence-pathway">
+          <p><strong>Three complementary evidence tools.</strong> <a class="text-link" href="surveys.html">Surveys</a> collect what people report. The <a class="text-link" href="assessment-center.html">Assessment Center</a> examines what combined evidence suggests about readiness, capability, and priorities. This <strong>Analytics Lab</strong> explores what measurable business data show.</p>
+          <p>Bring the findings together for human interpretation, decisions, measurement, and adaptation. A survey response, a capability rating, and an observed performance metric answer different questions.</p>
+        </div>
+        <p class="lab-privacy"><strong>Local browser processing.</strong> No login, paid API, or AI service. Your uploaded file is processed locally in your browser in this version of CEAM+ and is not intentionally transmitted to CEAM+ servers. <a href="#lab-limitations">Privacy &amp; limitations</a></p>
+        <ol class="lab-levels" aria-label="CEAM+ analytical hierarchy"><li><strong>1 · Describe</strong><span>What is happening?</span></li><li><strong>2 · Diagnose</strong><span>Why might it be happening?</span></li><li><strong>3 · Explain</strong><span>What evidence supports it?</span></li><li><strong>4 · Decide</strong><span>What should we consider?</span></li><li><strong>5 · Measure</strong><span>Did the decision work?</span></li></ol>
+        <p class="lab-principle">Use the simplest analysis that adequately answers the decision question.</p>
+        <div class="lab-mode-switch" role="group" aria-label="Choose an analysis mode"><button type="button" data-mode="data" aria-pressed="true">Data &amp; visualizations</button><button type="button" data-mode="calculator" aria-pressed="false">Quick Marketing Calculator</button><button type="button" data-mode="case" aria-pressed="false">Case Analysis Mode</button></div>
+        <p id="lab-status" role="status" aria-live="polite">Start with a file, sample data, or a manual calculation.</p>
+        <p id="lab-error" role="alert" hidden></p>
+      </section>
+
+      <details class="section lab-details" id="lab-assessment-context"></details>
+      <section class="section lab-workspace" data-mode-panel="data" aria-labelledby="data-title">
+        <div class="lab-section-title"><div><span class="eyebrow">01 / Data</span><h2 id="data-title">Start with your evidence.</h2></div><button type="button" id="clear-data" class="button secondary">Clear dataset</button></div>
+        <div id="drop-zone" class="lab-drop-zone">
+          <label for="data-file"><strong>Choose a spreadsheet or drop it here</strong><span>CSV, XLSX, XLS · Up to 10 MB · 20,000 rows · 100 columns · 1 million cells per sheet</span></label>
+          <input type="file" id="data-file" accept=".csv,.xlsx,.xls">
+          <p>Use a header row, consistent units, and one observation per row. Your source file is never modified. Avoid unnecessary personal or sensitive information.</p>
+        </div>
+        <div class="lab-toolbar"><label>Try an example<select id="sample-select"><option value="market">Market growth &amp; purchase penetration</option><option value="segments">Customer segments</option><option value="quarters">Quarterly sales</option><option value="campaigns">Marketing campaigns</option></select></label><button type="button" class="button primary" id="load-sample">Load Sample Data</button></div>
+        <div id="dataset-summary" class="lab-data-summary" hidden><p id="dataset-name"></p><label id="sheet-control" hidden>Workbook sheet<select id="sheet-select"></select></label><p id="dataset-notes"></p></div>
+        <div id="dataset-panels" hidden>
+          <h3>Data preview</h3><p id="preview-caption"></p><div id="data-preview"></div>
+          <details class="lab-details" open><summary>Data quality · Check the meaning before calculating</summary><p id="quality-summary"></p><div id="data-quality"></div></details>
+          <details class="lab-details"><summary>Variable mapping · Review suggestions and override them</summary><p>Column-name matches are suggestions. Choose the business meaning of each column. Mapping a column does not validate its definition. Numeric percentages need an explicit scale when used in calculations.</p><div id="variable-mapping" class="lab-mapping-grid"></div></details>
+          <div class="lab-section-title"><div><span class="eyebrow">02 / Calculation</span><h3>What are you trying to understand?</h3></div><button type="button" class="button secondary" data-mode="calculator">Choose a business question</button></div>
+          <div id="recommended-metrics"></div>
+          <section class="lab-analysis-area" aria-labelledby="chart-title"><span class="eyebrow">03 / Visualization</span><h3 id="chart-title">Explore a pattern.</h3><p id="chart-recommendation"></p>
+            <form id="chart-form" class="lab-control-grid"><label>Chart type<select id="chart-type"><option value="bar">Bar chart</option><option value="horizontalBar">Horizontal bar chart</option><option value="line">Line / quarter or year trend</option><option value="donut">Donut · Up to 8 categories</option><option value="scatter">Scatter plot</option><option value="histogram">Histogram</option></select></label><label>X variable<select id="chart-x"></select></label><label>Y variable<select id="chart-y"></select></label><label>Grouping variable<select id="chart-group"></select></label><label>Aggregation<select id="chart-aggregation"><option value="sum">Sum</option><option value="mean">Mean</option><option value="count">Row count</option></select></label><label>Chart title<input id="chart-name" maxlength="120" placeholder="Give the chart a useful title"></label><button class="button primary" type="submit">Generate chart</button><button class="button secondary" type="button" id="reset-chart">Reset chart settings</button></form>
+            <div id="chart-output" hidden><canvas id="analysis-chart" role="img"></canvas><p id="chart-legend"></p><h4>What this chart suggests</h4><p id="chart-summary"></p><details><summary>Accessible chart data table</summary><div id="chart-table"></div></details><button type="button" class="button secondary" id="download-chart">Download chart PNG</button></div>
+          </section>
+          <section class="lab-analysis-area" aria-labelledby="statistics-title"><span class="eyebrow">Explain / Educational statistics</span><h3 id="statistics-title">Choose a method that fits.</h3>
+            <form id="statistics-form" class="lab-control-grid"><label>Statistical method<select id="stat-method"><option value="describe">Descriptive statistics</option><option value="ci">Confidence interval for a mean</option><option value="correlation">Correlation</option><option value="regression">Simple linear regression</option><option value="one">One-sample t-test</option><option value="two">Two-sample Welch t-test</option><option value="paired">Paired t-test</option><option value="forecast">Sales forecast</option></select></label><label>Variable A<select id="stat-a"></select></label><label>Variable B · Two-variable methods<select id="stat-b"></select></label><label>Null mean · One-sample test<input id="stat-null" value="0" inputmode="decimal"></label><label>Confidence level<select id="stat-confidence"><option value="0.95">95%</option><option value="0.90">90%</option><option value="0.99">99%</option></select></label><label>Forecast method<select id="forecast-method"><option value="average">Historical average</option><option value="moving_average">Moving average · last 3 observations</option><option value="growth">Growth-rate projection</option><option value="trend">Linear trend</option></select></label><label>Forecast growth assumption<input id="forecast-rate" value="5%" inputmode="decimal"></label><label>Percentile (0–100)<input id="stat-percentile" type="number" min="0" max="100" value="90"></label><p id="stat-fit" class="lab-full-width"></p><label class="lab-check lab-full-width"><input type="checkbox" id="stat-assumptions">I have reviewed whether the observations, sampling, measurement, and independence assumptions fit this question. For paired tests, rows identify matched observations.</label><button class="button primary" type="submit">Run selected analysis</button></form>
+            <div id="statistics-result" aria-live="polite"></div>
+          </section>
+          <section class="lab-analysis-area"><span class="eyebrow">Diagnose / Customers &amp; financial feasibility</span><h3>Compare the parts of the business.</h3><p>Use mapped columns for segment, product, region, channel or campaign comparisons, RFM, cohorts, customer metrics, and cash flow. Only available measures are reported.</p><div id="operations-root"></div></section>
+        </div>
+      </section>
+
+      <section class="section lab-workspace" data-mode-panel="calculator" hidden aria-labelledby="calculator-title">
+        <span class="eyebrow">02 / Quick Marketing Calculator</span><h2 id="calculator-title">Start with a business question.</h2><p>Enter your own values or explicitly use columns from your current dataset. Results explain the method, assumptions, meaning, and questions to investigate.</p>
+        <details class="lab-details" open><summary>Quick start · Market growth and purchasers</summary><form id="quick-form" class="lab-control-grid"><label>Market Size<input id="quick-market" inputmode="decimal" placeholder="5,000" required></label><label>Growth Rate<input id="quick-growth" inputmode="decimal" placeholder="7%" required></label><label>Purchased Last Quarter<input id="quick-purchase" inputmode="decimal" placeholder="11%" required></label><label>Unmarked percentage format<select id="quick-scale"><option value="">Choose if you enter values without %</option><option value="percent">7 means 7% (whole percent)</option><option value="decimal">0.07 means 7% (decimal ratio)</option></select></label><button class="button primary" type="submit">Calculate market opportunity</button><button class="button secondary" id="quick-example" type="button">Use 5,000 / 7% / 11% example</button></form><div id="quick-result" aria-live="polite"></div></details>
+        <label for="metric-select"><strong>What are you trying to understand?</strong></label><select id="metric-select"></select><p id="metric-fit"></p>
+        <form id="metric-form"><div id="metric-fields" class="lab-control-grid"></div><p id="mapped-status"></p><div class="lab-toolbar"><button id="use-mapped" type="button" class="button secondary">Use selected data columns</button><button type="submit" class="button primary">Calculate &amp; explain</button></div></form>
+        <div id="metric-result" aria-live="polite"></div>
+        <details class="lab-details"><summary>Financial dashboard · Available calculated measures</summary><p>Revenue is not cash flow. Margin differs from markup. ROAS measures attributed revenue per advertising spend; ROMI depends on incremental revenue or contribution assumptions, and ROI uses the explicitly defined return and investment. This is a decision-support view, not accounting software.</p><div id="financial-summary"></div></details>
+        <details class="lab-details"><summary>Marketing budget planner</summary><p>Enter a planned allocation to see totals and percentages. Add actual spending only when it uses the same period and scope; a variance needs context before it is called favorable or unfavorable.</p><form id="budget-form" class="lab-control-grid"><label>Advertising<input id="budget-advertising" inputmode="decimal" value="0"></label><label>Promotions<input id="budget-promotions" inputmode="decimal" value="0"></label><label>Research<input id="budget-research" inputmode="decimal" value="0"></label><label>CRM<input id="budget-crm" inputmode="decimal" value="0"></label><label>Technology<input id="budget-technology" inputmode="decimal" value="0"></label><label>Events<input id="budget-events" inputmode="decimal" value="0"></label><label>Content<input id="budget-content" inputmode="decimal" value="0"></label><label>Personnel<input id="budget-personnel" inputmode="decimal" value="0"></label><label>Other<input id="budget-other" inputmode="decimal" value="0"></label><label>Actual spending (optional)<input id="budget-actual" inputmode="decimal" placeholder="Leave blank if unavailable"></label><button class="button primary" type="submit">Calculate budget plan</button><button class="button secondary" type="button" id="budget-reset">Reset budget</button></form><div id="budget-output" aria-live="polite"></div></details>
+        <section class="lab-analysis-area"><span class="eyebrow">Decide / What-if analysis</span><h3>Which assumptions matter most?</h3><p>Choose a metric above, calculate a base case, then vary one input to compare low, base, and high assumptions. These are scenarios, not forecasts or confidence intervals.</p><div class="lab-control-grid"><label>Assumption to vary<select id="scenario-field"></select></label><label>Low assumption<input id="scenario-low" inputmode="decimal"></label><label>High assumption<input id="scenario-high" inputmode="decimal"></label><button type="button" id="run-scenario" class="button primary">Compare scenarios</button></div><label class="lab-slider">Explore between low and high<input type="range" id="scenario-slider" min="0" max="100" value="50" disabled></label><div id="scenario-result" aria-live="polite"></div></section>
+      </section>
+
+      <section class="section lab-workspace" data-mode-panel="case" hidden aria-labelledby="case-title"><span class="eyebrow">04 / Case Analysis Mode</span><h2 id="case-title">Build a case from evidence.</h2><p>Connect market → customer → competition → strategy → financial feasibility → implementation → measurement → learning. This workspace supports your reasoning and case rubric; it does not write an assignment for you.</p><div id="strategy-root"></div></section>
+
+      <section class="section lab-review" aria-labelledby="review-title"><span class="eyebrow">Interpret / Decide / Measure</span><h2 id="review-title">From analysis to a considered decision.</h2><div id="managerial-interpretation"></div>
+        <details class="lab-details"><summary>CEAM+ Decision Lens · Use the relevant questions</summary><div id="ceam-lens"></div></details>
+        <details class="lab-details"><summary>Marketing Performance Scorecard</summary><p>Available saved measures are grouped by decision area. This is a planning view; it does not create an arbitrary overall score.</p><div id="marketing-scorecard"></div></details>
+        <details class="lab-details"><summary>Challenge the Analysis</summary><ul><li>What evidence could contradict this interpretation?</li><li>Are we confusing correlation with causation?</li><li>Is the target market defined correctly?</li><li>Are important variables missing? Could another explanation fit?</li><li>Which assumption is driving the recommendation?</li><li>What might a competitor do in response?</li><li>Which customer group might react differently?</li><li>Could the strategy damage trust or reduce customer experience or quality?</li></ul></details>
+        <details class="lab-details"><summary>Analysis history · This tab only</summary><p>Up to 20 results are kept in memory for this tab. Closing or reloading clears them. Uploaded source files and case notes are not saved to localStorage. Use a report to keep your work.</p><div id="analysis-history"></div><button type="button" id="clear-history" class="button secondary">Clear all history</button></details>
+        <div class="lab-toolbar"><button type="button" id="print-report" class="button primary">Print / Save report as PDF</button><button type="button" id="export-csv" class="button secondary">Export results CSV</button><button type="button" id="copy-analysis" class="button secondary">Copy analysis</button><button type="button" id="clear-all" class="button secondary">Clear all work</button></div>
+        <details class="lab-details"><summary>Methodology · Formulas, assumptions, and alternatives</summary><div id="methodology"></div><p>Statistical methods follow standard sample mean, Student t, Welch, correlation, and least-squares definitions. <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm" target="_blank" rel="noopener">NIST: confidence limits for the mean</a>. <a href="https://openstax.org/books/principles-managerial-accounting/pages/3-2-calculate-a-break-even-point-in-units-and-dollars" target="_blank" rel="noopener">OpenStax: break-even analysis</a>.</p></details>
+        <details class="lab-details"><summary>Beyond the Dashboard · Python, SQL, and future AI</summary><p>The same group comparisons can be expressed with pandas groupby, mean, sum, and corr, or SQL AVG(), SUM(), COUNT(), and GROUP BY. A future AI interpretation service would require a secure server endpoint, explicit data-sharing choices, and human review. No AI service runs in this version.</p></details>
+        <details class="lab-details"><summary>Customer Persona Builder · Beta / Work in Progress</summary><p><strong>Synthetic / exploratory persona.</strong> A future planning worksheet may capture segment, age/income ranges, purchase behavior, goals, motivations, concerns, trust, perceived risk, desired benefits, barriers, and adoption willingness.</p><p>This persona is a planning tool and should not replace actual customer research. Persona generation is not active and synthetic personas are not part of the analytical evidence.</p></details>
+      </section>
+      <section class="section" id="lab-limitations"><h2>Limitations &amp; privacy</h2><p>CEAM+ supports analysis and human judgment for educational, exploratory, and business decision-support purposes. Results depend on the quality and meaning of the data. Correlation does not prove causation; statistical findings need context. Uncertainty cannot be removed by adding more frameworks.</p><p>Files remain in this browser tab. The local parser does not execute spreadsheet formulas or macros; Excel workbooks use saved cell results. No uploaded contents are sent to a server. Use a current browser and small, relevant datasets without unnecessary personal or sensitive information. This tool is not designed as a protected personal-data repository.</p><p>Numeric parsing supports decimal points and comma thousands separators; ambiguous regional formats require normalization. Tests require suitable sampling and measurement. Forecasts and planning ratings are estimates and discussion aids. Any future AI-generated interpretation may contain errors. Synthetic personas cannot substitute for customer research.</p><p><strong>Attribution:</strong> Observed sales following marketing activity do not necessarily mean the marketing activity caused all of those sales. Examine baseline sales, controls, experiments, incrementality, and attribution assumptions.</p><a class="text-link" href="marketing.html">Back to Marketing Research &amp; Customer Insight</a></section>
+    </main>
+    <div class="site-directory">
+      <span class="eyebrow">Explore CEAM+</span>
+      <nav aria-label="More CEAM+ pages">
+        <a href="change-consulting.html">Change Consulting</a>
+        <a href="marketing.html">Marketing</a>
+        <a href="sustainability.html">Sustainability &amp; Flourishing</a>
+        <a href="framework.html">CEAM+ Framework</a>
+        <a href="applications.html">Applications</a>
+        <a href="workflow.html">Guides</a>
+        <a href="analytics-lab.html">Marketing Analytics Lab</a>
+        <a href="ai-solutions.html">AI Tools</a>
+        <a href="values.html">Mission, Values &amp; Philosophy</a>
+        <a href="contact.html">Contact a Consultant</a>
+      </nav>
+    </div>
+    <footer class="site-footer"><p>ClearPathway Systems | CEAM+</p><a href="#top">Back to top</a></footer>
+
+<div id="lab-print-report"></div>
+<script type="module" src="js/analytics/app.mjs"></script>
+</body>
+</html>

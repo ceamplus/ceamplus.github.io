@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="description" content="Combine reported conditions, supporting evidence, and business measures to explore readiness, capability, and priorities with CEAM+.">
+  <title>CEAM+ Assessment Center</title>
+  <link rel="icon" href="ceam-icon.jpeg">
+  <link rel="stylesheet" href="styles-assessment-base.css?v=20260914">
+  <link rel="stylesheet" href="styles-assessments.css?v=20260914">
+  <link rel="stylesheet" href="styles-marketing-assessment.css?v=20260921">
+</head>
+<body class="assessment-center-page">
+  <a class="skip-link" href="#top">Skip to content</a>
+  <header class="site-header" data-header>
+    <a class="brand" href="index.html" aria-label="CEAM+ home"><span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span><span>CEAM+</span></a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="surveys.html">Surveys</a>
+      <a href="assessment-center.html" aria-current="page">Assessment Center</a>
+      <a href="analytics-lab.html">Marketing Analytics Lab</a>
+      <a href="research.html">Research</a>
+      <a href="ai-technology.html">AI</a>
+      <a href="consulting.html">Consulting</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a class="header-action" href="consulting.html">Consulting Process</a>
+  </header>
+  <main id="top" tabindex="-1">
+    <section class="ac-hero" id="center-intro">
+      <div class="ac-container ac-hero-grid">
+        <div><span class="eyebrow">Evidence into action</span><h1>CEAM+<br>Assessment Center</h1><p class="ac-lead">Measure readiness. Identify gaps.<br>Prioritize action. Track change.</p><p>CEAM+ assessments combine structured questions, evidence, business information, and where available measurable performance indicators to evaluate readiness, maturity, capability, or strategic conditions. They are intended for decision support, not deterministic prediction.</p><div class="ac-actions"><a class="button primary" href="#explore">Explore Assessments</a><a class="button secondary" href="surveys.html">Take a Survey</a><a class="ac-hero-link" href="analytics-lab.html">Open Marketing Analytics Lab →</a></div></div>
+        <aside class="ac-cycle" aria-label="Assessment process"><span class="eyebrow">A repeatable practice</span><ol><li><span>01</span><div><strong>Assess</strong><p>Bring conditions and evidence together.</p></div></li><li><span>02</span><div><strong>Understand</strong><p>Examine gaps, strengths, and uncertainty.</p></div></li><li><span>03</span><div><strong>Act</strong><p>Choose a supported next step.</p></div></li><li><span>04</span><div><strong>Measure Again</strong><p>Review progress in its changing context.</p></div></li></ol></aside>
+      </div>
+    </section>
+    <div class="ac-container">
+      <nav class="ac-evidence-flow" aria-label="CEAM+ evidence flow"><a href="surveys.html"><strong>Surveys</strong><span>What people report</span></a><a href="#explore" aria-current="step"><strong>Assessments</strong><span>What combined conditions suggest</span></a><a href="analytics-lab.html"><strong>Analytics</strong><span>What business data show</span></a><a href="dashboard.html#prescriptive-support"><strong>Decisions</strong><span>What to investigate or consider</span></a><a href="#follow-up"><strong>Follow-Up</strong><span>What changed, and why?</span></a></nav>
+      <div id="ac-status" class="ac-status" role="status" aria-live="polite"></div>
+      <section id="ac-workspace" hidden aria-label="Assessment workspace"></section>
+      <div id="ac-landing">
+        <section id="explore" class="ac-section" aria-labelledby="explore-title"><div class="ac-section-head"><div><span class="eyebrow">Choose your question</span><h2 id="explore-title">A clearer view of your next move.</h2><p>Thirteen structured assessments. Start with the decision you need to make.</p></div><button class="button secondary" type="button" id="demo-start">Try a Demo Assessment</button></div>
+          <div class="ac-actions"><a class="button primary" href="assessment-center.html?assessment=marketing-assessment">Start Marketing Assessment</a><a class="button secondary" href="assessment-center.html?assessment=organizational-readiness">Corporate &amp; Organizational Readiness</a><a class="button secondary" href="assessment-center.html?assessment=ai-adoption&amp;mode=analysis">AI Use &amp; Case Analysis</a></div>
+          <div id="ac-filters" class="ac-filters" role="group" aria-label="Assessment categories"></div><p id="ac-catalogue-count" class="ac-small" aria-live="polite"></p><div id="ac-catalogue" class="ac-card-grid"></div>
+          <noscript><p>Enable JavaScript to use the local assessment engine. <a href="surveys.html">Surveys</a>, <a href="analytics-lab.html">Marketing Analytics Lab</a>, and <a href="consulting.html">consulting information</a> remain available.</p></noscript>
+        </section>
+        <section class="ac-section ac-wizard" id="recommended" aria-labelledby="wizard-title"><span class="eyebrow">Recommended for me</span><h2 id="wizard-title">Not Sure Where to Start?</h2><p>Three questions to narrow your starting point. Recommendations are a guide; you can choose any assessment.</p><form id="ac-wizard-form" class="ac-form-grid"><label>What are you trying to understand?<select name="goal"><option value="marketing">I want to improve my marketing.</option><option value="customers">I want to understand why customers are not adopting.</option><option value="ai">I want to know whether my organization is ready for AI.</option><option value="data">I want to improve our use of data.</option><option value="change">I am planning a major organizational change.</option><option value="financial">I want to assess our financial marketing performance.</option><option value="strategy">I want to review our strategy.</option><option value="trust">I want to examine trust and agency.</option><option value="personal">I am navigating personal change.</option><option value="resilience">I want to strengthen resilience.</option></select></label><label>Whose conditions are you exploring?<select name="audience"><option value="organization">An organization or team</option><option value="customers">Customers or technology users</option><option value="personal">My own circumstances</option></select></label><label>What evidence can you bring?<select name="evidence"><option value="some">Some records or research</option><option value="none">Mostly perceptions or assumptions</option><option value="numbers">Business measures and numerical data</option></select></label><button class="button primary" type="submit">Recommend Assessments</button></form><div id="ac-recommendations" aria-live="polite"></div></section>
+        <section class="ac-section" id="follow-up" aria-labelledby="follow-up-title"><span class="eyebrow">Assess → Understand → Act → Measure Again</span><h2 id="follow-up-title">Return to the question. Look for change.</h2><p>Save a baseline locally, assign an action, and return for a follow-up using the same assessment, context, and initiative. Compare dimension scores while keeping changes in people and evidence visible.</p><p>A score change may reflect actual improvement, different respondents, changed interpretation, new evidence, or measurement variation. It does not establish the effect of an intervention.</p><div id="ac-saved"></div></section>
+        <section class="ac-section ac-privacy" aria-labelledby="privacy-title"><h2 id="privacy-title">Your evidence stays with you.</h2><p>Assessment responses in this version are processed locally in your browser unless otherwise stated. This Assessment Center makes no response uploads or external API calls. Browser saving is optional; saved data is available to anyone using this browser profile. Exports contain your notes and answers. Supporting Surveys have their own submission workflow.</p><p>Evidence notes and quality ratings are supplied by you. CEAM+ does not independently verify them. Use source references or summaries; avoid unnecessary personal or confidential details.</p><button type="button" id="clear-saved" class="button secondary">Manage Saved Assessments</button><div id="ac-data-manager"></div></section>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer"><p>ClearPathway Systems | CEAM+</p><a href="contact.html">Contact a Consultant</a><a href="#top">Back to top</a></footer>
+  <script type="module" src="js/assessments/app.mjs"></script>
+</body>
+</html>
