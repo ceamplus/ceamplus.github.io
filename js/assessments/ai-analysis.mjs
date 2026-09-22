@@ -24,7 +24,7 @@ export function classifyEvidence(record={}){
 }
 /** Exact text excerpts with line references, never automatic verification or ratings. */
 export function organizeCase(text,source='Pasted case'){
-  return clean(text).split(/\r?\n/).map((quote,index)=>({quote:quote.trim(),line:index+1})).filter(r=>r.quote).slice(0,400).map((row,index)=>{
+  return clean(text).split(/\r?\n/).map((quote,index)=>({quote:quote.trim(),line:index+1})).filter(r=>r.quote).map((row,index)=>{
     const proposed=/\b(could|might|propos|suggest|potential|would|may)\b/i.test(row.quote);
     const negative=/\b(no|not|never|unknown|unmeasured|not measured)\b/i.test(row.quote);
     const type=metricCategory(row.quote);

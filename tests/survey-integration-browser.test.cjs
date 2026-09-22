@@ -67,7 +67,7 @@ const base = process.env.CEAM_TEST_URL || 'http://127.0.0.1:8765';
     for (const width of [320, 390, 768, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${route}: page overflow at ${width}px`);
-      assert.equal(await page.locator('.nav-links a').count(), 8);
+      assert.equal(await page.locator('.nav-links a').count(), 9);
     }
     await page.locator('.nav-links a[href="assessment-center.html"]').focus();
     assert.equal(await page.locator(':focus').getAttribute('href'), 'assessment-center.html');
