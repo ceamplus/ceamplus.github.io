@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles-assessment-base.css?v=20260915-disclosure">
     <link rel="stylesheet" href="styles-header.css?v=20260921-unified">
+  <link rel="stylesheet" href="styles-surveys.css?v=20260921-categories">
 </head>
   <body>
     <a class="skip-link" href="#top">Skip to content</a>
@@ -37,9 +38,10 @@
           <p class="survey-subtitle"><strong>Understand how people experience change, adoption, trust, agency, readiness, and implementation.</strong></p>
           <p>CEAM+ Surveys collect perceptions, experiences, attitudes, barriers, and self-reported conditions that may influence adoption and change. Survey responses are one source of evidence and should be interpreted alongside behavior, context, organizational records, business data, and other perspectives.</p>
         </div>
+        <section id="survey-catalogue" class="survey-catalogue" aria-label="Surveys by assessment category"><p>Loading survey categories…</p><noscript>Enable JavaScript to use the category surveys. The existing survey contexts remain below.</noscript></section>
         <div class="assessment-selector-card">
           <div>
-            <h3>Select Your Context</h3>
+            <h3>Existing Context Surveys</h3>
             <p>
               Recommendations use all nine expanded CEAM+ layers and adapt to
               your selected context. Pick one category to begin.
@@ -165,5 +167,6 @@
     <script src="script.js?v=20260904-assessment-integrity"></script>
     <script src="js/surveys-context.js?v=20260914-evidence"></script>
     <script src="js/site-disclosure.js?v=20260915-disclosure"></script>
-  </body>
+    <script type="module" src="js/surveys/app.mjs?v=20260921-categories"></script>
+</body>
 </html>

@@ -1,0 +1,11 @@
+# Survey categories
+
+The Surveys catalogue derives its four category names and 13 assessment mappings from the existing Assessment Center registry. Each companion survey has five original CEAM+ self-report statements with an explicit indicator label in `js/surveys/definitions.mjs`. AI items are confined to the AI Adoption survey. The five original context instruments and `script.js` are unchanged.
+
+These are exploratory respondent-perspective items, not validated measures. Statements ask about perceived clarity, experience, access, support or practices. Agreement responses cannot establish actual organizational capability, financial performance or causal effects. Customer Adoption is addressed to customers/intended users; Personal Change to the individual; other surveys to relevant employees, managers or owners. Research validation, respondent sampling, cognitive interviews and reliability studies remain future work.
+
+The scale is 1 Strongly disagree through 5 Strongly agree, plus Not sure and Not applicable. Reports retain item responses and identify reported positive experiences (4–5), discussion areas (1–2), neutral, uncertain, inapplicable and missing responses. There is no aggregate capability score. A link opens the corresponding assessment without copying survey answers into it.
+
+Browser saving is opt-in. The shared assessment persistence functions are reused with a storage adapter for `ceamplus.surveys.v1`, keeping survey records separate from assessment records and the Dashboard's assessment scores. No new survey data goes to the legacy email submission service. Users can resume drafts, edit saved responses, export JSON, delete selected survey records and start fresh follow-ups. Comparisons are restricted by instrument, version, initiative and stated perspective; users must also verify that the same respondent and context are appropriate for comparison. Data remains accessible to other users of the same browser profile.
+
+Checks cover every mapping, item purpose label, AI separation, missing responses, full browser completion of all 13 surveys, editing, persistence, exports, follow-ups, mobile layout, storage failure and preservation of the original instruments. Legacy submission testing intercepts the request; it does not send email or participant data.

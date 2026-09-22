@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=20260904-research-integrity">
     <link rel="stylesheet" href="styles-header.css?v=20260921-unified">
+  <link rel="stylesheet" href="styles-surveys.css?v=20260921-categories">
 </head>
   <body>
     <header class="site-header ceam-unified-header" data-header>
@@ -79,9 +80,10 @@
           <article><h3>Keep structural barriers visible</h3><p>Interpret time, resources, access, authority, culture, power, and opportunity before placing responsibility on an individual.</p></article>
           <article><h3>Preserve human authority</h3><p>Any AI-generated interpretation is provisional. A human reviewer must verify evidence, examine alternatives, and retain final decision authority.</p></article>
         </div>
+        <section id="survey-catalogue" class="survey-catalogue" aria-label="Surveys by assessment category"><p>Loading survey categories…</p><noscript>Enable JavaScript to use the category surveys. The existing survey contexts remain below.</noscript></section>
         <div class="assessment-selector-card">
           <div>
-            <h3>Select Your Context</h3>
+            <h3>Existing Context Surveys</h3>
             <p>
               Recommendations use all nine expanded CEAM+ layers and adapt to
               your selected context. Pick one category to begin.
@@ -112,5 +114,7 @@
     </footer>
 
     <script src="script.js?v=20260904-assessment-integrity"></script>
-  </body>
+    <script src="js/surveys-context.js?v=20260914-evidence"></script>
+    <script type="module" src="js/surveys/app.mjs?v=20260921-categories"></script>
+</body>
 </html>

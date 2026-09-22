@@ -1,0 +1,22 @@
+/* Companion surveys use the existing CEAM+ palette and controls. */
+.survey-catalogue { margin:28px 0 40px; padding:24px; border:1px solid var(--line); border-radius:8px; background:#fbfbf7; }
+.survey-catalogue h2 { scroll-margin-top:24px; }
+.survey-filters,.survey-actions { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0; }
+.survey-filters [aria-pressed=true] { background:#505258; color:white; }
+.survey-card-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:22px 0; }
+.survey-card-grid article { padding:20px; background:white; border:1px solid var(--line); border-radius:8px; min-width:0; }
+.survey-card-grid h3 { font-size:1.2rem; }
+.survey-card-grid article>a:not(.button) { display:block; margin-top:12px; text-decoration:underline; }
+.survey-catalogue .button { white-space:normal; line-height:1.35; text-align:center; }
+.survey-catalogue .survey-context { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.survey-catalogue label { display:block; font-weight:500; }
+.survey-question { border:0; border-top:1px solid var(--line); margin:24px 0; padding:20px 0 0; min-width:0; }
+.survey-question legend { font-weight:700; padding:0; }
+.survey-question label,.survey-catalogue .survey-check { display:flex; gap:12px; align-items:flex-start; margin:8px 0; padding:10px; border:1px solid var(--line); border-radius:6px; }
+.survey-catalogue input[type=checkbox],.survey-catalogue input[type=radio] { width:20px; height:20px; min-width:20px; min-height:20px; padding:0; margin:3px 0 0; flex:0 0 20px; accent-color:#957020; }
+.survey-catalogue label span { min-width:0; flex:1; }
+.survey-question label:has(input:checked) { background:#f3ead2; border-color:#957020; }
+.survey-catalogue [data-survey-status] { color:#505258; font-weight:600; }
+.survey-saved { margin:24px 0; }
+.survey-saved summary { font-weight:700; cursor:pointer; }
+@media(max-width:700px) { .survey-catalogue { padding:16px; }.survey-card-grid,.survey-catalogue .survey-context { grid-template-columns:1fr; }.survey-filters .button { flex:1 1 40%; font-size:.85rem; padding:10px; } }
