@@ -1,0 +1,28 @@
+/* Shared public header: one navigation layout on every CEAM+ page. */
+.site-header.ceam-unified-header {
+  position:relative; top:auto; display:grid; grid-template-columns:minmax(0,1fr) auto;
+  grid-template-rows:auto auto; gap:10px 12px; align-items:center;
+  padding:12px clamp(16px,3vw,40px); background:#fbfbf7;
+}
+.site-header.ceam-unified-header .brand { grid-column:1; grid-row:1; min-width:0; gap:10px; font-size:1.1rem; }
+.site-header.ceam-unified-header .brand-mark { width:42px; height:42px; flex:0 0 42px; }
+.site-header.ceam-unified-header .header-action { grid-column:2; grid-row:1; min-height:44px; margin:0; padding:12px 16px; font-size:.9rem; white-space:normal; text-align:center; }
+.site-header.ceam-unified-header .nav-links {
+  grid-column:1 / -1; grid-row:2; display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px; width:100%; margin:0; padding:0; overflow:visible;
+}
+.site-header.ceam-unified-header .nav-links a {
+  display:flex; justify-content:center; align-items:center; min-width:0; min-height:44px;
+  padding:10px 8px; white-space:normal; overflow-wrap:anywhere; text-align:center;
+  font-size:.88rem; line-height:1.3; border:0; border-radius:8px; background:transparent;
+}
+.site-header.ceam-unified-header .nav-links a:hover { background:rgba(199,155,59,.14); }
+.site-header.ceam-unified-header .nav-links a[aria-current="page"] { color:#fff; background:#505258; box-shadow:0 5px 14px rgba(52,54,58,.18); }
+.site-header.ceam-unified-header .nav-links a:focus-visible { outline:3px solid #957020; outline-offset:2px; }
+@media(max-width:700px) {
+  .site-header.ceam-unified-header .brand { font-size:1rem; gap:7px; }
+  .site-header.ceam-unified-header .brand-mark { width:34px; height:34px; flex-basis:34px; }
+  .site-header.ceam-unified-header .header-action { padding:10px 12px; font-size:.8rem; }
+  .site-header.ceam-unified-header .nav-links a { padding:7px 4px; font-size:.75rem; }
+}
+@media print { .site-header.ceam-unified-header { display:none; } }
