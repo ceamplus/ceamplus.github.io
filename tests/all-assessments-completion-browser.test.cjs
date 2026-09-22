@@ -1,0 +1,18 @@
+const assert=require('node:assert/strict');
+const {chromium}=require(process.env.CEAM_PLAYWRIGHT_PATH||'C:/Users/brigg/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const base=process.env.CEAM_TEST_URL||'http://127.0.0.1:8765';
+(async()=>{const {assessments}=await import('../js/assessments/definitions.mjs');const b=await chromium.launch({channel:'msedge',headless:true});try{
+for(const def of assessments.filter(d=>d.id!=='marketing-assessment')){
+ const c=await b.newContext({viewport:{width:390,height:800}});const p=await c.newPage();const errors=[];p.on('pageerror',e=>errors.push(e.message));
+ await p.goto(base+'/assessment-center.html?assessment='+def.id);await p.locator('#ac-initiative').fill('Complete flow verification');
+ const label=await p.locator('#ac-saving').evaluate(e=>({control:e.getBoundingClientRect().width,text:e.nextElementSibling.getBoundingClientRect().width}));assert.equal(label.control,20,def.id);assert(label.text>100,def.id);
+ await p.locator('#ac-saving').check();await p.getByRole('button',{name:'Begin Assessment',exact:true}).click();const count=await p.locator('[data-step]').count();
+ for(let i=0;i<count;i++){await p.locator('[data-step]').nth(i).click();for(const q of await p.locator('.ac-question').all()){const choices=q.locator('input[type=radio]');await choices.first().check();const three=q.locator('input[value="3"]');if(await three.count())await three.check();else if(await choices.count()>1)await choices.nth(1).check();assert.equal(await q.locator('input:checked').count(),1);}assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),def.id+' question overflow');}
+ await p.getByRole('button',{name:'Review Available Responses',exact:true}).click();if(def.id==='financial-marketing')await p.getByRole('button',{name:'Generate Assessment Report',exact:true}).click();await p.getByRole('button',{name:'Create Action Plan',exact:true}).waitFor();
+ const records=await p.evaluate(()=>Object.values(JSON.parse(localStorage.getItem('ceamplus.assessment-center.v1')).results).flat());assert.equal(records.length,1,def.id);assert.equal(records[0].assessmentId,def.id);assert.equal(records[0].result.coverage,100,def.id);
+ await p.getByRole('button',{name:'Create Action Plan',exact:true}).click();const owner=p.locator('[data-field=owner]').first();if(await owner.count()){await owner.fill('Verification owner');await owner.press('Tab');}
+ for(const width of [320,390,768,1440]){await p.setViewportSize({width,height:900});assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),def.id+' report overflow at '+width);}
+ await p.getByRole('link',{name:'Open Dashboard',exact:true}).click();await p.getByRole('link',{name:'Review Report & Action Plan',exact:true}).click();await p.getByRole('button',{name:'Start Follow-Up',exact:true}).click();await p.getByRole('button',{name:'Begin Assessment',exact:true}).click();await p.locator('.ac-question input[value="5"]').first().check();await p.getByRole('button',{name:'Review Available Responses',exact:true}).click();if(def.id==='financial-marketing')await p.getByRole('button',{name:'Generate Assessment Report',exact:true}).click();assert.match(await p.locator('#ac-comparison').innerText(),/2 comparable saved results/,def.id);assert.deepEqual(errors,[],def.id);
+ console.log('PASS '+def.title+': full completion, editable answers, saved report, Dashboard reopen, action plan, follow-up comparison, mobile layout, no script errors.');await c.close();
+}
+}finally{await b.close();}})().catch(e=>{console.error(e);process.exit(1)});
