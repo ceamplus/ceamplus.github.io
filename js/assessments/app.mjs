@@ -1,5 +1,5 @@
 import { measurementHTML } from './measurement-dictionary.mjs';
-import { mountAIAnalysis } from './ai-analysis-view.mjs?v=20260922-baseline';
+import { mountAIAnalysis } from './ai-analysis-view.mjs?v=20260922-review';
 import { marketingEvidenceForm, marketingEvidenceReport } from './marketing-evidence.mjs?v=20260922-fields';
 import { assessments, getAssessment } from './definitions.mjs';
 import { scoreAssessment, FINANCIAL_FIELDS, financialMetrics } from './scoring.mjs';
