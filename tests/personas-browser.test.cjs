@@ -1,0 +1,75 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const {chromium}=require(process.env.CEAM_PLAYWRIGHT_PATH||'C:/Users/brigg/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const base=process.env.CEAM_TEST_URL||'http://127.0.0.1:8765';
+(async()=>{
+ const browser=await chromium.launch({channel:'msedge',headless:true});
+ try{
+  const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[],external=[];
+  page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(!r.url().startsWith(base))external.push(r.url());});
+  await page.goto(base+'/personas.html');await page.locator('.persona-card').first().waitFor();
+  assert.equal(await page.locator('.persona-card').count(),16);
+  assert.equal(await page.locator('header a[aria-current="page"]').innerText(),'Personas');
+  assert.equal(await page.locator('#persona-filters select').count(),12);
+  assert.equal(await page.locator('#filter-location optgroup').count(),3);
+  await page.locator('#filter-location').selectOption('country:United States');assert.equal(await page.locator('.persona-card').count(),9);
+  await page.locator('#filter-location').selectOption('region:United States · Illinois');assert.equal(await page.locator('.persona-card').count(),1);
+  assert.match(await page.locator('.persona-card').innerText(),/Dev Rowan/);
+  assert.match(await page.locator('#custom-location option').allTextContents().then(labels=>labels.join('\n')),/United States · Kentucky · Rural Appalachia/);
+  await page.locator('#persona-clear-filters').click();
+  await page.locator('#filter-role').selectOption('Student');assert.equal(await page.locator('.persona-card').count(),1);
+  await page.locator('#filter-access').selectOption('Intermittent connection');assert.equal(await page.locator('.persona-card').count(),0);
+  await page.locator('#persona-clear-filters').click();
+  for(const id of ['mara','eli','nora'])await page.locator(`[data-compare="${id}"]`).check();
+  assert(await page.locator('[data-compare="dev"]').isDisabled());
+  await page.locator('#persona-compare').focus();await page.keyboard.press('Enter');
+  assert.equal(await page.locator('#persona-comparison h2').innerText(),'Compare Personas');
+  for(const text of ['Shared goals','Different constraints','Differences in access','Practical agency','Support requirements','Possible benefits','Possible burdens','Evidence gaps','Questions before'])assert((await page.locator('#persona-comparison').innerText()).includes(text));
+  fs.mkdirSync('.cache/personas-verification',{recursive:true});
+  for(const width of [320,390,768,1440]){
+   await page.setViewportSize({width,height:1000});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`overflow ${width}`);
+   if(width===390||width===1440)await page.locator('#persona-comparison').screenshot({path:`.cache/personas-verification/comparison-${width}.png`});
+  }
+  await page.locator('#persona-close-comparison').click();await page.locator('[data-compare="nora"]').uncheck();await page.locator('#persona-compare').click();
+  assert.equal(await page.locator('#persona-comparison .persona-compare-cells').first().locator('article').count(),2);
+  await page.locator('[data-profile="mara"]').click();await page.getByText('Assumptions and Evidence',{exact:true}).focus();await page.keyboard.press('Enter');
+  assert.match(await page.locator('#persona-profile').innerText(),/Not reviewed by a person with relevant lived experience/);
+  await page.locator('[data-explore="mara"]').click();
+  await page.getByRole('button',{name:'Use shorter explanations',exact:true}).click();assert.equal(await page.getByRole('button',{name:'Use shorter explanations',exact:true}).getAttribute('aria-pressed'),'true');
+  await page.getByRole('button',{name:'Larger demonstration text',exact:true}).click();assert(await page.locator('#persona-demo').evaluate(e=>e.classList.contains('persona-large')));
+  // Seed valid saved result and an unrelated draft; demos must preserve every byte.
+  await page.evaluate(async()=>{
+   const {getAssessment}=await import('/js/assessments/definitions.mjs');const {scoreAssessment}=await import('/js/assessments/scoring.mjs');const {saveResult,saveDraft}=await import('/js/assessments/storage.mjs');
+   const def=getAssessment('marketing-readiness');const response={answers:{},evidence:{},priorities:[],actionPlan:[],context:def.contextOptions[0],initiative:'Preserve through personas',metrics:{},demo:false};
+   for(const d of def.dimensions)for(const q of d.questions)response.answers[q.id]=q.options?.[0]?.value||'3';
+   if(!saveResult(def,response,scoreAssessment(def,response)).ok||!saveDraft(def,response).ok)throw Error('fixture failed');
+  });
+  const snapshot=()=>page.evaluate(()=>JSON.stringify(Object.entries(localStorage).sort()));const original=await snapshot();
+  await page.getByRole('link',{name:'Open Dashboard demonstration',exact:true}).click();await page.locator('#persona-context').waitFor();
+  assert.match(await page.locator('#dashboard-assessment-detail').innerText(),/Preserve through personas/);assert.equal(await snapshot(),original);
+  await page.goto(base+'/assessment-center.html?demo=true&persona=mara');await page.locator('#persona-context').waitFor();await page.locator('.ac-demo').waitFor();
+  await page.locator('.ac-result-hero').waitFor();const maraScore=await page.locator('.ac-result-hero').innerText();
+  await page.goto(base+'/assessment-center.html?demo=true&persona=jo');await page.locator('.ac-result-hero').waitFor();assert.equal(await page.locator('.ac-result-hero').innerText(),maraScore,'persona does not alter demo scores');assert.equal(await snapshot(),original);
+  await page.goto(base+'/assessment-center.html?assessment=marketing-readiness&demo=true&persona=mara');assert.equal(await page.locator('#persona-context').count(),0,'real assessment route wins');
+  await page.goto(base+'/personas.html');await page.locator('#custom-context').fill('Fictional team with shared devices');await page.locator('#custom-goals').fill('Learn safely');
+  await page.locator('#persona-builder-fields details').last().locator('summary').click();
+  for(const field of ['security','accessibility','language','lifeStage']){await page.locator(`#custom-${field}`).selectOption('Prefer not to answer');}
+  assert.equal(await page.locator('#persona-builder-form input[name*=name]').count(),0);
+  await page.locator('#persona-persist').check();await page.locator('#persona-save').click();
+  assert.match(await page.locator('#persona-profile').innerText(),/User-created fictional scenario/);
+  let customId=await page.locator('[data-edit]').getAttribute('data-edit');
+  await page.locator('[data-edit]').click();await page.locator('#custom-goals').fill('Learn safely\nKeep support');await page.locator('#persona-save').click();
+  assert.match(await page.locator('#persona-profile').innerText(),/Keep support/);
+  const downloadEvent=page.waitForEvent('download');await page.locator('[data-export]').click();const download=await downloadEvent;const payload=JSON.parse(fs.readFileSync(await download.path(),'utf8'));assert.equal(payload.persona.kind,'custom');assert.equal(payload.persona.security,'Prefer not to answer');assert(!('score' in payload.persona));
+  await page.locator('[data-duplicate]').click();assert.equal(await page.locator('.persona-card').count(),18);
+  await page.locator('[data-delete]').click();assert.equal(await page.locator('.persona-card').count(),17);
+  await page.reload();await page.locator('.persona-card').first().waitFor();assert.equal(await page.locator('.persona-card').count(),17);
+  await page.locator(`[data-profile="${customId}"]`).click();await page.locator('[data-explore]').click();assert.equal(await page.locator('#persona-demo a').count(),0,'custom free text not transferred through URLs');
+  await page.locator('[data-delete]').click();assert.equal(await page.locator('.persona-card').count(),16);assert(await page.locator('#persona-demo').isHidden());
+  assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('ceamplus.personas.custom.v1')).items.length),0);
+  const after=await page.evaluate(()=>{const entries=Object.entries(localStorage).filter(([key])=>key!=='ceamplus.personas.custom.v1');return JSON.stringify(entries.sort());});assert.equal(after,original);
+  await page.setViewportSize({width:1440,height:1000});await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.screenshot({path:'.cache/personas-verification/library-desktop.png'});
+  const denied=await browser.newPage();await denied.addInitScript(()=>{Storage.prototype.getItem=Storage.prototype.setItem=()=>{throw new DOMException('Blocked','SecurityError');};});await denied.goto(base+'/personas.html');await denied.locator('#custom-context').fill('Fictional blocked-storage trial');await denied.locator('#persona-persist').check();await denied.locator('#persona-save').click();assert.match(await denied.locator('#persona-builder-status').innerText(),/saving failed/);assert.equal(await denied.locator('.persona-card').count(),17);await denied.close();
+  assert.deepEqual(errors,[]);assert.deepEqual(external,[]);console.log('PASS persona navigation, filters, 2/3 comparison, responsive/keyboard controls, transparent evidence, isolated demo scores, storage preservation, custom CRUD/export, sensitive opt-outs, and blocked storage.');
+ }finally{await browser.close();}
+})().catch(error=>{console.error(error);process.exit(1);});

@@ -5,29 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="About Faye Briggs, ClearPathway Systems, and CEAM+: the lived experience and research behind human adaptation, better decisions, AI literacy, and sustainable change."
+      content="About Faye Briggs, ClearPathway Systems, and CEAM+: the research and applied analytics behind an evolving marketing intelligence platform, human adaptation, and sustainable change."
     >
     <title>About | ClearPathway Systems and CEAM+</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260615-logo-palette">
-  </head>
+    <link rel="stylesheet" href="styles.css?v=20260915-disclosure">
+    <link rel="stylesheet" href="styles-header.css?v=20261017-personas">
+    <script src="js/header-navigation.js?v=20261009-navigation" defer></script>
+</head>
   <body>
-    <header class="site-header" data-header>
-      <a class="brand" href="index.html" aria-label="CEAM+ home">
-        <span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span>
-        <span>CEAM+</span>
-      </a>
+    <header class="site-header ceam-unified-header" data-header>
+      <a class="brand" href="index.html" aria-label="CEAM+ home"><span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span><span>CEAM+</span></a>
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="index.html">Home</a>
-        <a href="change-consulting.html">Change Consulting</a>
-        <a href="marketing.html">Marketing</a>
-        <a href="ai-technology.html">AI &amp; Technology</a>
-        <a href="sustainability.html">Sustainability &amp; Flourishing</a>
-        <a href="research.html">Research</a>
-        <a href="assessments.html">Assessments</a>
-        <a href="contact.html">Contact a Consultant</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="analytics-lab.html">Marketing Analytics Lab</a>
+        <a href="assessment-center.html">Assessment Center</a>
+        <a href="personas.html">Personas</a>
+        <details class="nav-more" data-current-section>
+          <summary>Explore</summary>
+          <div class="nav-secondary">
+            <a href="index.html">Home</a>
+            <a href="surveys.html">Surveys</a>
+            <a href="research.html">Research</a>
+            <a href="ai-technology.html">AI</a>
+            <a href="consulting.html">Consulting</a>
+            <a href="about.html" aria-current="page">About</a>
+          </div>
+        </details>
       </nav>
       <a class="header-action" href="consulting.html">Consulting Process</a>
     </header>
@@ -35,7 +41,7 @@
     <main id="top">
       <section class="section intro">
         <div class="section-heading">
-          <h2>About Faye Briggs and ClearPathway Systems</h2>
+          <h1>About Faye Briggs and ClearPathway Systems</h1>
           <p>
             My name is Faye Briggs. I am a first-generation college graduate,
             McNair Scholar, MBA student, future PhD student, researcher,
@@ -53,9 +59,58 @@
             another tool fits, and build the support needed for real change.
           </p>
         </div>
+        <div class="hero-actions" aria-label="Next steps"><a class="button primary" href="dashboard.html">Explore the Dashboard</a><a class="button secondary" href="framework.html">Explore the CEAM+ Framework</a></div>
       </section>
 
-      <section class="section human-adaptation-story">
+      <div class="site-disclosure-toolbar" data-disclosure-toolbar hidden><p>Choose a topic to read more. Every original explanation remains available.</p><div><button type="button" data-disclosure-action="expand">Expand all topics</button><button type="button" data-disclosure-action="collapse">Collapse all topics</button></div><span class="site-disclosure-status" role="status" aria-live="polite"></span></div>
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Building CEAM+ Through Applied Research</span><span class="site-disclosure-overview">See how research, analytics, and practical pilots inform the platform.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section" aria-labelledby="applied-research-title">
+        <div class="section-heading">
+          <h2 id="applied-research-title">Building CEAM+ Through Applied Research</h2>
+          <p>
+            CEAM+ is both a research program and an applied analytics project.
+            Its research-informed framework provides the intellectual foundation
+            for an evolving marketing intelligence and decision-support platform.
+          </p>
+          <p>
+            The CEAM+ Marketing Intelligence Dashboard is the first major
+            practical application of that framework. Development connects
+            business measures with customer, human, and organizational context
+            to support interpretation, practical pilot implementations, and
+            decisions that remain accountable to human judgment.
+          </p>
+          <p>
+            This work brings together complementary fields to study how people,
+            organizations, customers, and markets adopt, resist, sustain, and
+            adapt to change. Marketing intelligence gives that broader research
+            a practical setting for measurement, testing, and learning.
+          </p>
+        </div>
+        <div class="tag-list" role="list" aria-label="Fields informing CEAM+ development">
+          <span role="listitem">Marketing research</span>
+          <span role="listitem">Marketing analytics</span>
+          <span role="listitem">Business analytics</span>
+          <span role="listitem">Customer relationship management</span>
+          <span role="listitem">Organizational change</span>
+          <span role="listitem">Information systems</span>
+          <span role="listitem">Human-AI collaboration</span>
+          <span role="listitem">Adoption research</span>
+          <span role="listitem">Decision science</span>
+        </div>
+        <div class="hero-actions">
+          <a class="button primary" href="dashboard.html">Explore the Dashboard</a>
+          <a class="button secondary" href="framework.html">Explore the CEAM+ Framework</a>
+        </div>
+      </section>
+        </div>
+      </details>
+
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">How CEAM+ Began and How CEAM+ Is Evolving</span><span class="site-disclosure-overview">Follow the move from technology adoption research toward broader human and organizational adaptation.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section human-adaptation-story">
         <div class="section-heading">
           <h2>How CEAM+ Began and How CEAM+ Is Evolving</h2>
           <p>
@@ -127,8 +182,13 @@
           </p>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">What we pay attention to</span><span class="site-disclosure-overview">Understand the people, behavior, systems, and technology around a decision.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>What we pay attention to</h2>
           <p>
@@ -156,14 +216,32 @@
           </article>
         </div>
       </section>
+        </div>
+      </details>
 
     </main>
 
+    <div class="site-directory">
+      <span class="eyebrow">Explore CEAM+</span>
+      <nav aria-label="More CEAM+ pages">
+        <a href="change-consulting.html">Change Consulting</a>
+        <a href="marketing.html">Marketing</a>
+        <a href="sustainability.html">Sustainability &amp; Flourishing</a>
+        <a href="framework.html">CEAM+ Framework</a>
+        <a href="applications.html">Applications</a>
+        <a href="workflow.html">Guides</a>
+        <a href="analytics-lab.html">Marketing Analytics Lab</a>
+        <a href="ai-solutions.html">AI Tools</a>
+        <a href="values.html">Mission, Values &amp; Philosophy</a>
+        <a href="contact.html">Contact a Consultant</a>
+      </nav>
+    </div>
     <footer class="site-footer">
       <p>ClearPathway Systems | CEAM+</p>
       <a href="#top">Back to top</a>
     </footer>
 
     <script src="script.js?v=20260615-ai-solutions"></script>
+    <script src="js/site-disclosure.js?v=20260915-disclosure"></script>
   </body>
 </html>

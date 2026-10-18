@@ -3,6 +3,9 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $mainPages = @(
   "index.html",
+  "dashboard.html",
+  "personas.html",
+  "analytics-lab.html",
   "change-consulting.html",
   "marketing.html",
   "ai-technology.html",
@@ -11,21 +14,30 @@ $mainPages = @(
   "consulting.html",
   "about.html",
   "assessments.html",
+  "surveys.html",
+  "assessment-center.html",
   "applications.html",
   "workflow.html",
   "contact.html",
-  "ai-solutions.html"
+  "ai-solutions.html",
+  "framework.html",
+  "values.html",
+  "mission.html",
+  "philosophy.html",
+  "auth.html"
 )
 
-$requiredNavigation = @{
+$requiredNavigation = [ordered]@{
+  "dashboard.html" = "Dashboard"
+  "analytics-lab.html" = "Marketing Analytics Lab"
+  "assessment-center.html" = "Assessment Center"
+  "personas.html" = "Personas"
   "index.html" = "Home"
-  "change-consulting.html" = "Change Consulting"
-  "marketing.html" = "Marketing"
-  "ai-technology.html" = "AI &amp; Technology"
-  "sustainability.html" = "Sustainability &amp; Flourishing"
+  "surveys.html" = "Surveys"
   "research.html" = "Research"
-  "assessments.html" = "Assessments"
-  "contact.html" = "Contact a Consultant"
+  "ai-technology.html" = "AI"
+  "consulting.html" = "Consulting"
+  "about.html" = "About"
 }
 
 foreach ($page in $mainPages) {
@@ -35,34 +47,47 @@ foreach ($page in $mainPages) {
   }
 
   $html = Get-Content $path -Raw
-  if ($html -notmatch '<nav class="nav-links"') {
+  $navigation = [regex]::Match($html, '<nav class="nav-links"[^>]*>([\s\S]*?)</nav>')
+  if (-not $navigation.Success) {
     throw "$page does not contain the primary navigation."
   }
 
   foreach ($entry in $requiredNavigation.GetEnumerator()) {
     $pattern = '<a href="' + [regex]::Escape($entry.Key) + '"(?: aria-current="page")?>' + [regex]::Escape($entry.Value) + '</a>'
-    if ($html -notmatch $pattern) {
+    if ($navigation.Value -notmatch $pattern) {
       throw "$page is missing navigation link: $($entry.Value)"
     }
   }
 
-  if ($html -match '<a href="consulting\.html"(?: aria-current="page")?>Consulting</a>') {
-    throw "$page still contains the standalone Consulting navigation tab."
+  $navigationLinks = [regex]::Matches($navigation.Value, '<a href="([^"]+)"')
+  $actualNavigation = @($navigationLinks | ForEach-Object { $_.Groups[1].Value })
+  if (($actualNavigation -join ',') -ne ($requiredNavigation.Keys -join ',')) {
+    throw "$page does not contain the ten navigation destinations in the intended order."
+  }
+  if ($navigation.Value -notmatch '<details class="nav-more"[^>]*>\s*<summary>Explore</summary>\s*<div class="nav-secondary">') {
+    throw "$page is missing the accessible native disclosure for secondary destinations."
+  }
+  if ($html -notmatch '<script src="js/header-navigation\.js[^\"]*" defer></script>') {
+    throw "$page is missing the shared keyboard navigation enhancement."
   }
   if ($html -notmatch '<a class="header-action" href="consulting\.html">Consulting Process</a>') {
     throw "$page is missing the Consulting Process action."
   }
 
-  $expectedCurrentPage = if ($page -in @("framework.html", "applications.html", "values.html")) {
+  $expectedCurrentPage = if ($page -in @("framework.html", "applications.html", "values.html", "mission.html", "philosophy.html")) {
     "research.html"
   } elseif ($page -eq "ai-solutions.html") {
     "ai-technology.html"
-  } elseif ($page -in @("consulting.html", "workflow.html", "about.html")) {
+  } elseif ($page -in @("change-consulting.html", "workflow.html")) {
+    "consulting.html"
+  } elseif ($page -eq "assessments.html") {
+    "surveys.html"
+  } elseif ($page -in @("marketing.html", "sustainability.html", "contact.html", "auth.html")) {
     ""
   } else {
     $page
   }
-  $currentLinks = [regex]::Matches($html, '<a href="([^"]+)" aria-current="page">([^<]+)</a>')
+  $currentLinks = [regex]::Matches($navigation.Value, '<a href="([^"]+)" aria-current="page">([^<]+)</a>')
   if ($expectedCurrentPage -eq "") {
     if ($currentLinks.Count -ne 0) {
       throw "$page should not highlight a main navigation tab."
@@ -100,7 +125,9 @@ if ($framework -notmatch [regex]::Escape("Understanding how people and organizat
 
 $homepage = Get-Content (Join-Path $root "index.html") -Raw
 @(
-  "CEAM+ helps organizations understand why people adopt, resist, sustain, and respond to change.",
+  "Marketing Intelligence for Better Decisions",
+  "Explore the Dashboard",
+  "Explore the CEAM+ Framework",
   "marketing research",
   "Optionality = agency",
   "enough agency remains when it does not"
@@ -108,6 +135,10 @@ $homepage = Get-Content (Join-Path $root "index.html") -Raw
   if ($homepage -notmatch [regex]::Escape($_)) {
     throw "index.html is missing repositioning content: $_"
   }
+}
+
+if ($homepage -notmatch '<a class="button primary" href="dashboard\.html">Explore the Dashboard</a>') {
+  throw "index.html is missing its primary link to the Dashboard."
 }
 
 $marketing = Get-Content (Join-Path $root "marketing.html") -Raw

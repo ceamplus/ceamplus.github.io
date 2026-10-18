@@ -1,8 +1,69 @@
 # CEAM+ Website
 
-CEAM+ is a human-centered framework that helps individuals and small businesses understand complexity, make better decisions, adopt useful technology, and turn awareness into sustainable action.
+CEAM+ is a marketing intelligence and decision-support platform that helps organizations understand what is happening, why it is happening, what may happen next, and what actions may improve performance. Its research-informed framework remains the foundation for understanding how people, organizations, customers, and markets adopt, resist, sustain, and adapt to change.
 
 This repository publishes the static CEAM+ website through GitHub Pages. The existing HTML, CSS, and JavaScript site does not require Supabase to keep working.
+
+## Surveys, Assessments, Dashboard, and Action
+
+The evidence journey now separates four jobs:
+
+- [`surveys.html`](surveys.html) preserves the original human-adaptation instruments and collects self-reported perceptions, experiences, willingness, trust, agency, barriers, and readiness. The old `assessments.html` URL remains fully functional for compatibility.
+- [`assessment-center.html`](assessment-center.html) contains thirteen evidence-led readiness, maturity, capability, strategy, and performance-system assessments. Questions and recommendations can be tailored through configuration for 15 organization types, five size contexts, ten business functions, and dynamic objectives while retaining common CEAM+ constructs.
+- [`dashboard.html`](dashboard.html) reads assessment results that a visitor explicitly saved in the same browser. It presents priorities, evidence gaps, action status, follow-up comparisons, and links back to the complete report.
+- The result action plan assigns owners, dates, KPIs, evidence needs, status, and reassessment dates. Data remains local unless a separate feature explicitly says otherwise.
+
+Assessment definitions, rendering, scoring, personalization, and storage are separate modules under `js/assessments/`. Unknown and not-applicable answers are never scored as zero. Evidence confidence is a user-declared support indicator, not independent verification or statistical confidence. Financial calculations remain separate from the score for financial measurement capability.
+
+## Marketing and AI assessment update (2026-09-21)
+
+The dedicated **Marketing Assessment** is available at `assessment-center.html?assessment=marketing-assessment`. It keeps the 40 supplied statements, eight scored screening dimensions and the 1–5 scale. Fourteen separate construct evidence reviews distinguish beliefs, practices, data and outcomes. Scores are provisional self-report indicators, not validated measures or observed business performance.
+
+The existing **AI Adoption Assessment** keeps its original readiness mode. Choose **AI Use & Case Analysis** or open `assessment-center.html?assessment=ai-adoption&mode=analysis` for evidence classification, human task allocation/necessity, customer journey, governance, assumption stress tests and a locked pre-analysis human baseline. Analysis runs locally with transparent rules; it does not call an AI model or send case text to a server. Case and baseline uploads support plain `.txt` and `.md` files.
+
+Both use the existing opt-in local storage and Dashboard. AI analysis results are version-separated from earlier readiness results. These changes are **local and not deployed**. See the [implementation report](docs/marketing-ai-update-report.md) and [measurement dictionary](docs/measurement-dictionary.md) for files, tests, conceptual sources and limitations.
+
+## Marketing Intelligence Dashboard
+
+[`dashboard.html`](dashboard.html) presents the first major practical application of the CEAM+ framework. The page includes executive, customer, and marketing measures; diagnostic and predictive analytics concepts; prescriptive decision support; and contextual CEAM+ signals. The displayed metric cards, chart, and accessible data table use explicitly labeled **Demonstration Data** from a fictional retail example. They are static examples, with no live company data, analytics service, or model connection.
+
+The **Dashboard is CEAM+'s primary product experience**. It brings together saved assessment priorities, evidence, interpretation, and next steps; the Marketing Analytics Lab supports deeper analysis. First-time visitors immediately see an interactive, clearly fictional six-quarter Revenue / Cost example with observations, limitations, and decision questions. **Load Demo Data** and **Try a Demo Assessment** remain available without replacing saved results or drafts. The older static business example and potential measures remain under the labeled research-framework disclosure.
+
+Completed readiness, marketing, and AI reports include an explicit **Save to Dashboard** action. Saving remains opt-in and browser-local; repeated saves update the same report. **Download Result JSON** / **Download Analysis JSON** and PDF printing remain available, and saved reports can also be downloaded directly from the Dashboard. Downloads retain answers, evidence, limitations, and action plans. Fictional demos can be downloaded but cannot enter real assessment history.
+
+CEAM+ is an evolving platform developed through practical pilots: Assess, Measure, Analyze, Interpret, Test, and Learn. Pilot work would define data sources, metric definitions, appropriate analytical methods, and human review. Future productized services or SaaS capabilities remain part of the longer-term development path.
+
+See the [website update review](docs/website-update-review.md) for the file-by-file changes and verification status, and the [GPT-6 Astra migration plan](docs/gpt-6-astra-migration-plan.md) for the proposed future AI integration. The migration document is a plan; this website update does not add an OpenAI runtime integration. Changes remain local for review and have not been deployed.
+
+## Marketing Analytics Lab
+
+[`analytics-lab.html`](analytics-lab.html) is a client-side, no-login teaching and decision-support workspace. It accepts local CSV, XLSX, and XLS files (up to 10 MB, 20,000 rows, 100 columns, and 1 million cells per sheet), shows a preview and data-quality notes, and keeps uploaded contents in the current browser tab. The vendored SheetJS parser runs in a Web Worker; formulas and macros are not executed, and no file contents are sent to a server.
+
+The Lab includes sample datasets, variable mapping, chart and accessible-table output, descriptive statistics, confidence intervals, correlation, regression, t-tests, forecasts, funnel and group comparisons, RFM/cohort starting points, customer and campaign measures, pricing and profitability scenarios, CAC/CLV/ROMI/ROI/ROAS, break-even, payback, NPV, operating leverage, NPS, an in-tab history, print/report export, and a CEAM+ Decision Lens. Every result follows the teaching sequence Business Question → Method → Why it fits → Formula → Calculation → Interpretation → Marketing / Managerial Meaning → Decision Questions. Case Analysis Mode adds evidence-led SWOT/TOWS, Porter’s Five Forces, STP, 4P/7P, PESTEL, Ansoff, lifecycle, benchmarking, perceptual mapping, root-cause questions, prioritization, decision and risk matrices, recommendations, KPIs, SMART objectives, and an executive synthesis. The worksheets do not generate automatic AI conclusions or replace customer research and management judgment.
+
+The Lab now opens with the six-row **Quarterly sales** demonstration and its recommended line chart. All four samples remain available, and manual chart choices are preserved. A single observation is reported as insufficient evidence for every variance and standard-deviation summary, including the population forms. Forecast scenarios remain user-assumed ranges, not predictive percentiles. See [CEAM+ External User Feedback and Improvement Log — October 2026](docs/external-user-feedback-october-2026.md) for the audit, rationale, changed files, verification, and limitations.
+
+Pure calculation and data-quality checks can be run with:
+
+```powershell
+node --test tests/analytics-math.test.mjs tests/analytics-data.test.mjs tests/internal-links.test.mjs
+```
+
+Assessment and preservation checks can be run with:
+
+```powershell
+node --test tests/assessment-definitions.test.mjs tests/assessment-personalization.test.mjs tests/assessment-scoring.test.mjs tests/survey-preservation.test.mjs
+```
+
+With a local server running at `http://127.0.0.1:8765`, the browser checks are:
+
+```powershell
+node tests/analytics-lab-browser.test.cjs
+node tests/strategy-browser-check.cjs
+node tests/assessment-center-browser.test.cjs
+node tests/site-disclosure-browser.test.cjs
+node tests/survey-integration-browser.test.cjs
+```
 
 ## Supabase Preparation
 
@@ -209,6 +270,12 @@ SITE_URL
 The email approval button should use the `approvalUrl` field from the Zapier
 payload. Clicking that link marks the user approved through the server-side
 function, not through public website JavaScript.
+
+## Dashboard scenario update
+
+The October 18 updates add [Personas and their methodology](docs/personas-methodology.md) and [layered scoring reports with historical safeguards](docs/scoring-layers-implementation-october-2026.md). The [pre-change scoring audit](docs/scoring-audit-october-2026.md) documents existing formulas; assessment questions and substantive formulas are preserved.
+
+The October 17 Dashboard scenario explorer, methods, design influences, preservation safeguards, and verification results are documented in [Dashboard Interaction and Transparency Update](docs/dashboard-scenario-update-october-2026.md).
 
 ## Official References
 

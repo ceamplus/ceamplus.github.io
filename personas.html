@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Personas | CEAM+</title>
+  <meta name="description" content="Explore fictional circumstances, compare constraints and agency, and ask better questions with CEAM+ Personas.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <link rel="icon" href="ceam-icon.jpeg"><link rel="stylesheet" href="styles.css?v=20260914-evidence"><link rel="stylesheet" href="styles-personas.css?v=20261017-personas"><link rel="stylesheet" href="styles-header.css?v=20261017-personas">
+  <script src="js/header-navigation.js?v=20261009-navigation" defer></script>
+</head>
+<body class="personas-page">
+  <a class="skip-link" href="#top">Skip to content</a>
+  <header class="site-header ceam-unified-header" data-header>
+    <a class="brand" href="index.html" aria-label="CEAM+ home"><span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span><span>CEAM+</span></a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="dashboard.html">Dashboard</a><a href="analytics-lab.html">Marketing Analytics Lab</a><a href="assessment-center.html">Assessment Center</a><a href="personas.html" aria-current="page">Personas</a>
+      <details class="nav-more"><summary>Explore</summary><div class="nav-secondary"><a href="index.html">Home</a><a href="surveys.html">Surveys</a><a href="research.html">Research</a><a href="ai-technology.html">AI</a><a href="consulting.html">Consulting</a><a href="about.html">About</a></div></details>
+    </nav>
+    <a class="header-action" href="consulting.html">Consulting Process</a>
+  </header>
+  <main id="top" tabindex="-1">
+    <span class="eyebrow">Circumstances. Constraints. Agency.</span><h1>Personas</h1>
+    <p>One change can create very different experiences. Explore a fictional starting library, compare practical circumstances, and test the questions CEAM+ should ask.</p>
+    <p class="persona-notice">Personas are tools for asking better questions. They do not predict how every person from a particular background will think, behave, or respond.</p>
+    <p>All profiles are fictional. This is an expandable starting set, not a representation of every population or a set of validated research personas. No real assessment participants are used.</p>
+    <nav class="persona-actions" aria-label="Personas sections"><a class="button primary" href="#persona-library">Explore the library</a><a class="button secondary" href="#persona-builder">Create a custom persona</a><a class="button secondary" href="#representation-review">Representation review</a></nav>
+    <noscript><p>The interactive library requires JavaScript. Personas remain fictional question-building tools, not scoring inputs. <a href="docs/personas-methodology.md">Read the methodology and initial library</a>.</p></noscript>
+    <section id="persona-library" aria-labelledby="library-title"><h2 id="library-title">Different circumstances. Better questions.</h2>
+      <details open><summary>Filter the library</summary><p>Filters describe constructed circumstances; they do not predict behavior. All filters combine. Clear them to see the full library.</p><div id="persona-filters" class="persona-filters"></div><button type="button" id="persona-clear-filters">Clear filters</button></details>
+      <p id="persona-count" role="status" aria-live="polite"></p>
+      <div class="persona-actions"><button type="button" id="persona-compare" disabled>Compare Personas</button><button type="button" id="persona-clear-selection">Clear selection</button><span id="persona-selection" role="status">Select two or three personas to compare.</span></div>
+      <div id="persona-cards" class="persona-grid"></div>
+    </section>
+    <section id="persona-profile" hidden aria-label="Complete persona profile"></section>
+    <section id="persona-comparison" hidden aria-label="Persona comparison"></section>
+    <section id="persona-demo" hidden aria-label="Persona demonstration"></section>
+    <section id="persona-builder" aria-labelledby="builder-title"><h2 id="builder-title" tabindex="-1">Create a custom persona</h2>
+      <p>Use a fictional composite of circumstances. Do not enter a real name, employer, address, contact details, health history, or identifiable story. A neutral scenario label is assigned automatically.</p>
+      <p>Fields are optional. Use “Unknown / not specified” or “Prefer not to answer” for sensitive details. Custom personas are user-created planning aids, separate from the CEAM+ library.</p>
+      <form id="persona-builder-form"><div id="persona-builder-fields"></div><label><input id="persona-persist" type="checkbox">Save custom personas in this browser (optional)</label><p>Anyone using this browser profile can read saved personas. If saving is blocked, work stays in this tab and can be exported. Assessment storage is separate.</p><div class="persona-actions"><button type="submit" id="persona-save">Create custom persona</button><button type="button" id="persona-cancel-edit">Clear builder / cancel edit</button></div></form>
+      <p id="persona-builder-status" role="status" aria-live="polite"></p>
+    </section>
+    <details id="representation-review"><summary>Internal representation review · coverage, not validation</summary><p>This review counts only the 16 CEAM+ library profiles, excluding custom scenarios. Counts show concentration; they are not population estimates or validated diversity targets. A single profile cannot speak for a community.</p><div id="persona-review" class="persona-review-grid"></div><h3>Perspectives still missing or insufficiently explored</h3><p>Oceania, Central Asia, the Middle East, displaced and stateless people, people without stable housing, children’s direct perspectives, Deaf sign-language users, people with multiple access needs, informal agricultural labor, and people with no usable internet are not adequately represented. African, Asian, European, Latin American, and Caribbean settings each cover very few circumstances. No specific Tribal Nation is represented; community-led co-design is needed before making locally specific claims.</p><p>All profiles lack lived-experience review. The provisional Indigenous-community profile is a prompt to seek locally authorized review, not evidence of community views or approval.</p></details>
+    <details><summary>How personas are created, reviewed, and retired</summary><p id="persona-principle"></p><p>Start with a question and explicit circumstances, record provenance and unknowns, invite relevant lived-experience review with consent, and test for counterexamples. Version updates and retire misleading profiles without silently changing old exports. Representation is not validation.</p><p><a href="docs/personas-methodology.md">Read the methodology, lifecycle, and implementation report</a>.</p><div id="persona-sources"></div></details>
+    <p><a class="text-link" href="dashboard.html">Return to the Dashboard</a> · <a class="text-link" href="analytics-lab.html">Open the Marketing Analytics Lab</a></p>
+  </main>
+  <footer class="site-footer"><p>ClearPathway Systems | CEAM+</p><a href="contact.html">Contact a Consultant</a><a href="#top">Back to top</a></footer>
+  <script type="module" src="js/personas/app.mjs"></script>
+</body>
+</html>

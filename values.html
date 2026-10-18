@@ -11,23 +11,29 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260615-logo-palette">
-  </head>
+    <link rel="stylesheet" href="styles.css?v=20260915-disclosure">
+    <link rel="stylesheet" href="styles-header.css?v=20261017-personas">
+    <script src="js/header-navigation.js?v=20261009-navigation" defer></script>
+</head>
   <body>
-    <header class="site-header" data-header>
-      <a class="brand" href="index.html" aria-label="CEAM+ home">
-        <span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span>
-        <span>CEAM+</span>
-      </a>
+    <header class="site-header ceam-unified-header" data-header>
+      <a class="brand" href="index.html" aria-label="CEAM+ home"><span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span><span>CEAM+</span></a>
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="index.html">Home</a>
-        <a href="change-consulting.html">Change Consulting</a>
-        <a href="marketing.html">Marketing</a>
-        <a href="ai-technology.html">AI &amp; Technology</a>
-        <a href="sustainability.html">Sustainability &amp; Flourishing</a>
-        <a href="research.html" aria-current="page">Research</a>
-        <a href="assessments.html">Assessments</a>
-        <a href="contact.html">Contact a Consultant</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="analytics-lab.html">Marketing Analytics Lab</a>
+        <a href="assessment-center.html">Assessment Center</a>
+        <a href="personas.html">Personas</a>
+        <details class="nav-more" data-current-section>
+          <summary>Explore</summary>
+          <div class="nav-secondary">
+            <a href="index.html">Home</a>
+            <a href="surveys.html">Surveys</a>
+            <a href="research.html" aria-current="page">Research</a>
+            <a href="ai-technology.html">AI</a>
+            <a href="consulting.html">Consulting</a>
+            <a href="about.html">About</a>
+          </div>
+        </details>
       </nav>
       <a class="header-action" href="consulting.html">Consulting Process</a>
     </header>
@@ -49,7 +55,11 @@
         </div>
       </section>
 
-      <section class="section visual-feature">
+      <div class="site-disclosure-toolbar" data-disclosure-toolbar hidden><p>Choose a topic to read more. Every original explanation remains available.</p><div><button type="button" data-disclosure-action="expand">Expand all topics</button><button type="button" data-disclosure-action="collapse">Collapse all topics</button></div><span class="site-disclosure-status" role="status" aria-live="polite"></span></div>
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Bridging the gap between knowing and doing</span><span class="site-disclosure-overview">Connect understanding with practical support and sustainable action.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section visual-feature">
         <div class="visual-copy">
           <h2>Bridging the gap between knowing and doing</h2>
           <p>
@@ -77,8 +87,13 @@
           >
         </figure>
       </section>
+        </div>
+      </details>
 
-      <section class="section mission-philosophy" id="philosophy">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Core Philosophy</span><span class="site-disclosure-overview">Explore agency, uncertainty, adaptation, and the conditions that make change possible.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section mission-philosophy" id="philosophy">
         <div class="section-heading">
           <h2>Core Philosophy</h2>
           <blockquote>
@@ -102,8 +117,13 @@
           </p>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section visual-feature">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Adaptive Wisdom and CEAM+</span><span class="site-disclosure-overview">See how the philosophical foundation informs the applied framework.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section visual-feature">
         <div class="visual-copy">
           <h2>Adaptive Wisdom and CEAM+</h2>
           <p>
@@ -150,8 +170,13 @@
           >
         </figure>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Guiding Principles</span><span class="site-disclosure-overview">Review the principles behind learning, interpretation, and responsible action.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Guiding Principles</h2>
           <p>
@@ -170,8 +195,13 @@
           </article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section process">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Adaptive Wisdom Learning Loop</span><span class="site-disclosure-overview">Reflect on experience, test assumptions, and revise the next step.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section process">
         <div class="section-heading">
           <h2>Adaptive Wisdom Learning Loop</h2>
           <p>
@@ -190,8 +220,13 @@
           <li><span>09</span><div><h3>New Questions</h3><p>Use what was learned to ask what should be watched, tested, or predicted next.</p></div></li>
         </ol>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Adaptive Wisdom Systems Change Loop</span><span class="site-disclosure-overview">Connect learning and action across people, organizations, and systems.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Adaptive Wisdom Systems Change Loop</h2>
           <p>
@@ -208,8 +243,13 @@
           <article><span class="layer-number">06</span><h3>New Equilibrium</h3><p>A revised pattern becomes normal until the next change begins.</p></article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Agency, Optionality, and Signals</span><span class="site-disclosure-overview">Examine meaningful choice, remaining options, and the signals that shape decisions.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Agency, Optionality, and Signals</h2>
           <p>
@@ -236,8 +276,13 @@
           </article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Developing Research Concepts</span><span class="site-disclosure-overview">Review emerging concepts as ideas to investigate, rather than settled findings.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Developing Research Concepts</h2>
           <p>
@@ -260,8 +305,13 @@
           </article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Hypotheses to Test</span><span class="site-disclosure-overview">Explore questions and propositions that require evidence and challenge.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Hypotheses to Test</h2>
           <p>
@@ -279,8 +329,13 @@
           </article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section context-applications">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Marketing and Interdisciplinary Research</span><span class="site-disclosure-overview">Connect customer understanding with organizational and human adaptation research.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section context-applications">
         <div class="section-heading">
           <h2>Marketing and Interdisciplinary Research</h2>
         </div>
@@ -295,8 +350,13 @@
           </article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">What we stand for</span><span class="site-disclosure-overview">Review the values that guide CEAM+ research and practice.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>What we stand for</h2>
           <p>
@@ -343,8 +403,13 @@
           </article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section visual-feature reverse">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Values become meaningful through action.</span><span class="site-disclosure-overview">Connect principles with choices, responsibilities, and everyday practice.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section visual-feature reverse">
         <figure class="visual-image">
           <img
             src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80"
@@ -364,8 +429,13 @@
           </p>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section intro">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Version 1 focus and future applications</span><span class="site-disclosure-overview">See the current focus and areas where the framework may develop.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section intro">
         <div class="section-heading">
           <h2>Version 1 focus and future applications</h2>
           <p>
@@ -389,21 +459,39 @@
           <p class="mission-tagline">Turning Awareness Into Action.</p>
         </div>
       </section>
+        </div>
+      </details>
 
       <section class="section final-cta">
         <div>
           <h2>Ready to turn understanding into a practical next step?</h2>
           <p>Use a CEAM+ assessment to identify what matters, what is getting in the way, and what practical support can help.</p>
         </div>
-        <a class="button primary" href="assessments.html">Start Assessment</a>
+        <a class="button primary" href="surveys.html">Start Survey</a>
       </section>
     </main>
 
+    <div class="site-directory">
+      <span class="eyebrow">Explore CEAM+</span>
+      <nav aria-label="More CEAM+ pages">
+        <a href="change-consulting.html">Change Consulting</a>
+        <a href="marketing.html">Marketing</a>
+        <a href="sustainability.html">Sustainability &amp; Flourishing</a>
+        <a href="framework.html">CEAM+ Framework</a>
+        <a href="applications.html">Applications</a>
+        <a href="workflow.html">Guides</a>
+        <a href="analytics-lab.html">Marketing Analytics Lab</a>
+        <a href="ai-solutions.html">AI Tools</a>
+        <a href="values.html">Mission, Values &amp; Philosophy</a>
+        <a href="contact.html">Contact a Consultant</a>
+      </nav>
+    </div>
     <footer class="site-footer">
       <p>ClearPathway Systems | CEAM+</p>
       <a href="#top">Back to top</a>
     </footer>
 
     <script src="script.js?v=20260615-restored-pages"></script>
+    <script src="js/site-disclosure.js?v=20260915-disclosure"></script>
   </body>
 </html>

@@ -8,20 +8,29 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260904-research-integrity">
-  </head>
+    <link rel="stylesheet" href="styles.css?v=20260915-disclosure">
+    <link rel="stylesheet" href="styles-header.css?v=20261017-personas">
+    <script src="js/header-navigation.js?v=20261009-navigation" defer></script>
+</head>
   <body>
-    <header class="site-header" data-header>
+    <header class="site-header ceam-unified-header" data-header>
       <a class="brand" href="index.html" aria-label="CEAM+ home"><span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span><span>CEAM+</span></a>
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="index.html">Home</a>
-        <a href="change-consulting.html">Change Consulting</a>
-        <a href="marketing.html">Marketing</a>
-        <a href="ai-technology.html">AI &amp; Technology</a>
-        <a href="sustainability.html">Sustainability &amp; Flourishing</a>
-        <a href="research.html" aria-current="page">Research</a>
-        <a href="assessments.html">Assessments</a>
-        <a href="contact.html">Contact a Consultant</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="analytics-lab.html">Marketing Analytics Lab</a>
+        <a href="assessment-center.html">Assessment Center</a>
+        <a href="personas.html">Personas</a>
+        <details class="nav-more" data-current-section>
+          <summary>Explore</summary>
+          <div class="nav-secondary">
+            <a href="index.html">Home</a>
+            <a href="surveys.html">Surveys</a>
+            <a href="research.html" aria-current="page">Research</a>
+            <a href="ai-technology.html">AI</a>
+            <a href="consulting.html">Consulting</a>
+            <a href="about.html">About</a>
+          </div>
+        </details>
       </nav>
       <a class="header-action" href="consulting.html">Consulting Process</a>
     </header>
@@ -30,33 +39,56 @@
       <section class="section framework-intro">
         <div class="section-heading">
           <h1>CEAM+ Research Architecture</h1>
-          <p>
-            CEAM+ is a framework and consulting platform for understanding how
-            people, organizations, and markets adopt, resist, sustain, and adapt
-            to change. AI is one important application area, but the broader
-            CEAM+ research focus remains human adaptation, agency, trust,
-            capability, resilience, sustainability, ethics, and flourishing.
-          </p>
-          <p>
-            CEAM+ provides a structured way to examine how contextual
-            conditions, trusted signals, perceived meaning, capability, agency,
-            and ethical judgment interact to shape varied responses to change
-            over time. It generates testable propositions and practical
-            questions rather than deterministic predictions.
-          </p>
+          <p class="research-page-lead">Explore the research in five areas. Open an area, then choose only the topic you want to read.</p>
         </div>
         <div class="core-principle">
           <strong>Probabilistic framework</strong>
           <p>CEAM+ is an evolving framework and research program. It may generate probabilistic explanations and testable propositions, but uncertainty, heterogeneity, boundary conditions, and multiple pathways remain explicit.</p>
         </div>
-        <div class="research-callout">
-          <p>
-            "CEAM+ does not assume that individuals or organizations will respond to change in the same way, nor does it claim to predict every possible outcome. Human behavior, organizational conditions, environmental pressures, prior experiences, available resources, trust, agency, and other factors interact differently across contexts. CEAM+ therefore focuses on identifying patterns, conditions, pathways, and probabilities rather than deterministic outcomes. Unexpected, contradictory, and minority outcomes are treated as meaningful evidence that may reveal boundary conditions, missing variables, alternative explanations, or areas where the framework itself should be revised."
-          </p>
-        </div>
       </section>
 
-      <section class="section" id="scope-and-components">
+      <section class="section research-topic-hub" aria-labelledby="research-topic-hub-title">
+        <div class="section-heading">
+          <span class="eyebrow">Research directory</span>
+          <h2 id="research-topic-hub-title">Choose a research area</h2>
+          <p>Each area contains short topic summaries. Detailed evidence, measures, propositions, and limitations stay closed until you select them.</p>
+        </div>
+        <nav class="research-area-grid" aria-label="Research areas">
+          <a href="#research-foundations"><strong>1. Foundations</strong><span>Purpose, constructs, levels, and research safeguards</span></a>
+          <a href="#research-evidence"><strong>2. Evidence &amp; measurement</strong><span>Signals, evidence sources, and operationalization</span></a>
+          <a href="#research-testing"><strong>3. Testing claims</strong><span>Falsifiability, boundaries, variation, and alternatives</span></a>
+          <a href="#research-model"><strong>4. Model &amp; propositions</strong><span>Empirical core, propositions, AI reliance, and outcomes</span></a>
+          <a href="#research-learning"><strong>5. Learning &amp; integrity</strong><span>Revision, integrity rules, and the full architecture</span></a>
+        </nav>
+      </section>
+
+      <div class="site-disclosure-toolbar research-disclosure-toolbar" data-disclosure-toolbar hidden><p>Open one area at a time, or use these controls to review the complete research architecture.</p><div><button type="button" data-disclosure-action="expand">Expand all topics</button><button type="button" data-disclosure-action="collapse">Collapse all topics</button></div><span class="site-disclosure-status" role="status" aria-live="polite"></span></div>
+
+      <details class="site-disclosure research-area" data-site-disclosure id="research-foundations">
+        <summary><span class="site-disclosure-title">1. Foundations</span><span class="site-disclosure-overview">Purpose, scope, core constructs, levels of analysis, and safeguards against distorted interpretation.</span></summary>
+        <div class="site-disclosure-body research-area-body">
+          <div class="research-topic-list">
+      <details class="site-disclosure research-topic" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Research purpose and position</span><span class="site-disclosure-overview">Understand what CEAM+ studies and why its claims remain probabilistic.</span></summary>
+        <div class="site-disclosure-body">
+          <section class="section">
+            <div class="section-heading">
+              <h2>Research purpose and position</h2>
+              <p>CEAM+ is a framework and consulting platform for understanding how people, organizations, and markets adopt, resist, sustain, and adapt to change. AI is one important application area, but the broader CEAM+ research focus remains human adaptation, agency, trust, capability, resilience, sustainability, ethics, and flourishing.</p>
+              <p>CEAM+ provides a structured way to examine how contextual conditions, trusted signals, perceived meaning, capability, agency, and ethical judgment interact to shape varied responses to change over time. It generates testable propositions and practical questions rather than deterministic predictions.</p>
+            </div>
+            <div class="research-callout">
+              <strong>How uncertainty shapes CEAM+ research</strong>
+              <p>"CEAM+ does not assume that individuals or organizations will respond to change in the same way, nor does it claim to predict every possible outcome. Human behavior, organizational conditions, environmental pressures, prior experiences, available resources, trust, agency, and other factors interact differently across contexts. CEAM+ therefore focuses on identifying patterns, conditions, pathways, and probabilities rather than deterministic outcomes. Unexpected, contradictory, and minority outcomes are treated as meaningful evidence that may reveal boundary conditions, missing variables, alternative explanations, or areas where the framework itself should be revised."</p>
+            </div>
+          </section>
+        </div>
+      </details>
+
+      <details class="site-disclosure research-topic" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Scope, Status, and Connected Components</span><span class="site-disclosure-overview">Distinguish the research framework, practice method, and developmental instruments.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section" id="scope-and-components">
         <div class="section-heading">
           <h2>Scope, Status, and Connected Components</h2>
           <p>
@@ -74,8 +106,13 @@
         </div>
         <p class="research-note">These are connected components of one CEAM+ framework, not separate brands. Research claims and practice guidance should remain clearly labeled.</p>
       </section>
+        </div>
+      </details>
 
-      <section class="section" id="conceptual-core">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Five Core Construct Families</span><span class="site-disclosure-overview">Meaning, trusted signals, capability, agency, and adaptation connect the CEAM+ constructs.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section" id="conceptual-core">
         <div class="section-heading">
           <h2>Five Core Construct Families</h2>
           <p>
@@ -94,8 +131,13 @@
         </div>
         <p class="research-note">Supporting concepts such as trust, emotions, willingness, resistance, self-efficacy, resilience, prudence, accountability, invisible labor, sustainability, flourishing, environmental conditions, and early-warning indicators are classified according to the role they play in a specific study.</p>
       </section>
+        </div>
+      </details>
 
-      <section class="section" id="levels-of-analysis">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Levels of Analysis</span><span class="site-disclosure-overview">Keep individual, team, organization, and environmental evidence in its proper context.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section" id="levels-of-analysis">
         <div class="section-heading">
           <h2>Levels of Analysis</h2>
           <p>Constructs may interact across levels, but the levels are not interchangeable. Researchers should identify the unit of theory, measurement, and inference before interpreting a relationship.</p>
@@ -115,8 +157,13 @@
           </table>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section" id="epistemic-integrity">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Epistemic Integrity</span><span class="site-disclosure-overview">Separate what is observed, inferred, uncertain, and open to challenge.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section" id="epistemic-integrity">
         <div class="section-heading">
           <h2>Epistemic Integrity</h2>
           <p>Epistemic integrity is a cross-cutting research and practice rule, not another CEAM+ layer.</p>
@@ -134,8 +181,21 @@
           <p>“CEAM+ does not treat agreement as evidence, confidence as accuracy, compliance as willingness, adoption as success, or a single signal as proof. The framework actively searches for contradictory evidence, alternative explanations, unequal power, measurement error, and unintended consequences.”</p>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section" id="trusted-signals">
+          </div>
+        </div>
+      </details>
+
+      <details class="site-disclosure research-area" data-site-disclosure id="research-evidence">
+        <summary><span class="site-disclosure-title">2. Evidence &amp; measurement</span><span class="site-disclosure-overview">Trusted and behavioral signals, evidence sources, and ways to turn concepts into measurable variables.</span></summary>
+        <div class="site-disclosure-body research-area-body">
+          <div class="research-topic-list">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Trusted Signals</span><span class="site-disclosure-overview">Examine how information becomes credible and how experience shapes trust.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section" id="trusted-signals">
         <div class="section-heading">
           <h2>Trusted Signals</h2>
           <p>
@@ -166,8 +226,13 @@
           <p>A trusted signal can be inaccurate, manipulative, incomplete, or harmful. High trust may improve coordination, while excessive or misplaced trust may reduce scrutiny.</p>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section" id="behavioral-signals">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Body, Emotional, and Behavioral Signals</span><span class="site-disclosure-overview">Treat visible behavior and emotion as contextual evidence, never proof of an internal state.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section" id="behavioral-signals">
         <div class="section-heading">
           <h2>Body, Emotional, and Behavioral Signals</h2>
           <p>Body language, microexpressions, resistance, hesitation, silence, and compliance are observable cues, not proof of an internal emotional state or intention. The same cue may have multiple explanations.</p>
@@ -177,8 +242,13 @@
           <article><h3>Triangulate before interpreting</h3><ul><li>Individual baseline and clusters of signals</li><li>Change over time and situational context</li><li>Cultural context and power relationships</li><li>Self-report and other evidence sources</li><li>Credible alternative explanations</li></ul></article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Evidence</span><span class="site-disclosure-overview">Compare observations, records, research, and perspectives before drawing conclusions.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section" id="evidence">
         <div class="section-heading">
           <h2>Evidence</h2>
           <p>
@@ -221,8 +291,13 @@
           </p>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Operationalization</span><span class="site-disclosure-overview">Translate constructs into observable indicators and testable measures.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Operationalization</h2>
           <p>
@@ -264,8 +339,21 @@
           </table>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+          </div>
+        </div>
+      </details>
+
+      <details class="site-disclosure research-area" data-site-disclosure id="research-testing">
+        <summary><span class="site-disclosure-title">3. Testing claims</span><span class="site-disclosure-overview">Falsifiability, probabilistic relationships, variation, boundary conditions, and competing explanations.</span></summary>
+        <div class="site-disclosure-body research-area-body">
+          <div class="research-topic-list">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Falsifiability</span><span class="site-disclosure-overview">Specify findings that could challenge or require revision of a CEAM+ proposition.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Falsifiability</h2>
           <p>
@@ -294,8 +382,13 @@
           <article><h3>Competing explanations</h3><p>Alternative variables that may better explain the observed pattern.</p></article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Probabilistic Relationships</span><span class="site-disclosure-overview">Relationships depend on conditions; the framework does not promise fixed outcomes.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Probabilistic Relationships</h2>
           <p>
@@ -330,8 +423,13 @@
           </article>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Heterogeneity and Multiple Pathways</span><span class="site-disclosure-overview">Different people and settings can reach different outcomes through different pathways.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Heterogeneity and Multiple Pathways</h2>
           <p>
@@ -359,8 +457,13 @@
           </p>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Boundary Conditions</span><span class="site-disclosure-overview">Identify when, where, and for whom a proposed relationship may apply.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Boundary Conditions</h2>
           <p>
@@ -395,8 +498,13 @@
         </div>
         <p class="research-note">Whenever possible, researchers should identify expected boundary conditions before analyzing outcomes and state what observations would weaken the proposed relationship.</p>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Alternative Explanations</span><span class="site-disclosure-overview">Compare competing explanations before attributing an outcome to a favored cause.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Alternative Explanations</h2>
           <p>
@@ -417,8 +525,21 @@
         </div>
         <p class="research-note">Future CEAM+ research should compare competing explanations whenever possible through study design, measurement, statistical controls, qualitative comparison, or replication.</p>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+          </div>
+        </div>
+      </details>
+
+      <details class="site-disclosure research-area" data-site-disclosure id="research-model">
+        <summary><span class="site-disclosure-title">4. Model &amp; propositions</span><span class="site-disclosure-overview">The empirical core, testable propositions, AI reliance, and multiple outcomes over time.</span></summary>
+        <div class="site-disclosure-body research-area-body">
+          <div class="research-topic-list">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Proposed Initial Empirical Core</span><span class="site-disclosure-overview">Start with a focused set of constructs that can be studied and revised.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Proposed Initial Empirical Core</h2>
           <p>
@@ -439,8 +560,13 @@
         </ol>
         <p class="research-note">The arrows organize questions; they do not prescribe one sequence. People and organizations may enter, revisit, skip, or reverse pathways, and outcomes feed back into later interpretation and response.</p>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Proposed Research Propositions</span><span class="site-disclosure-overview">Review sixteen proposed relationships, their alternatives, and evidence that could challenge them.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Proposed Research Propositions</h2>
           <p>
@@ -452,7 +578,7 @@
           <p class="research-note">These are propositions requiring empirical testing, not established findings.</p>
         </div>
         <div class="proposition-list">
-          <details open>
+          <details>
             <summary><span>P1</span> Greater perceived agency during implementation will be associated with a greater probability of sustained adoption when major contextual conditions are relatively comparable.</summary>
             <dl><div><dt>Expected relationship</dt><dd>Higher agency is associated with greater sustained adoption.</dd></div><div><dt>Possible moderators</dt><dd>Autonomy, mandate level, leadership support, workload, training quality.</dd></div><div><dt>Possible alternative explanations</dt><dd>Management quality, prior experience, self efficacy, job design, resources.</dd></div><div><dt>Evidence that would support it</dt><dd>Agency predicts sustained adoption after comparable conditions and relevant controls.</dd></div><div><dt>Evidence that would challenge it</dt><dd>Agency has no association, or the relationship disappears when training or management quality is included.</dd></div><div><dt>Evidence requiring CEAM+ revision</dt><dd>Higher agency consistently predicts worse outcomes or lower sustained adoption under conditions CEAM+ expected to be favorable.</dd></div></dl>
           </details>
@@ -491,8 +617,13 @@
           <details><summary><span>P16</span> Preserved agency will be associated with greater psychological ownership and sustainability, subject to organizational and task conditions.</summary><p>Measure meaningful choice and actual authority separately, and identify organizational and task boundary conditions in advance.</p></details>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section" id="ai-reliance">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">AI Reliance and Authority Transfer</span><span class="site-disclosure-overview">Distinguish productive assistance from dependence and loss of human decision authority.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section" id="ai-reliance">
         <div class="section-heading">
           <h2>AI Reliance and Authority Transfer</h2>
           <p>Frequent AI use does not automatically equal dependence. CEAM+ examines the quality and consequences of reliance, including who understands, verifies, challenges, and retains final authority.</p>
@@ -515,8 +646,13 @@
           <p>“AI may assist with analysis, pattern identification, and communication, but it does not receive automatic factual, interpretive, moral, or decision-making authority. Human reviewers remain responsible for verifying evidence, examining alternatives, and making consequential decisions.”</p>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Multiple Outcome Principle</span><span class="site-disclosure-overview">Adoption, capability, ethics, agency, resilience, and flourishing can move in different directions.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Multiple Outcome Principle</h2>
           <p>
@@ -546,8 +682,21 @@
           <p>“CEAM+ examines whether change strengthens or weakens people’s ability to live, learn, choose, connect, contribute, and adapt. Growth, adoption, and efficiency are not treated as automatically beneficial.”</p>
         </div>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+          </div>
+        </div>
+      </details>
+
+      <details class="site-disclosure research-area" data-site-disclosure id="research-learning">
+        <summary><span class="site-disclosure-title">5. Learning &amp; integrity</span><span class="site-disclosure-overview">Learning loops, integrity rules, and the path from concepts through replication and revision.</span></summary>
+        <div class="site-disclosure-body research-area-body">
+          <div class="research-topic-list">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Learning and Revision Loop</span><span class="site-disclosure-overview">Use contradictory findings and unexpected outcomes to improve the framework.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Learning and Revision Loop</h2>
           <p>
@@ -569,8 +718,13 @@
           <li>New Test</li>
         </ol>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Research Integrity Rules</span><span class="site-disclosure-overview">Keep evidence, uncertainty, competing explanations, and human consequences visible.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Research Integrity Rules</h2>
           <p>
@@ -594,8 +748,13 @@
           <li>Clearly distinguish exploratory findings from confirmatory findings.</li>
         </ul>
       </section>
+        </div>
+      </details>
 
-      <section class="section">
+      <details class="site-disclosure" data-site-disclosure>
+        <summary><span class="site-disclosure-title">Research Architecture Summary</span><span class="site-disclosure-overview">Connect concepts to measurement, tests, replication, and revision.</span></summary>
+        <div class="site-disclosure-body">
+<section class="section">
         <div class="section-heading">
           <h2>Research Architecture Summary</h2>
           <p>
@@ -619,13 +778,35 @@
           <a class="button secondary" href="framework.html">View Framework Layers</a>
         </div>
       </section>
+        </div>
+      </details>
+
+          </div>
+        </div>
+      </details>
 
       <section class="section final-cta">
         <div><h2>Research gives consulting its spine.</h2><p>CEAM+ uses interdisciplinary inquiry to ask better questions before recommending change.</p></div>
         <a class="button primary" href="contact.html">Contact a Consultant</a>
       </section>
     </main>
+    <div class="site-directory">
+      <span class="eyebrow">Explore CEAM+</span>
+      <nav aria-label="More CEAM+ pages">
+        <a href="change-consulting.html">Change Consulting</a>
+        <a href="marketing.html">Marketing</a>
+        <a href="sustainability.html">Sustainability &amp; Flourishing</a>
+        <a href="framework.html">CEAM+ Framework</a>
+        <a href="applications.html">Applications</a>
+        <a href="workflow.html">Guides</a>
+        <a href="analytics-lab.html">Marketing Analytics Lab</a>
+        <a href="ai-solutions.html">AI Tools</a>
+        <a href="values.html">Mission, Values &amp; Philosophy</a>
+        <a href="contact.html">Contact a Consultant</a>
+      </nav>
+    </div>
     <footer class="site-footer"><p>ClearPathway Systems | CEAM+</p><a href="#top">Back to top</a></footer>
     <script src="script.js?v=20260615-ai-solutions"></script>
+    <script src="js/site-disclosure.js?v=20260915-disclosure"></script>
   </body>
 </html>

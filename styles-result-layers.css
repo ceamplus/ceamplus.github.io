@@ -1,0 +1,7 @@
+.result-layers { padding:24px; margin:24px 0; border:1px solid #d6ddda; border-radius:12px; background:#fff; color:#26343b; }
+.result-layers h3 { margin-top:0; font-size:1.2rem; }
+.result-layers p,.result-layers li { line-height:1.65; overflow-wrap:anywhere; }
+.result-layers details { padding:10px 16px; margin:10px 0; border:1px solid #d6ddda; border-radius:8px; background:#f8faf9; }
+.result-layers summary { cursor:pointer; min-height:44px; padding:10px 0; font-weight:600; }
+.result-layers :focus-visible { outline:3px solid #28685e; outline-offset:3px; }
+@media(max-width:600px) { .result-layers { padding:16px; }.result-layers details { padding:8px 12px; } }
