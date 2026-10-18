@@ -47,6 +47,8 @@ The Location filter groups choices into countries, states/regions, and cities/lo
 
 ## Creation, review, updates, retirement
 
+The location catalogue now includes all 50 U.S. states in both library filtering and the custom builder, even when no library profile is set there. Empty matches do not generate new personas. Custom scenarios saved with a state retain that selection through editing, export, and reload and match both the state and country filters. State coverage in the selector is not research coverage in the fictional library.
+
 1. Identify an overlooked practical question and construct explicit circumstances, not a demographic behavioral rule. Do not use identifiable participant information.
 2. Record which details are fictional, assumptions, unknowns, and any source supporting a general condition. Keep research context separate from person-specific claims.
 3. Seek voluntary, appropriately compensated review with relevant lived experience. Record consent, scope, date, disagreements, and what review did not establish. Community-specific work requires locally appropriate authorization; no reviewer speaks for an entire group.

@@ -43,6 +43,13 @@ export const library = seeds.map(seed => ({
 }));
 
 export const getPersona = id => library.find(persona => persona.id === id);
+export const usStates = Object.freeze([
+  'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia',
+  'Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland',
+  'Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey',
+  'New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina',
+  'South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'
+]);
 const locationDetails = {
   mara:['Kentucky','Rural Appalachia · town unspecified'], eli:['Mississippi','Small Southern community · town unspecified'],
   nora:['Iowa','Agricultural community · town unspecified'], tess:['Alabama','Midsized city · city unspecified'],
@@ -54,15 +61,16 @@ const locationDetails = {
   ren:['Metro Manila','Manila']
 };
 export function locationParts(persona) {
-  const country=persona.location.split(' · ')[0];
-  const [region,locality]=persona.kind==='library'&&locationDetails[persona.id] || ['',persona.location];
+  const [country,selectedState]=persona.location.split(' · ');
+  const seed=seeds.find(item=>item.location===persona.location);
+  const [region,locality]=(seed&&locationDetails[seed.id]) || (country==='United States'&&usStates.includes(selectedState)?[selectedState,'Local setting unspecified']:['',persona.location]);
   return {country,region,locality,label:[country,region,locality].filter(Boolean).join(' · ')};
 }
 export function locationOptions(items) {
   const parts=items.map(locationParts);
   return [
-    {label:'Countries',options:[...new Set(parts.map(p=>p.country))].sort().map(country=>({value:`country:${country}`,label:country}))},
-    {label:'States and regions',options:[...new Set(parts.filter(p=>p.region).map(p=>`${p.country} · ${p.region}`))].sort().map(region=>({value:`region:${region}`,label:region}))},
+    {label:'Countries',options:[...new Set(['United States',...parts.map(p=>p.country)])].sort().map(country=>({value:`country:${country}`,label:country}))},
+    {label:'States and regions',options:[...new Set([...usStates.map(state=>`United States · ${state}`),...parts.filter(p=>p.region).map(p=>`${p.country} · ${p.region}`)])].sort().map(region=>({value:`region:${region}`,label:region}))},
     {label:'Cities and local settings',options:items.map(p=>({value:p.location,label:locationParts(p).label})).filter((p,i,all)=>all.findIndex(other=>other.value===p.value)===i).sort((a,b)=>a.label.localeCompare(b.label))}
   ];
 }

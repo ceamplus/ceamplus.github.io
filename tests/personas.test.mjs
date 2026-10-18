@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {library,facets,profileFields,filterPersonas,locationOptions,sharedGoals,representation,guidance,notice,principle} from '../js/personas/library.mjs';
+import {library,facets,profileFields,filterPersonas,locationOptions,usStates,sharedGoals,representation,guidance,notice,principle} from '../js/personas/library.mjs';
 import {makeCustom,loadCustom,saveCustom,storageKey,prefer} from '../js/personas/custom.mjs';
 test('fictional library is complete, unique, provisional, and not demographic scoring',()=>{
   assert.equal(library.length,16);assert.equal(new Set(library.map(p=>p.id)).size,16);
@@ -26,6 +26,22 @@ test('location selections support countries, regions and detailed local settings
   const custom=makeCustom({location:library[0].location},'custom-location','Custom location');
   assert.equal(filterPersonas([custom],{location:custom.location}).length,1);
   assert.equal(filterPersonas([custom],{location:'country:United States'}).length,1);
+});
+test('all 50 US states are selectable and custom state choices survive storage',()=>{
+  assert.equal(usStates.length,50);assert.equal(new Set(usStates).size,50);
+  assert.deepEqual([...usStates].sort(),usStates);
+  const regions=locationOptions(library)[1].options.filter(option=>option.value.startsWith('region:United States · '));
+  assert.equal(regions.length,50);
+  for(const state of usStates){
+    const persona=makeCustom({location:`United States · ${state}`},'custom-state','State scenario');
+    const storage={value:null,setItem(key,value){this.value=value;},getItem(){return this.value;}};
+    assert(saveCustom(storage,[persona]).ok);
+    const saved=loadCustom(storage).items;
+    assert.equal(filterPersonas(saved,{location:`region:United States · ${state}`}).length,1,state);
+    assert.equal(filterPersonas(saved,{location:'country:United States'}).length,1,state);
+  }
+  assert.deepEqual(filterPersonas(library,{location:'region:United States · Alaska'}),[]);
+  assert.equal(filterPersonas([makeCustom({location:library[0].location},'custom-local','Local scenario')],{location:'region:United States · Kentucky'}).length,1);
 });
 test('comparison finds actual shared goals, not invented consensus',()=>{
   assert.deepEqual(sharedGoals([{goals:['a','b']},{goals:['b','c']},{goals:['b']}]),['b']);

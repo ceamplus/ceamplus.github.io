@@ -1,4 +1,4 @@
-import { library, facets, profileFields, contextSources, principle, filterPersonas, locationOptions, sharedGoals, representation, guidance } from './library.mjs';
+import { library, facets, profileFields, contextSources, principle, filterPersonas, locationOptions, usStates, sharedGoals, representation, guidance } from './library.mjs';
 import { loadCustom, saveCustom, makeCustom, unknown, prefer } from './custom.mjs';
 import { renderPersonaDemo } from './demo.mjs';
 const $=id=>document.getElementById(`persona-${id}`);
@@ -54,7 +54,7 @@ function persist(message){
 }
 function refresh(){filters();cards();}
 function builder(){
-  const options=key=>[unknown,prefer,'Other / describe in context',...new Set(library.map(p=>p[key]))];
+  const options=key=>[unknown,prefer,'Other / describe in context',...new Set([...(key==='location'?usStates.map(state=>`United States · ${state}`):[]),...library.map(p=>p[key])])];
   const locationLabels=new Map(locationOptions(library)[2].options.map(p=>[p.value,p.label]));
   const textFields={context:'Role and context (fictional)',goals:'Goals (one per line)',hesitation:'Constraints and reasons for caution',accessDetail:'Technology access in practice',experienceDetail:'Experience level and learning needs',time:'Available time and mental bandwidth',securityDetail:'Financial and employment considerations',support:'Human support',needs:'Accessibility and language requirements',authority:'Decision authority',optout:'Ability to opt out, question, or override',interest:'Potential benefit to investigate',success:'What successful adoption might look like',evidence:'Evidence available / needed',unknown:'Important unknowns'};
   $('builder-fields').innerHTML=`<details open><summary>Describe circumstances · no real identity</summary><div class="persona-builder-grid">${Object.entries(textFields).map(([key,label])=>`<label for="custom-${key}">${label}<textarea id="custom-${key}" name="${key}" rows="3" maxlength="1500" placeholder="Fictional circumstances only. Unknown or Prefer not to answer are valid."></textarea></label>`).join('')}</div></details><details><summary>Optional library filters and sensitive circumstances</summary><p>Every field supports Prefer not to answer. These labels organize scenarios; they never set scores.</p><div class="persona-builder-grid">${Object.entries(facets).map(([key,label])=>`<label for="custom-${key}">${label}<select id="custom-${key}" name="${key}">${options(key).map(value=>`<option value="${esc(value)}">${esc(key==='location'?(locationLabels.get(value)||value):value)}</option>`).join('')}</select></label>`).join('')}<label for="custom-lifeStage">Age / life stage<select id="custom-lifeStage" name="lifeStage">${[unknown,prefer,'Adult','Young adult','Caregiving stage','Workforce transition','Retired adult','Other / describe in context'].map(value=>`<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select></label></div></details>`;
