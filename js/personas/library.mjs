@@ -1,3 +1,5 @@
+import {matchesLanguage} from './languages.mjs';
+import {countries} from './countries.mjs';
 export const notice = 'Personas are tools for asking better questions. They do not predict how every person from a particular background will think, behave, or respond.';
 export const principle = 'CEAM+ personas represent circumstances, constraints, goals, and forms of agency rather than demographic destiny. They are used to expose overlooked questions, test accessibility, and improve implementation guidance. They are not predictions of how a group will behave.';
 export const contextSources = [
@@ -69,7 +71,7 @@ export function locationParts(persona) {
 export function locationOptions(items) {
   const parts=items.map(locationParts);
   return [
-    {label:'Countries',options:[...new Set(['United States',...parts.map(p=>p.country)])].sort().map(country=>({value:`country:${country}`,label:country}))},
+    {label:'Countries and territories',options:[...new Set([...countries,...parts.map(p=>p.country)])].sort().map(country=>({value:`country:${country}`,label:country}))},
     {label:'States and regions',options:[...new Set([...usStates.map(state=>`United States · ${state}`),...parts.filter(p=>p.region).map(p=>`${p.country} · ${p.region}`)])].sort().map(region=>({value:`region:${region}`,label:region}))},
     {label:'Cities and local settings',options:items.map(p=>({value:p.location,label:locationParts(p).label})).filter((p,i,all)=>all.findIndex(other=>other.value===p.value)===i).sort((a,b)=>a.label.localeCompare(b.label))}
   ];
@@ -77,6 +79,7 @@ export function locationOptions(items) {
 export function filterPersonas(items, filters) {
   return items.filter(persona=>Object.entries(filters).every(([key,value])=>{
     if(!value)return true;
+    if(key==='language')return matchesLanguage(persona.language,value);
     if(key==='location'&&value.startsWith('country:'))return locationParts(persona).country===value.slice(8);
     if(key==='location'&&value.startsWith('region:')){const p=locationParts(persona);return `${p.country} · ${p.region}`===value.slice(7);}
     return persona[key]===value;

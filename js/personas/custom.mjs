@@ -1,4 +1,5 @@
 import { facets, profileFields } from './library.mjs';
+import {demographicFields} from './options.mjs';
 export const storageKey = 'ceamplus.personas.custom.v1';
 export const unknown = 'Unknown / not specified';
 export const prefer = 'Prefer not to answer';
@@ -6,6 +7,11 @@ const clean = value => typeof value === 'string' ? value.trim().slice(0, 1500) :
 export function makeCustom(input, id, name) {
   const persona = { id, name, kind:'custom', version:1, updated:new Date().toISOString().slice(0,10), reviewed:false };
   for (const field of [...Object.keys(facets), ...Object.keys(profileFields)]) persona[field] = clean(input[field]) || unknown;
+  persona.demographics={};
+  for(const field of Object.keys(demographicFields)){
+    const value=clean(input.demographics?.[field]??input[field]);
+    if(value)persona.demographics[field]=value;
+  }
   persona.goals = (Array.isArray(input.goals) ? input.goals : clean(input.goals).split('\n')).filter(value => typeof value === 'string' && value.trim()).slice(0,10).map(clean);
   if (!persona.goals.length) persona.goals = ['Goals not specified'];
   persona.assumptions = 'User-created fictional planning scenario. All entered details are assumptions unless separately verified; never a real participant record.';

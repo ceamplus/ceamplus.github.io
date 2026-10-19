@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {library,facets,profileFields,filterPersonas,locationOptions,usStates,sharedGoals,representation,guidance,notice,principle} from '../js/personas/library.mjs';
 import {makeCustom,loadCustom,saveCustom,storageKey,prefer} from '../js/personas/custom.mjs';
+import {matchesLanguage} from '../js/personas/languages.mjs';
 test('fictional library is complete, unique, provisional, and not demographic scoring',()=>{
   assert.equal(library.length,16);assert.equal(new Set(library.map(p=>p.id)).size,16);
   for(const p of library){for(const key of [...Object.keys(facets),...Object.keys(profileFields),'assumptions','unknown','review','evidenceStatus'])assert.equal(typeof p[key],'string',`${p.id}.${key}`);assert(p.goals.length);assert.equal(p.reviewed,false);assert.equal(p.kind,'library');assert(!Object.hasOwn(p,'score'));assert.match(p.assumptions,/fictional/);}
@@ -10,7 +11,7 @@ test('fictional library is complete, unique, provisional, and not demographic sc
 });
 test('all twelve filters combine exactly and no-match is empty',()=>{
   assert.equal(Object.keys(facets).length,12);
-  for(const key of Object.keys(facets)){const value=library[0][key];assert(filterPersonas(library,{[key]:value}).every(p=>p[key]===value));}
+  for(const key of Object.keys(facets)){const value=library[0][key];assert(filterPersonas(library,{[key]:value}).every(p=>key==='language'?matchesLanguage(p[key],value):p[key]===value));}
   assert.deepEqual(filterPersonas(library,{role:'Student',location:library[0].location}),[]);
   assert.equal(filterPersonas(library,{}).length,16);
 });
