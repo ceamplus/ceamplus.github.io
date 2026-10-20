@@ -9,7 +9,7 @@ const fs = require('node:fs');
     await page.route('https://fonts.googleapis.com/**', route => route.fulfill({ body: '', contentType: 'text/css' }));
     const base = process.env.CEAM_TEST_URL || 'http://127.0.0.1:8765';
     const files = fs.readdirSync('.').filter(name => name.endsWith('.html'));
-    const expected = ['Dashboard', 'Marketing Analytics Lab', 'Assessment Center', 'Personas', 'Home', 'Surveys', 'Research', 'AI', 'Consulting', 'About'];
+    const expected = ['Dashboard', 'Marketing Analytics Lab', 'Assessment Center', 'Personas', 'Home', 'Research', 'AI', 'Consulting', 'About', 'Scenario Studio Preview'];
     for (const name of files) {
       await page.goto(base + '/' + name);
       if (['mission.html', 'philosophy.html'].includes(name)) await page.waitForURL('**/values.html*');

@@ -1,5 +1,9 @@
 # CEAM+ Website
 
+## October 20, 2026 update
+
+[Scenario Studio Preview](scenario-studio-preview.html) presents fictional marketing and research examples for the planned platform. [Assessment Center](assessment-center.html) now also contains eighteen self-report assessments adapted from the original survey questionnaires. Existing evidence-led assessments and historical survey records are preserved. See [Preview implementation](docs/scenario-studio-preview-release.md) and [assessment integration](docs/self-report-assessment-integration.md).
+
 CEAM+ is a marketing intelligence and decision-support platform that helps organizations understand what is happening, why it is happening, what may happen next, and what actions may improve performance. Its research-informed framework remains the foundation for understanding how people, organizations, customers, and markets adopt, resist, sustain, and adapt to change.
 
 This repository publishes the static CEAM+ website through GitHub Pages. The existing HTML, CSS, and JavaScript site does not require Supabase to keep working.
@@ -8,7 +12,7 @@ This repository publishes the static CEAM+ website through GitHub Pages. The exi
 
 The evidence journey now separates four jobs:
 
-- [`surveys.html`](surveys.html) preserves the original human-adaptation instruments and collects self-reported perceptions, experiences, willingness, trust, agency, barriers, and readiness. The old `assessments.html` URL remains fully functional for compatibility.
+- [`assessment-center.html#self-report-assessments`](assessment-center.html#self-report-assessments) contains the original survey questionnaires as eighteen self-report assessments. The old `surveys.html` and `assessments.html` URLs preserve read-only legacy history and downloads without rescoring.
 - [`assessment-center.html`](assessment-center.html) contains thirteen evidence-led readiness, maturity, capability, strategy, and performance-system assessments. Questions and recommendations can be tailored through configuration for 15 organization types, five size contexts, ten business functions, and dynamic objectives while retaining common CEAM+ constructs.
 - [`dashboard.html`](dashboard.html) reads assessment results that a visitor explicitly saved in the same browser. It presents priorities, evidence gaps, action status, follow-up comparisons, and links back to the complete report.
 - The result action plan assigns owners, dates, KPIs, evidence needs, status, and reassessment dates. Data remains local unless a separate feature explicitly says otherwise.

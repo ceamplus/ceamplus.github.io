@@ -4,6 +4,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $mainPages = @(
   "index.html",
   "dashboard.html",
+  "scenario-studio-preview.html",
   "personas.html",
   "analytics-lab.html",
   "change-consulting.html",
@@ -33,11 +34,11 @@ $requiredNavigation = [ordered]@{
   "assessment-center.html" = "Assessment Center"
   "personas.html" = "Personas"
   "index.html" = "Home"
-  "surveys.html" = "Surveys"
   "research.html" = "Research"
   "ai-technology.html" = "AI"
   "consulting.html" = "Consulting"
   "about.html" = "About"
+  "scenario-studio-preview.html" = "Scenario Studio Preview"
 }
 
 foreach ($page in $mainPages) {
@@ -80,8 +81,8 @@ foreach ($page in $mainPages) {
     "ai-technology.html"
   } elseif ($page -in @("change-consulting.html", "workflow.html")) {
     "consulting.html"
-  } elseif ($page -eq "assessments.html") {
-    "surveys.html"
+  } elseif ($page -in @("assessments.html", "surveys.html")) {
+    ""
   } elseif ($page -in @("marketing.html", "sustainability.html", "contact.html", "auth.html")) {
     ""
   } else {
@@ -179,13 +180,8 @@ if ($workflow -notmatch [regex]::Escape("Conditions for Change")) {
   throw "workflow.html does not begin from Conditions for Change."
 }
 
-$assessments = Get-Content (Join-Path $root "assessments.html") -Raw
-if ($assessments -notmatch [regex]::Escape("CEAM+ Adoption Model")) {
-  throw "assessments.html is missing the CEAM+ Adoption Model label."
-}
-if ($assessments -notmatch 'applied\s+component\s+of\s+the\s+broader\s+CEAM\+\s+framework') {
-  throw "assessments.html is missing the applied-model clarification."
-}
+$legacy = Get-Content (Join-Path $root "assessments.html") -Raw
+if ($legacy -notmatch 'Earlier short surveys retired' -or $legacy -match 'data-start-assessment') { throw "Legacy survey retirement route is missing or starts an engine." }
 
 $values = Get-Content (Join-Path $root "values.html") -Raw
 if ($values -match 'http-equiv="refresh"') {

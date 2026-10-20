@@ -46,14 +46,14 @@ $framework = Get-Content (Join-Path $root "framework.html") -Raw
 }
 
 @(
-  "CEAM+ Adoption Model",
+  "Earlier short surveys retired",
   "discussion indicator",
   "not a diagnosis",
   "Uncertain",
   "Not applicable",
   "Insufficient information"
 ) | ForEach-Object {
-  if (($assessments + $script) -notmatch [regex]::Escape($_)) {
+  if (($assessments + $script + $framework) -notmatch [regex]::Escape($_)) {
     throw "The assessment experience is missing: $_"
   }
 }

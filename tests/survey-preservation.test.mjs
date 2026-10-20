@@ -51,13 +51,15 @@ test('survey scoring, uncertainty, recommendations and contextual safeguards rem
   }
 });
 
-test('canonical and compatibility survey pages retain functional controls, safeguards and disclosure', () => {
-  assert.equal(read('surveys.html'), read('assessments.html'));
-  for (const file of ['surveys.html', 'assessments.html']) {
-    const page = read(file);
-    for (const required of ['<title>CEAM+ Surveys</title>', 'id="assessments"', 'id="assessments-title"', 'data-organization-select', 'data-start-assessment', 'data-assessment-panel', 'script.js?v=20260904-assessment-integrity', 'js/surveys-context.js', 'CEAM+ Adoption Model', 'not validated diagnostic instruments', 'Contradictory answers create follow-up questions', 'Triangulate when stakes are high', 'Keep structural barriers visible', 'Preserve human authority', 'Zapier', 'assessment-center.html', 'analytics-lab.html']) assert(page.includes(required), `${file}: ${required}`);
-    for (const id of Object.keys(counts)) assert(page.includes(`value="${id}"`), `${file}: ${id}`);
-    assert(!page.includes('http-equiv="refresh"'), `${file} stays functional without a redirect`);
+test('canonical and compatibility survey URLs are read-only retirement pages', () => {
+  assert.equal(read('surveys.html'),read('assessments.html'));
+  for(const file of ['surveys.html','assessments.html']) {
+    const page=read(file);
+    assert(page.includes('Earlier short surveys retired'));
+    assert(page.includes('js/surveys/retired.mjs'));
+    assert(!page.includes('data-start-assessment'));
+    assert(!page.includes('js/surveys/app.mjs'));
+    assert(!page.includes('script.js?'));
   }
 });
 

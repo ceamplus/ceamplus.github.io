@@ -60,13 +60,9 @@ const base = process.env.CEAM_TEST_URL || 'http://127.0.0.1:8765';
   assert.deepEqual(await page.locator('main details').evaluateAll(nodes => nodes.map(node => node.open)), before, 'print restores the prior reading state');
 
   for (const route of ['surveys.html','assessments.html']) {
-    await page.goto(`${base}/${route}?context=business`, { waitUntil: 'domcontentloaded' });
-    assert.equal(await page.locator('details[data-site-disclosure][open]').count(), 0);
-    for (const selector of ['[data-organization-select]','[data-start-assessment]','.assessment-integrity-note','.assessment-safeguards','.survey-submission-note','.survey-journey']) assert(await page.locator(selector).isVisible(), `${route}: ${selector} remains visible`);
-    assert(await page.locator('.survey-journey').innerText().then(text => text.includes('Surveys → Assessment → Dashboard → Action')));
-    await page.locator('[data-start-assessment]').click();
-    assert.equal(await page.locator('.guided-question').count(),58);
-    assert.equal(await page.locator('details[data-site-disclosure][open]').count(),0,'starting surveys leaves optional explanations closed');
+    await page.goto(base+'/'+route+'?context=business');
+    assert.match(await page.locator('main').innerText(),/earlier short survey experience/);
+    assert.equal(await page.locator('[data-start-assessment],[data-survey-start]').count(),0);
   }
 
   const native = await browser.newPage({ javaScriptEnabled: false });
@@ -78,5 +74,5 @@ const base = process.env.CEAM_TEST_URL || 'http://127.0.0.1:8765';
   await native.close();
   assert.deepEqual(errors,[]);
   await browser.close();
-  console.log('PASS progressive disclosure: preserved routes, native keyboard toggles, topic controls, deep links, nested print/restore, visible survey controls/safeguards, no-JavaScript fallback and mobile layout.');
+  console.log('PASS progressive disclosure: preserved routes, native keyboard toggles, topic controls, deep links, nested print/restore, legacy retirement routes, no-JavaScript fallback and mobile layout.');
 })().catch(error => { console.error(error); process.exit(1); });

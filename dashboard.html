@@ -27,11 +27,10 @@
           <summary>Explore</summary>
           <div class="nav-secondary">
             <a href="index.html">Home</a>
-            <a href="surveys.html">Surveys</a>
             <a href="research.html">Research</a>
             <a href="ai-technology.html">AI</a>
             <a href="consulting.html">Consulting</a>
-            <a href="about.html">About</a>
+            <a href="about.html">About</a><a href="scenario-studio-preview.html">Scenario Studio Preview</a>
           </div>
         </details>
       </nav>
@@ -50,6 +49,7 @@
           <a class="button secondary" href="#pilot-approach">Explore the pilot approach <span aria-hidden="true">↓</span></a>
         </div>
         <p class="dashboard-intro-note">The Dashboard brings together your assessment priorities, evidence, and next steps. Use the <a class="text-link" href="analytics-lab.html">Marketing Analytics Lab</a> for deeper analysis that informs your decisions here. The <a class="text-link" href="framework.html">CEAM+ framework</a> remains the foundation; proposed pilot measures are labeled separately below.</p>
+        <p class="dashboard-intro-note">Planned future CEAM+ Platform feature: <a class="text-link" href="scenario-studio-preview.html">explore the Scenario Studio Preview</a>, a fictional walkthrough with no customer workspace or paid access.</p>
         <nav class="dashboard-jumps" aria-label="Dashboard sections">
           <a href="personas.html">Explore Personas</a>
           <a href="#scenario-explorer">Explore scenarios</a><a href="#assessment-insights">Your assessments</a><a href="#dashboard-tools">Analysis tools</a><a href="#executive-overview">Research &amp; pilot example</a>
@@ -114,10 +114,10 @@
       <section class="section" id="assessment-insights" aria-labelledby="assessment-insights-title">
         <span class="eyebrow">Assess → Analyze → Interpret → Decide</span>
         <h2 id="assessment-insights-title">Your evidence. Your priorities. Your next steps.</h2>
-        <p><a class="text-link" href="assessment-center.html">Assess conditions</a>, <a class="text-link" href="analytics-lab.html">analyze business records</a>, interpret findings in context, then assign actions and follow-up in your report. <a class="text-link" href="surveys.html">Surveys</a> add what people report. Each source contributes evidence; none replaces human judgment.</p>
+        <p><a class="text-link" href="assessment-center.html">Assess conditions</a>, <a class="text-link" href="analytics-lab.html">analyze business records</a>, interpret findings in context, then assign actions and follow-up in your report. Research surveys and interviews can add what people report. Each source contributes evidence; none replaces human judgment.</p>
         <p class="dashboard-intro-note">This view reads only assessments you chose to save in this browser. No assessment responses are uploaded. Anyone using this browser profile may access saved data.</p>
         <details class="dashboard-local-details"><summary>What this means · assessment evidence</summary><p>These results summarize user-provided information under the existing CEAM+ method. Evidence indicators describe declared support and coverage; they are not probabilities of success. Review the full report for human baseline comparisons, assumptions, and action plans. Scenario controls above do not change these scores.</p></details>
-        <div id="saved-assessment-dashboard"><p>Loading local assessment history…</p></div>
+        <details class="dashboard-local-details"><summary>Legacy survey history</summary><p>Earlier short surveys are retired. Historical survey records remain separate from assessments and never enter assessment trend lines.</p><div id="legacy-survey-history"><p>Enable JavaScript to read legacy survey history.</p></div><a href="surveys.html#legacy-history">Read legacy survey history and downloads</a></details><details class="dashboard-local-details"><summary>Self-report assessment results</summary><p>Experience and context assessments have their own results and methods. They do not enter evidence-led assessment trend lines.</p><div id="self-report-history"></div><a href="assessment-center.html#self-report-assessments">Choose a self-report assessment</a></details><div id="saved-assessment-dashboard"><p>Loading local assessment history…</p></div>
         <noscript><p>Enable JavaScript to view local results, or <a href="assessment-center.html">open the Assessment Center</a>.</p></noscript>
       </section>
       <details class="dashboard-demonstration" data-site-disclosure>
@@ -245,5 +245,7 @@
     <script type="module" src="js/assessments/dashboard-demo.mjs"></script>
     <script type="module" src="js/assessments/dashboard-scenario.mjs"></script>
       <script type="module" src="js/personas/context.mjs"></script>
+<script type="module" src="js/surveys/retired.mjs?v=20261019"></script>
+<script type="module" src="js/assessments/self-report-app.mjs?v=20261020"></script>
 </body>
 </html>

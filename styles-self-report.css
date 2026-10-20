@@ -1,0 +1,12 @@
+.self-report-options { display:grid; grid-template-columns:minmax(0,1fr); gap:8px; margin:16px 0; min-width:0; }
+.self-report-options label, [data-self-followup] label { display:flex; align-items:flex-start; gap:10px; padding:10px; min-height:44px; }
+.self-report-options input[type=radio], .self-report-options input[type=checkbox], [data-self-followup] input { width:20px; height:20px; flex:0 0 20px; margin:2px 0; }
+.self-report-question { min-width:0; margin:24px 0; border:1px solid #d8dcd7; border-radius:10px; padding:20px; }
+.self-report-question legend { float:none; width:auto; max-width:100%; padding:0 8px; font-weight:650; }
+.self-report-options input[type=range] { width:100%; min-width:0; margin:0; }
+.self-report-question select, .self-report-question textarea, #self-report-form>label input, #self-report-form>label textarea { box-sizing:border-box; width:100%; max-width:100%; min-height:44px; margin:8px 0; padding:10px; }
+#self-report-workspace { padding:32px 0; overflow-wrap:anywhere; }
+#self-report-workspace[hidden] { display:none; }
+#self-report-workspace ol { padding-left:24px; }
+#self-report-workspace button, #self-report-history button { white-space:normal; }
+@media(max-width:600px) { .self-report-question { padding:12px; } }

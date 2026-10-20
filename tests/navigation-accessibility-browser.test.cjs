@@ -24,7 +24,7 @@ const assert = require('node:assert/strict');
       await page.keyboard.press('Tab');
       assert.equal(await page.locator(':focus').textContent(), 'Home');
       await page.keyboard.press('Tab');
-      assert.equal(await page.locator(':focus').textContent(), 'Surveys');
+      assert.equal(await page.locator(':focus').textContent(), 'Research');
       await page.keyboard.press('Escape');
       assert.equal(await details.evaluate(element => element.open), false, 'Escape closes disclosure');
       assert(await summary.evaluate(element => document.activeElement === element), 'Escape restores focus');
