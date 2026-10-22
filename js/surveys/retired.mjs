@@ -45,10 +45,10 @@ if(routeNote){
   const params=new URLSearchParams(location.search);const requested=params.get('survey');
   const match=surveys.find(s=>s.assessmentId===requested||s.id===requested);
   routeNote.append(element('p','Old context, survey, query and hash links now open this retirement page. No survey starts automatically.'));
-  const context=params.get('context');
-  const selfId=match?'self-report-'+match.assessmentId:['personal','business','education','healthcare','rehabilitation'].includes(context)?'context-'+context:null;
-  if(selfId){const destination=element('a','Open this questionnaire as a self-report assessment');destination.href='assessment-center.html?selfReport='+encodeURIComponent(selfId);routeNote.append(destination);}
-  if(match){const link=element('a','Related topic: '+match.title.replace(/Survey$/,'Assessment'));link.href='assessment-center.html?assessment='+encodeURIComponent(match.assessmentId);routeNote.append(link,element('p','Topic relationship only. This is a different instrument, not a conversion or comparable score.'));}
+  const link=element('a',match?'Open related assessment: '+match.title.replace(/Survey$/,'Assessment'):'Browse existing assessments');
+  link.href=match?'assessment-center.html?assessment='+encodeURIComponent(match.assessmentId):'assessment-center.html#explore';
+  routeNote.append(link);
+  if(match)routeNote.append(element('p','Topic relationship only. This is a different instrument, not a conversion or comparable score.'));
 }
 const picker=document.querySelector('#legacy-result-file');
 if(picker)picker.addEventListener('change',async()=>{

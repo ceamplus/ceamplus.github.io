@@ -20,7 +20,7 @@ The interface calls only the preserved context engine's local question-rendering
 
 ## Compatibility
 
-`surveys.html` and `assessments.html` explain the move, link to the integrated assessments and preserve read-only legacy results and original downloads. Recognized old context/category links offer the matching self-report assessment. Nothing starts or submits automatically from an old URL.
+`surveys.html` and `assessments.html` explain the move, link to the integrated assessments and preserve read-only legacy results and original downloads. As of October 22, old short-survey category links offer the related existing evidence-led assessment. Context links and unknown queries lead to the existing assessment catalogue because there is no exact one-to-one context mapping. The copied questionnaires and current Assessment Center layout remain intact. Nothing starts or submits automatically from an old URL.
 
 Old records remain in their original schemas and namespaces. No historical survey record is renamed, converted, migrated, rescored or placed into an evidence-led trend. The older context engine did not persist browser history; existing downloaded context results remain readable and downloadable without alteration.
 

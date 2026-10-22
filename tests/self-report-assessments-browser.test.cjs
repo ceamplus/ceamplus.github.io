@@ -43,7 +43,7 @@ const base=process.env.CEAM_TEST_URL||'http://127.0.0.1:8765';
   }
   await page.goto(base+'/assessment-center.html');
   for(const width of [1440,390]){await page.setViewportSize({width,height:1000});await page.locator('#self-report-title').scrollIntoViewIfNeeded();await page.screenshot({path:'.cache/self-report-review/assessments-'+width+'.png'});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));}
-  await page.goto(base+'/surveys.html?context=education');assert.equal(await page.getByRole('link',{name:'Open this questionnaire as a self-report assessment'}).getAttribute('href'),'assessment-center.html?selfReport=context-education');
+  await page.goto(base+'/surveys.html?context=education');assert.equal(await page.getByRole('link',{name:'Browse existing assessments',exact:true}).getAttribute('href'),'assessment-center.html#explore');
   assert.deepEqual(errors,[]);assert.deepEqual(posts,[]);
   const nojs=await browser.newContext({javaScriptEnabled:false});const fallback=await nojs.newPage();await fallback.goto(base+'/assessment-center.html#self-report-assessments');assert.match(await fallback.locator('#self-report-assessments').innerText(),/Enable JavaScript/);await nojs.close();
   console.log('PASS 18 integrated assessments: completion, unchanged context calculations, separate opt-in saves, idempotency, dashboard reopen/download, original history preservation, four widths, no-JS explanation and no submissions.');
