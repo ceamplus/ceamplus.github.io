@@ -9,12 +9,12 @@ const fs = require('node:fs');
     await page.route('https://fonts.googleapis.com/**', route => route.fulfill({ body: '', contentType: 'text/css' }));
     const base = process.env.CEAM_TEST_URL || 'http://127.0.0.1:8765';
     const files = fs.readdirSync('.').filter(name => name.endsWith('.html'));
-    const expected = ['Dashboard', 'Marketing Analytics Lab', 'Assessment Center', 'Personas', 'Home', 'Research', 'AI', 'Consulting', 'About', 'Scenario Studio Preview'];
+    const expected = ['Dashboard', 'Communication & Planning Studio', 'Marketing Analytics Lab', 'Assessment Center', 'Personas', 'Home', 'Research', 'AI', 'Consulting', 'About', 'Scenario Studio Preview'];
     for (const name of files) {
       await page.goto(base + '/' + name);
       if (['mission.html', 'philosophy.html'].includes(name)) await page.waitForURL('**/values.html*');
       assert.deepEqual(await page.locator('header .nav-links a').allTextContents(), expected, name);
-      assert.equal(await page.locator('header .nav-links > a').count(), 4, name + ': primary task links');
+      assert.equal(await page.locator('header .nav-links > a').count(), 5, name + ': primary task links');
       for (const width of [320, 456, 900, 1440]) {
         await page.setViewportSize({ width, height: 900 });
         await page.locator('.nav-more').evaluate(details => { details.open = false; });
@@ -30,7 +30,7 @@ const fs = require('node:fs');
         });
         assert(metrics.right <= width + 1, name + ': header overflow');
         assert(metrics.scroll <= metrics.client + 1, name + ': nav overflow');
-        assert(metrics.height <= (width >= 1100 ? 85 : width > 700 ? 140 : 200), name + ': compact header at ' + width);
+        assert(metrics.height <= (width >= 1350 ? 100 : width > 700 ? 190 : 270), name + ': compact header at ' + width);
         assert(metrics.links.every(link => link.left >= 0 && link.right <= width + 1 && link.height >= 44), name + ': primary target bounds');
         await page.locator('.nav-more > summary').click();
         const secondary = await page.locator('.nav-secondary').boundingBox();

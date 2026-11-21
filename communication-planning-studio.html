@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Draft communications, organize project boards, and plan grant applications in a private browser-local CEAM+ workspace. No account or AI required.">
+<title>Communication &amp; Planning Studio | CEAM+</title>
+<link rel="stylesheet" href="styles.css?v=20260915-disclosure">
+<link rel="stylesheet" href="styles-header.css?v=20261121-studio">
+<link rel="stylesheet" href="styles-communication-studio.css?v=20261121">
+<script src="js/header-navigation.js?v=20261009-navigation" defer></script>
+<script type="module" src="js/communication-studio/app.mjs?v=20261121"></script>
+</head>
+<body class="cp-page">
+<a class="cp-skip" href="#cp-main">Skip to workspace</a>
+    <header class="site-header ceam-unified-header" data-header>
+      <a class="brand" href="index.html" aria-label="CEAM+ home"><span class="brand-mark"><img src="ceam-icon.jpeg" alt="" aria-hidden="true"></span><span>CEAM+</span></a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="communication-planning-studio.html" aria-current="page">Communication &amp; Planning Studio</a>
+        <a href="analytics-lab.html">Marketing Analytics Lab</a>
+        <a href="assessment-center.html">Assessment Center</a>
+        <a href="personas.html">Personas</a>
+        <details class="nav-more">
+          <summary>Explore</summary>
+          <div class="nav-secondary">
+            <a href="index.html">Home</a>
+            <a href="research.html">Research</a>
+            <a href="ai-technology.html">AI</a>
+            <a href="consulting.html">Consulting</a>
+            <a href="about.html">About</a><a href="scenario-studio-preview.html">Scenario Studio Preview</a>
+          </div>
+        </details>
+      </nav>
+      <a class="header-action" href="consulting.html">Consulting Process</a>
+    </header>
+
+<main class="cp-shell" id="top">
+  <div class="cp-topline"><div><span class="eyebrow">CEAM+ / Put the next step into words</span><h1>Communication &amp; Planning Studio</h1><p>Draft a message. Organize a project. Prepare a grant application.<br>Useful structure, your facts, and human judgment.</p></div><span class="cp-badge">No account or AI required</span></div>
+  <p class="cp-note">Saved in this browser only, with no device sync or live collaboration. Anyone using this browser profile may access saved work. Export a private backup before clearing browser data.</p>
+  <div id="cp-loading"><p>The workspace needs JavaScript for editing and local saving.</p><noscript><section class="cp-panel"><h2>Start a draft without JavaScript</h2><p>Copy this outline into your own text editor: Purpose and audience; confirmed facts; main message; requested action; deadline and time zone; questions to verify. Review names, evidence, tone, and accessibility before sharing.</p><p>For grant planning, start with the official application instructions, eligibility evidence, exact questions, limits, required documents, and a budget. This page does not verify requirements or submit applications.</p><p>For human writing assistance, <a href="contact.html">view the contact details</a>. Agree on pricing, scope, availability, and delivery before work begins.</p></section></noscript></div>
+  <div id="cp-app" hidden>
+    <div class="cp-toolbar"><label class="cp-field" for="cp-search">Search templates and workspace<input type="search" id="cp-search" placeholder="Try grant, meeting, or a project name"></label><label class="cp-field" for="cp-filter">Category / workspace filter<select id="cp-filter"><option>All</option><option>Workplace</option><option>Personal</option><option>Boards &amp; governance</option><option>Projects &amp; planning</option><option>Grants</option><option>Custom</option></select></label><details class="cp-create"><summary>Create New</summary><div><button type="button" data-action="templates">Use a Template</button><button type="button" data-action="blank">Start from Blank</button><button type="button" data-action="new-project">Project or board</button><button type="button" data-action="new-grant">Grant application</button></div></details><button type="button" data-action="request">Have It Written for Me</button></div>
+    <p id="cp-status" class="cp-status" role="status" aria-live="polite" aria-atomic="true"></p>
+    <div class="cp-layout">
+      <aside class="cp-sidebar" aria-label="Studio navigation">
+        <details open><summary>Workspace</summary><p id="cp-counts" class="cp-note"></p><nav aria-label="Workspace views"><button type="button" data-action="overview">Overview</button><button type="button" data-action="templates">Templates</button><button type="button" data-action="new-project">New project / board</button><button type="button" data-action="new-grant">New grant application</button></nav></details>
+        <details open><summary>My drafts</summary><div id="cp-drafts" class="cp-nav-list"></div></details>
+        <details open><summary>My projects</summary><div id="cp-projects" class="cp-nav-list"></div></details>
+        <details><summary>Backup and examples</summary><p class="cp-note">Backups contain your text, project details, and owner labels. Keep them private.</p><div class="cp-nav-list"><button type="button" data-action="export">Export workspace JSON</button><label class="cp-field">Restore workspace JSON<input id="cp-import" type="file" accept=".json,application/json"></label><button type="button" data-action="demo">Load fictional examples</button><button type="button" data-action="clear-demo">Clear fictional examples</button></div></details>
+        <details><summary>Workspace recovery</summary><p class="cp-note">If saved data cannot be read, download the original before clearing it. Only this Studio's storage is affected.</p><div class="cp-nav-list"><button type="button" data-action="recover-raw">Download original stored data</button><button type="button" data-action="reset-workspace" class="cp-danger">Clear Studio workspace</button></div></details>
+      </aside>
+      <div id="cp-main" tabindex="-1"></div>
+    </div>
+  </div>
+</main>
+<pre id="cp-print-output" class="cp-print-output"></pre>
+<footer class="site-footer"><p>CEAM+ · Research informed. Human led. <a href="contact.html">Contact</a> · <a href="research.html">Research and limitations</a></p></footer>
+</body>
+</html>

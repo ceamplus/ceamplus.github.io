@@ -4,6 +4,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $mainPages = @(
   "index.html",
   "dashboard.html",
+  "communication-planning-studio.html",
   "scenario-studio-preview.html",
   "personas.html",
   "analytics-lab.html",
@@ -30,6 +31,7 @@ $mainPages = @(
 
 $requiredNavigation = [ordered]@{
   "dashboard.html" = "Dashboard"
+  "communication-planning-studio.html" = "Communication &amp; Planning Studio"
   "analytics-lab.html" = "Marketing Analytics Lab"
   "assessment-center.html" = "Assessment Center"
   "personas.html" = "Personas"
@@ -63,7 +65,7 @@ foreach ($page in $mainPages) {
   $navigationLinks = [regex]::Matches($navigation.Value, '<a href="([^"]+)"')
   $actualNavigation = @($navigationLinks | ForEach-Object { $_.Groups[1].Value })
   if (($actualNavigation -join ',') -ne ($requiredNavigation.Keys -join ',')) {
-    throw "$page does not contain the ten navigation destinations in the intended order."
+    throw "$page does not contain the eleven navigation destinations in the intended order."
   }
   if ($navigation.Value -notmatch '<details class="nav-more"[^>]*>\s*<summary>Explore</summary>\s*<div class="nav-secondary">') {
     throw "$page is missing the accessible native disclosure for secondary destinations."
@@ -127,7 +129,7 @@ if ($framework -notmatch [regex]::Escape("Understanding how people and organizat
 $homepage = Get-Content (Join-Path $root "index.html") -Raw
 @(
   "Marketing Intelligence for Better Decisions",
-  "Explore the Dashboard",
+  "Try the Decision Explorer",
   "Explore the CEAM+ Framework",
   "marketing research",
   "Optionality = agency",
@@ -138,7 +140,7 @@ $homepage = Get-Content (Join-Path $root "index.html") -Raw
   }
 }
 
-if ($homepage -notmatch '<a class="button primary" href="dashboard\.html">Explore the Dashboard</a>') {
+if ($homepage -notmatch '<a class="button primary" href="#decision-example">Try the Decision Explorer</a>') {
   throw "index.html is missing its primary link to the Dashboard."
 }
 

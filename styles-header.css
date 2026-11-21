@@ -17,6 +17,7 @@
   grid-column: 1 / -1;
   grid-row: 2;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 6px;
   width: 100%;
@@ -66,7 +67,7 @@
   box-shadow: 0 12px 30px rgba(52, 54, 58, .16);
 }
 .site-header.ceam-unified-header .nav-secondary a { justify-content: flex-start; text-align: left; }
-@media (min-width: 1100px) {
+@media (min-width: 1350px) {
   .site-header.ceam-unified-header { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto; }
   .site-header.ceam-unified-header .nav-links { grid-column: 2; grid-row: 1; }
   .site-header.ceam-unified-header .header-action { grid-column: 3; }
@@ -81,5 +82,6 @@
   .site-header.ceam-unified-header .nav-more > summary { height: 100%; align-content: center; }
   .site-header.ceam-unified-header .nav-links { position:relative; }
   .site-header.ceam-unified-header .nav-more { position:static; }
+  .site-header.ceam-unified-header .nav-links > a[href="communication-planning-studio.html"] { grid-column: span 2; }
 }
 @media print { .site-header.ceam-unified-header { display: none; } }

@@ -16,9 +16,14 @@ test('all 56 pre-change outputs retain identical substantive and evidence arithm
  const fixtures=JSON.parse(fs.readFileSync(new URL('./fixtures/scoring-original.json',import.meta.url)));
  for(const fixture of fixtures){const definition=definitions.find(d=>d.id===fixture.id&&d.version===fixture.version);const {scoringVersion,...actual}=scoreAssessment(definition,fixture.response);assert.equal(scoringVersion,CORE_SCORING_VERSION);assert.deepEqual(actual,fixture.result,`${fixture.id}/${fixture.version}/${fixture.mode}`);}
 });
-test('all assessment questions, choices, maps, and tailoring sources remain byte-identical',()=>{
+test('all assessment questions, choices, maps, and tailoring sources are unchanged across checkout line endings',()=>{
  const hashes=JSON.parse(fs.readFileSync(new URL('./fixtures/assessment-content-hashes.json',import.meta.url)));
- for(const [file,hash] of Object.entries(hashes))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL(`../js/assessments/${file}`,import.meta.url))).digest('hex'),hash,file);
+ for(const [file,hash] of Object.entries(hashes)){
+  // The original fixture contains both LF and CRLF sources; Git may convert checkout endings.
+  const source=fs.readFileSync(new URL(`../js/assessments/${file}`,import.meta.url),'utf8').replace(/\r\n/g,'\n');
+  const candidates=[source,source.replace(/\n/g,'\r\n')].map(text=>crypto.createHash('sha256').update(text).digest('hex'));
+  assert(candidates.includes(hash),`${file}: content changed beyond checkout line endings`);
+ }
 });
 test('completion distinguishes skipped uncertain invalid and not-applicable from explicit low answers',()=>{
  assert.deepEqual(completion(def,{answers:{a:'1',b:'na',c:'unsure'}}),{total:3,answered:1,applicable:2,skipped:0,notApplicable:1,uncertain:1,invalid:0,usablePercent:50});

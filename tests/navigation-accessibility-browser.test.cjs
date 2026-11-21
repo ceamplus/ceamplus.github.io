@@ -14,7 +14,7 @@ const assert = require('node:assert/strict');
       const details = nav.locator('.nav-more');
       const summary = details.locator('summary');
       await page.locator('.brand').focus();
-      for (const expected of ['Dashboard', 'Marketing Analytics Lab', 'Assessment Center', 'Personas', 'Explore']) {
+      for (const expected of ['Dashboard', 'Communication & Planning Studio', 'Marketing Analytics Lab', 'Assessment Center', 'Personas', 'Explore']) {
         await page.keyboard.press('Tab');
         assert.equal(await page.locator(':focus').textContent(), expected, 'logical keyboard order at ' + width);
       }

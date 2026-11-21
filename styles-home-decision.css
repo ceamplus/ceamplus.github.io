@@ -1,0 +1,17 @@
+.home-hero .hero-copy h1 { font-size: clamp(2.3rem, 4.1vw, 4rem); }
+.home-audience { font-size: .95rem; font-weight: 600; color: #555962; }
+.home-example { min-width: 0; background: #fff; border: 1px solid #dadddf; border-top: 4px solid #a47c26; padding: clamp(20px, 3vw, 32px); border-radius: 12px; box-shadow: 0 12px 36px #34363a0d; }
+.home-example h2 { margin: 8px 0 12px; font-size: 1.6rem; line-height: 1.2; }
+.home-example p { font-size: .95rem; }
+.home-example .eyebrow { color: #755616; }
+.home-example label { display: flex; justify-content: space-between; gap: 12px; font-weight: 600; font-size: .95rem; }
+.home-example input[type=range] { width: 100%; min-height: 44px; accent-color: #805e1b; cursor: pointer; }
+.home-example input:focus-visible, .home-example button:focus-visible { outline: 3px solid #805e1b; outline-offset: 3px; }
+.home-example-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-block: 1px solid #dedfe2; padding: 18px 0; margin-top: 16px; }
+.home-example-metrics span { display: block; font-size: .875rem; }
+.home-example-metrics strong { font-size: clamp(1.4rem, 3vw, 2rem); color: #34363a; }
+.home-example details { border-top: 1px solid #dedfe2; padding-top: 14px; }
+.home-example summary { cursor: pointer; min-height: 44px; }
+.home-entry-points { display: flex; flex-wrap: wrap; gap: 12px 24px; margin: 20px 0 0; }
+.home-entry-points a { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 700px) { .home-example-metrics { gap: 8px; } }

@@ -287,3 +287,11 @@ The October 17 Dashboard scenario explorer, methods, design influences, preserva
 - [Supabase API keys](https://supabase.com/docs/guides/api/api-keys)
 - [Securing the Data API](https://supabase.com/docs/guides/api/securing-your-api)
 - [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security)
+
+## Communication and Planning Studio — November 21, 2026
+
+[Communication & Planning Studio](communication-planning-studio.html) adds 55 templates, editable drafts, local project and Kanban boards, grant applications with narrative limits and budget totals, validated workspace backup/restore, and human-writing request preparation. The homepage adds a fictional assumption explorer and a clearer path to pilots and practical work.
+
+Everything works without AI or an account. Data stays in this browser; writing requests must be reviewed and sent by the visitor. See [release behavior, verification, privacy, and follow-up](docs/communication-planning-studio-release.md).
+
+Run `node --test tests/communication-studio.test.mjs` for model checks. With a local static server, run `node tests/communication-studio-browser.test.cjs` (set `CEAM_TEST_URL` when using a port other than 8765).
