@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { templates, getTemplate, assemble } from '../js/communication-studio/templates.mjs';
-import { emptyWorkspace, createDraft, createProject, validateWorkspace, parseBackup, addDemo, budgetTotal, grantIssues, proposalText, countText } from '../js/communication-studio/model.mjs';
+import { emptyWorkspace, createDraft, createProject, validateWorkspace, parseBackup, addDemo, budgetTotal, grantIssues, proposalText, countText, completedStatus, isTaskComplete, renameColumn, copyDraftToProposal } from '../js/communication-studio/model.mjs';
 
 test('every requested template has meaningful guidance and missing-information markers', () => {
   assert.equal(templates.length, 55);
@@ -63,4 +63,53 @@ test('import rejects custom field attribute injection and reserved object keys',
     w.customTemplates.push({ id: 'custom-test', name: 'Custom', category: 'Personal', guidance: 'Test', body: '', fields: [{ id: fieldId, label: 'Field', hint: '', type: 'text' }] });
     assert.throws(() => validateWorkspace(w));
   }
+});
+
+test('email assembly produces a document and honors explicit sections without inventing a recipient', () => {
+  const text = assemble(getTemplate('email'), { purpose: 'Review the plan', audience: 'Leadership team', context: 'The scope remains under review.', message: 'First paragraph.\n\nSecond paragraph.', action: 'Please review the draft.', deadline: 'Friday, 5 p.m. Eastern', tone: 'Formal' });
+  assert.match(text, /^Subject: Review the plan/);
+  assert.match(text, /\[Add greeting for your recipient\]/);
+  assert.match(text, /First paragraph\.\n\nSecond paragraph\./);
+  assert.match(text, /Timing: Friday, 5 p.m. Eastern/);
+  assert(!text.includes('Purpose and desired outcome'));
+  assert(!text.includes('Formal'));
+  assert.equal(assemble(getTemplate('blank'), {}), '');
+  const override = assemble(getTemplate('email'), { purpose: 'Old subject', message: 'Old message', section0: 'My subject', section2: 'My actual wording' });
+  assert.match(override, /^Subject: My subject/); assert(override.includes('My actual wording')); assert(!override.includes('Old message'));
+});
+
+test('renaming a completion column preserves task completion and old backups remain readable', () => {
+  const w = emptyWorkspace(), p = createProject('Test'); w.projects.push(p);
+  delete p.completedStatus; // Original v1 shape.
+  p.tasks[0].status = 'Complete';
+  const restored = parseBackup(JSON.stringify(w)); assert.equal(restored.projects[0].completedStatus, undefined);
+  assert.equal(completedStatus(p), 'Complete'); assert(isTaskComplete(p, p.tasks[0]));
+  renameColumn(p, 'Complete', 'Done');
+  assert.equal(p.tasks[0].status, 'Done'); assert(isTaskComplete(p, p.tasks[0]));
+  assert.deepEqual(parseBackup(JSON.stringify(w)), w);
+  p.completedStatus = 'Missing'; assert.throws(() => validateWorkspace(w));
+});
+
+test('a proposal copy preserves text independently and exports section evidence links', () => {
+  const w = emptyWorkspace(), p = createProject('Test application', 'Grant application'), d = createDraft(getTemplate('needs-statement'));
+  w.projects.push(p); w.drafts.push(d); d.text = 'Supported need.\n\n[Evidence still needed]';
+  const s = copyDraftToProposal(p, d); assert.equal(d.projectId, p.id); assert.equal(s.text, d.text);
+  d.text = 'Later draft revision'; assert.notEqual(s.text, d.text);
+  p.grant.budget.push({ id: 'linked-cost', label: 'Workshop time', quantity: '3', cost: '100', basis: 'Estimate' });
+  p.grant.documents.push({ id: 'linked-document', text: 'Approved work plan', done: false });
+  s.budgetIds.push('linked-cost'); s.documentIds.push('linked-document');
+  assert.match(proposalText(p), /Linked budget total: 300.00 USD/);
+  assert.match(proposalText(p), /Approved work plan \[outstanding\]/);
+  assert.deepEqual(parseBackup(JSON.stringify(w)), w);
+  d.fictional = true; assert.throws(() => copyDraftToProposal(p, d), /Fictional/);
+});
+
+test('fractional budget lines use the same rounding in every export and total', () => {
+  const p = createProject('Rounding example', 'Grant application');
+  p.grant.budget.push({ id: 'fractional-cost', label: 'Partial hour', quantity: '0.5', cost: '5.35', basis: 'Estimate' });
+  p.grant.sections[0].budgetIds.push('fractional-cost');
+  assert.equal(budgetTotal(p.grant), 2.68);
+  const text = proposalText(p);
+  assert.match(text, /0.5 × 5.35 = 2.68/);
+  assert.match(text, /Linked budget total: 2.68 USD/);
 });

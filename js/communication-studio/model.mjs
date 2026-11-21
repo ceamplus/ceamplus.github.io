@@ -1,4 +1,4 @@
-import { assemble, getTemplate, grantFields, projectKinds } from './templates.mjs';
+import { assemble, getTemplate, grantFields, projectKinds } from './templates.mjs?v=20261121-complete';
 
 export const STORAGE_KEY = 'ceamplus.communication-planning.v1';
 export const MAX_BACKUP_BYTES = 4 * 1024 * 1024;
@@ -8,7 +8,7 @@ export function createDraft(template, fictional = false) {
   return { id: id(), title: template.name, templateId: template.id, values: {}, text: assemble(template, {}), edited: false, projectId: '', fictional, updated: new Date().toISOString() };
 }
 export function createProject(title, kind = 'Team project', fictional = false) {
-  return { id: id(), title, kind, fictional, columns: ['To Do', 'In Progress', 'Review', 'Complete'],
+  return { id: id(), title, kind, fictional, columns: ['To Do', 'In Progress', 'Review', 'Complete'], completedStatus: 'Complete',
     tasks: (projectKinds[kind] || []).map(title => ({ id: id(), title, description: '', owner: '', status: 'To Do', priority: 'Normal', due: '', checklist: [], draftId: '' })),
     grant: kind.startsWith('Grant') ? {
       fields: Object.fromEntries(grantFields.map(([key]) => [key, key === 'currency' ? 'USD' : key === 'stage' ? 'Planning' : ''])),
@@ -17,7 +17,38 @@ export function createProject(title, kind = 'Team project', fictional = false) {
     } : null };
 }
 export const countText = (text, unit = 'words') => unit === 'characters' ? [...text].length : (text.trim().match(/\S+/g) || []).length;
-export const budgetTotal = grant => Math.round(grant.budget.reduce((sum, row) => sum + Math.round(Number(row.quantity || 0) * Number(row.cost || 0) * 100), 0)) / 100;
+// Older version-1 backups did not store the completion column. Do not rewrite them on read.
+export const completedStatus = project => project.completedStatus ?? (project.columns.includes('Complete') ? 'Complete' : '');
+export const isTaskComplete = (project, task) => Boolean(completedStatus(project)) && task.status === completedStatus(project);
+export function renameColumn(project, oldName, newName) {
+  const name = newName.trim(), index = project.columns.indexOf(oldName);
+  if (index < 0 || !name || project.columns.includes(name)) throw new Error('Choose a nonempty, unique column name.');
+  const completion = completedStatus(project);
+  project.columns[index] = name;
+  project.tasks.filter(task => task.status === oldName).forEach(task => { task.status = name; });
+  project.completedStatus = completion === oldName ? name : completion;
+}
+export function copyDraftToProposal(project, draft) {
+  if (!project.grant) throw new Error('Choose a grant application or reporting project.');
+  if (project.grant.sections.length >= 100) throw new Error('This application already has 100 sections.');
+  if (draft.fictional && !project.fictional) throw new Error('Fictional drafts can only be copied into a fictional application.');
+  const section = { id: id(), title: draft.title || 'Communication draft', question: '', text: draft.text, limit: '', unit: 'words', budgetIds: [], documentIds: [] };
+  project.grant.sections.push(section);
+  draft.projectId = project.id;
+  return section;
+}
+export function sectionLinks(grant, section) {
+  const lines = grant.budget.filter(b => section.budgetIds.includes(b.id));
+  const docs = grant.documents.filter(d => section.documentIds.includes(d.id));
+  return [
+    `Linked budget items: ${lines.map(b => `${b.label || '[Cost item]'} (${budgetLineTotal(b).toFixed(2)})`).join('; ') || 'none'}`,
+    `Linked budget total: ${budgetTotal({ budget: lines }).toFixed(2)} ${grant.fields.currency || '[Specify currency]'}`,
+    `Linked required documents: ${docs.map(d => `${d.text} [${d.done ? 'prepared' : 'outstanding'}]`).join('; ') || 'none'}`
+  ].join('\n');
+}
+const budgetLineCents = row => Math.round(Number(row.quantity || 0) * Number(row.cost || 0) * 100);
+export const budgetLineTotal = row => budgetLineCents(row) / 100;
+export const budgetTotal = grant => grant.budget.reduce((sum, row) => sum + budgetLineCents(row), 0) / 100;
 export function grantIssues(grant) {
   const issues = [];
   for (const key of ['funder', 'opportunity', 'instructions', 'criteria', 'eligibility', 'deadline', 'timezone', 'organization', 'need', 'amount']) {
@@ -37,8 +68,8 @@ export function proposalText(project) {
   const g = project.grant;
   return [project.title, project.fictional ? 'FICTIONAL EXAMPLE — not a real application' : 'User-entered draft — not verified, approved, or submitted',
     ...grantFields.map(([key, label]) => `${label}\n${g.fields[key]?.trim() || `[Add ${label.toLowerCase()}]`}`),
-    ...g.sections.map(s => `${s.title}\nFunder question: ${s.question || '[Paste the exact question]'}\n${s.text || '[Draft this section using supported facts]'}\n${s.limit ? `User-entered limit: ${s.limit} ${s.unit}; current count: ${countText(s.text, s.unit)}` : 'Limit: not supplied'}`),
-    `Budget (${g.fields.currency || '[Specify currency]'})\n${g.budget.map(b => `${b.label || '[Cost item]'}: ${b.quantity || 0} × ${b.cost || 0} = ${(Number(b.quantity || 0) * Number(b.cost || 0)).toFixed(2)}; basis: ${b.basis || '[Add evidence or estimate basis]'}`).join('\n')}\nTotal: ${budgetTotal(g).toFixed(2)}`,
+    ...g.sections.map(s => `${s.title}\nFunder question: ${s.question || '[Paste the exact question]'}\n${s.text || '[Draft this section using supported facts]'}\n${s.limit ? `User-entered limit: ${s.limit} ${s.unit}; current count: ${countText(s.text, s.unit)}` : 'Limit: not supplied'}\n${sectionLinks(g, s)}`),
+    `Budget (${g.fields.currency || '[Specify currency]'})\n${g.budget.map(b => `${b.label || '[Cost item]'}: ${b.quantity || 0} × ${b.cost || 0} = ${budgetLineTotal(b).toFixed(2)}; basis: ${b.basis || '[Add evidence or estimate basis]'}`).join('\n')}\nTotal: ${budgetTotal(g).toFixed(2)}`,
     `Required documents\n${g.documents.map(d => `[${d.done ? 'x' : ' '}] ${d.text}`).join('\n') || '[Add funder-required documents]'}`,
     'Review notes\n' + grantIssues(g).join('\n'),
     'Human review required. All requirements and claims are user-entered. Check the official opportunity, evidence, budget and narrative together; this workspace does not establish eligibility, compliance, submission, or funding prospects.'
@@ -76,10 +107,11 @@ export function validateWorkspace(value) {
     if (getTemplate(d.templateId, value.customTemplates).id !== d.templateId) fail('unknown template.');
   }
   for (const p of value.projects) {
-    object(p, ['id', 'title', 'kind', 'fictional', 'columns', 'tasks', 'grant']); unique(p.id); str(p.title, 160); bool(p.fictional);
+    object(p, ['id', 'title', 'kind', 'fictional', 'columns', 'completedStatus', 'tasks', 'grant']); unique(p.id); str(p.title, 160); bool(p.fictional);
     if (!Object.hasOwn(projectKinds, p.kind)) fail('unknown project type.');
     array(p.columns, 20); if (!p.columns.length || new Set(p.columns).size !== p.columns.length) fail('missing or duplicate columns.');
     p.columns.forEach(c => { str(c, 80); if (!c.trim()) fail('empty status.'); });
+    if (p.completedStatus !== undefined && p.completedStatus !== '' && !p.columns.includes(p.completedStatus)) fail('invalid completion column.');
     array(p.tasks);
     for (const t of p.tasks) {
       object(t, ['id', 'title', 'description', 'owner', 'status', 'priority', 'due', 'checklist', 'draftId']); unique(t.id);

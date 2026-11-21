@@ -36,3 +36,16 @@ The homepage now identifies business leaders and consultants as the immediate au
 The release is based on the current published `origin/git-branch` and includes only this task's changes. The original checkout's unrelated local edits remain intact. GitHub Pages continues using its existing branch and root publishing configuration.
 
 Future work, outside this pass: an authenticated delivery service with verified receipts and secure uploads; optional authenticated syncing and collaboration; richer document-format exports; and user research to refine template language. Live grant discovery, automated eligibility verification, AI drafting, and application submission are not part of this release.
+
+## Completion fixes
+
+The follow-up completes the connections between drafting, projects, and grant applications:
+
+- Email and formal-letter previews use document layouts instead of exporting the planning questionnaire. Existing saved text is retained; a rebuild remains explicit. Tone and accessibility preferences guide the user's review without claiming automatic rewriting.
+- Grant templates can be added directly as editable proposal sections. An existing grant draft can be copied into a selected application without overwriting earlier sections. Copied text and the source draft remain independently editable, with explicit guidance in the interface.
+- Linked budget lines, rounded totals, and required-document statuses appear beside each section and in the combined proposal export. Budget lines now use the same cent-rounding rule in every display and export.
+- Grant Save excludes empty optional add-item forms from validation and opens collapsed panels containing invalid saved fields.
+- Boards retain the identity of their completion column when renamed. Project settings allow choosing a completion column. Existing version-1 backups without this property remain readable and are not rewritten on load.
+- Search works while editing, Create New closes after selection, and task status changes retain keyboard focus. Grant-draft writing requests open with the grant service selected and retain explicit inclusion consent.
+
+The added model and browser regression checks cover these behaviors, old backup compatibility, unchanged manual drafts, linked budget recalculation, invalid-field recovery, and desktop/mobile layouts. The complete model suite now contains 165 passing tests. Both Studio browser suites pass locally; the completion suite is also used for post-deployment verification.

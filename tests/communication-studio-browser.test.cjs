@@ -100,6 +100,7 @@ const base = process.env.CEAM_TEST_URL || 'http://127.0.0.1:8765';
     await page.locator('[data-section-form]').first().locator('[name=budgetIds]').check();
     await page.locator('[data-section-form]').first().locator('[name=documentIds]').check();
     await click('save-grant');
+    assert.match(await page.locator('#cp-status').innerText(), /Grant application saved locally/);
     const proposal = await downloadText(() => click('download-proposal'));
     assert.match(proposal, /4 × 150 = 600.00/); assert.match(proposal, /What will the project do/);
     await click('project'); await click('edit-task');

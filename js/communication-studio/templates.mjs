@@ -88,7 +88,35 @@ export const blankTemplate = { id: 'blank', name: 'Blank document', category: 'P
 export function getTemplate(id, custom = []) { return [...templates, ...custom, blankTemplate].find(t => t.id === id) || blankTemplate; }
 export function assemble(template, values) {
   if (template.body !== undefined) return template.body;
-  return template.fields.filter(f => !['tone', 'length', 'accessibility'].includes(f.id)).map(f => `${f.label}\n${values[f.id]?.trim() || `[Add ${f.label.toLowerCase()}]`}`).join('\n\n');
+  if (template.id === 'blank') return '';
+  const value = key => values[key]?.trim() || '';
+  const missing = label => `[Add ${label.toLowerCase()}]`;
+  const sections = template.fields.filter(f => f.id.startsWith('section'));
+  // These message formats place supplied text in a usable document rather than
+  // exporting the planning questionnaire. No names, facts or commitments are inferred.
+  if (template.id === 'email') {
+    return [
+      `Subject: ${value('section0') || value('purpose') || missing('subject')}`,
+      value('section1') || missing('greeting for your recipient'),
+      value('context'),
+      value('section2') || value('message') || missing('main message'),
+      value('section3') || value('action') || missing('requested response, or remove if none'),
+      value('deadline') ? `Timing: ${value('deadline')}` : '',
+      value('section4') || missing('sign-off and sender name')
+    ].filter(Boolean).join('\n\n');
+  }
+  if (template.id === 'formal-letter') {
+    return [value('section0') || missing('recipient address and date'), value('section1') || missing('salutation'),
+      value('purpose'), value('section2') || value('context'), value('message'),
+      value('section3') || value('action') || missing('request'),
+      value('deadline') ? `Timing: ${value('deadline')}` : '', value('section4') || missing('closing and signature')
+    ].filter(Boolean).join('\n\n');
+  }
+  const filledSections = sections.map(f => `${f.label}\n${value(f.id) || missing(f.label)}`);
+  const suppliedContext = [value('purpose') && `Purpose\n${value('purpose')}`, value('audience') && `For\n${value('audience')}`, value('context') && `Background\n${value('context')}`].filter(Boolean);
+  const suppliedMessage = value('message') ? [value('message')] : [];
+  const nextStep = [value('action') && `Requested action\n${value('action')}`, value('deadline') && `Timing\n${value('deadline')}`].filter(Boolean);
+  return [...suppliedContext, ...suppliedMessage, ...filledSections, ...nextStep].join('\n\n');
 }
 export const grantFields = [
   ['funder', 'Funder'], ['opportunity', 'Opportunity name'], ['source', 'Official opportunity link'],

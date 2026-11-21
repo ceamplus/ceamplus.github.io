@@ -92,3 +92,5 @@
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 @media (max-width: 760px) { .cp-shell { padding-top: 20px; } .cp-topline h1 { font-size: 1.6rem; } .cp-topline p { font-size: .95rem; } .cp-topline > .cp-badge { margin-bottom: 8px; } .cp-status { margin: 2px 0; } }
+
+.cp-linked-summary { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .9rem; background: #f3f4f6; padding: 12px; border-radius: 6px; }
